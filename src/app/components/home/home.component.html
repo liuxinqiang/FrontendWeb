@@ -1,3 +1,25 @@
 <h1 class="ui-h5">明星组件</h1>
 <h1 class="ui-h5">明星开发者</h1>
 <h1 class="ui-h5">标签列表</h1>
+<div class="ui-width-1-2@s"
+    *ngIf="tags && tags.length">
+    <ul class="ui-nav ui-nav-default">
+        <li *ngFor="let tag of tags"
+            [ngClass]="{
+                'ui-parent': tag.children.length
+            }">
+            <a>{{tag.name}}</a>
+            <ul class="ui-nav-sub"
+                *ngIf="tag.children.length">
+                <li *ngFor="let subTag of tag.children">
+                    <a>{{subTag.name}}</a>
+                    <ul *ngIf="subTag.children">
+                        <li *ngFor="let sonTag of subTag.children">
+                            <a>{{sonTag.name}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
