@@ -1,25 +1,24 @@
-import {Component, OnDestroy} from '@angular/core';
-import {GetMainMenuService} from 'app/common/services/auth/get-main-menu.service';
-import {Subscription} from 'rxjs';
-import {IMainMenuInterface} from 'app/common/interfaces/menu.interface';
+import {Component, OnInit} from '@angular/core';
+import {ITag} from '../interfaces/tag.interface';
+import {TagsService} from '../services/tags.service';
 
 @Component({
-    selector: 'app-components-home',
+    selector: 'app-home',
     templateUrl: './home.component.html',
-    styles: []
+    styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnDestroy {
-    private _getMainMenuSubscription$: Subscription;
-    menu: IMainMenuInterface;
+export class HomeComponent implements OnInit {
+    tags: ITag[];
 
-    constructor(private _getMainMenuService: GetMainMenuService) {
-        this._getMainMenuSubscription$ = this._getMainMenuService.getMainMenu('/components')
+    constructor(
+        private _tagsService: TagsService,
+    ) {}
+
+    ngOnInit() {
+        this._tagsService.getTags()
             .subscribe(data => {
-                this.menu = data.menu;
+                this.tags = data;
             });
     }
 
-    ngOnDestroy() {
-        this._getMainMenuSubscription$.unsubscribe();
-    }
 }

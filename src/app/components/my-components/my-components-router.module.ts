@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
 import {MyComponentsComponent} from './my-components/my-components.component';
 import {ComponentDetailComponent} from '../shared/component-detail/component-detail.component';
+import {EntryComponent} from './entry/entry.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: EntryComponent,
         children: [
             {
                 path: '',
@@ -33,6 +33,6 @@ export class MyComponentsRouterModule {
 }
 
 export const MyComponentsRouterComponents = [
-    HomeComponent,
+    EntryComponent,
     MyComponentsComponent,
 ];

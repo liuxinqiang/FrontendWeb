@@ -3,18 +3,18 @@ import {RouterModule, Routes} from '@angular/router';
 import {PublicComponentsComponent} from './public-components/public-components.component';
 import {CreateComponentComponent} from './create-component/create-component.component';
 import {AuthGuard} from '../common/guards/auth.guard';
-import {HomeComponent} from './home/home.component';
 import {ComponentDetailComponent} from './shared/component-detail/component-detail.component';
+import {EntryComponent} from './entry/entry.component';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: EntryComponent,
         children: [
             {
                 path: '',
-                pathMatch: 'full',
-                redirectTo: 'public',
+                component: HomeComponent,
             },
             {
                 path: 'public',
@@ -51,6 +51,7 @@ export class ComponentsRouterModule {
 
 export const ComponentsRouterComponents = [
     HomeComponent,
+    EntryComponent,
     PublicComponentsComponent,
     CreateComponentComponent,
 ];
