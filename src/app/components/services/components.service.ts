@@ -29,7 +29,7 @@ export class ComponentsService {
             );
     }
 
-    getAllPublicComponentsList(dataFilter: DataFilter): Observable<IResponseInterface> {
+    getAllPublicComponentsList(dataFilter: DataFilter): Observable<object> {
         const {
             pageSize,
             pageIndex,
@@ -46,7 +46,7 @@ export class ComponentsService {
             });
     }
 
-    getComponentsListByUser(dataFilter: DataFilter, loginName?: string): Observable<IResponseInterface> {
+    getComponentsListByUser(dataFilter: DataFilter, loginName?: string): Observable<object> {
         const {
             pageSize,
             pageIndex,
