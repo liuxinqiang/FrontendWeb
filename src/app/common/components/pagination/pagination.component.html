@@ -1,0 +1,27 @@
+<ul *ngIf="dataFilter && ([dataFilter.total, dataFilter.pageSize] | mathCeil) > 1"
+    class="ui-pagination"
+    ui-margin>
+    <li [ngClass]="{'ui-disabled': dataFilter.pageIndex <= 1}">
+        <a (click)="change(dataFilter.pageIndex - 1)">
+            <span ui-pagination-previous></span>
+        </a>
+    </li>
+    <ng-container *ngFor="let num of [dataFilter.total, dataFilter.pageSize]
+                          | mathCeil
+                          | numberToArray: '1'">
+        <li *ngIf="num === dataFilter.pageIndex; else link"
+            class="ui-active">
+            <span>{{num}}</span>
+        </li>
+        <ng-template #link>
+            <li>
+                <a (click)="change(num)">{{num}}</a>
+            </li>
+        </ng-template>
+    </ng-container>
+    <li [ngClass]="{'ui-disabled': dataFilter.pageIndex >= ([dataFilter.total, dataFilter.pageSize] | mathCeil)}">
+        <a (click)="change(dataFilter.pageIndex + 1)">
+            <span ui-pagination-next></span>
+        </a>
+    </li>
+</ul>

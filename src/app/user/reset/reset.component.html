@@ -1,0 +1,29 @@
+<div class="ui-width-large ui-margin-auto">
+    <form class="ui-form-stacked">
+        <h2 class="ui-h2 ui-margin-medium-bottom">重置密码</h2>
+        <div class="ui-margin">
+            <label class="ui-form-label" for="loginName">验证码</label>
+            <input class="ui-input" id="loginName" type="text" placeholder="验证码">
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label" for="password">新密码</label>
+            <input class="ui-input" id="password" type="password" placeholder="新密码">
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label" for="confirmPassword">确认新密码</label>
+            <input class="ui-input" id="confirmPassword" type="password" placeholder="确认新密码">
+        </div>
+        <div class="ui-margin-medium-top ui-text-center">
+            <button type="submit"
+                    class="ui-button ui-button-secondary ui-button-large ui-width-1-2">
+                重置
+            </button>
+        </div>
+        <p class="ui-text-center">
+            取消重置？
+            <a routerLink="../login">
+                去登录
+            </a>
+        </p>
+    </form>
+</div>

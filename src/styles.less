@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/topui/src/less/topui.theme.less";
+
+.dot-loading {
+  display: inline-block;
+  height: 1em; line-height: 1;
+  text-align: left;
+  vertical-align: -.25em;
+  overflow: hidden;
+}
+.dot-loading::before {
+  display: block;
+  content: '...\A..\A.';
+  white-space: pre-wrap;   /* 也可以是white-space: pre */
+  animation: dot 3s infinite step-start both;
+}
+@keyframes dot {
+  33% { transform: translateY(-2em); }
+  66% { transform: translateY(-1em); }
+}
+
+.page-medium-container {
+  max-width: 1360px;
+}

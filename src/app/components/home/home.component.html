@@ -1,0 +1,23 @@
+<div class="page-medium-container ui-container">
+    <div ui-grid
+         class="ui-margin-medium-bottom"
+         *ngIf="menu && menu.children.length">
+        <div class="ui-width-expand">
+            <h2 class="ui-h3">
+                <a class="ui-link-reset"
+                    [routerLink]="menu.path">
+                    {{menu.name}}
+                </a>
+            </h2>
+        </div>
+        <div class="ui-width-auto">
+            <ul class="ui-subnav" ui-margin>
+                <li routerLinkActive="ui-active"
+                    *ngFor="let subMenu of menu.children">
+                    <a [routerLink]="subMenu.path">{{subMenu.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

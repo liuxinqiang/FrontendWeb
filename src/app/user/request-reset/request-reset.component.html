@@ -1,0 +1,25 @@
+<div class="ui-width-large ui-margin-auto">
+    <form class="ui-form-stacked">
+        <h2 class="ui-h2 ui-margin-medium-bottom">请求重置密码</h2>
+        <div class="ui-margin">
+            <label class="ui-form-label" for="loginName">用户名</label>
+            <input class="ui-input" id="loginName" type="text" placeholder="请输入用户名">
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label" for="emailOrPhone">邮箱或手机号</label>
+            <input class="ui-input" id="emailOrPhone" type="text" placeholder="请输入你注册时提供的邮箱或手机号">
+        </div>
+        <div class="ui-margin-medium-top ui-text-center">
+            <button type="submit"
+                    class="ui-button ui-button-secondary ui-button-large ui-width-1-2">
+                请求重置
+            </button>
+        </div>
+        <p class="ui-text-center">
+            取消重置？
+            <a routerLink="../login">
+                去登录
+            </a>
+        </p>
+    </form>
+</div>

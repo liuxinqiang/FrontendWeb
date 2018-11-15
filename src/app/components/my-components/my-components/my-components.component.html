@@ -1,0 +1,42 @@
+<div *ngIf="dataList && dataList.length"
+     class="ui-child-width-1-3" ui-grid>
+    <div *ngFor="let component of dataList">
+        <div class="ui-card ui-card-default">
+            <div class="ui-card-header">
+                <h3 class="ui-card-title ui-margin-remove-bottom">
+                    <a class="ui-link-reset"
+                       [routerLink]="[component.componentName]">
+                        {{component.name}}
+                        [{{component.users[0].role === 99 ? '管理员' : '参与者'}}]
+                    </a>
+                </h3>
+                <p class="ui-text-meta ui-margin-remove-top">
+                    {{component.componentName}}
+                </p>
+            </div>
+            <div class="ui-card-body">
+                <ul class="ui-list">
+                    <li>
+                        <span>创建时间：</span>
+                        {{component.createTime | date: 'medium'}}
+                    </li>
+                    <li>
+                        <span>更新时间：</span>
+                        {{component.createTime | date: 'medium'}}
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-card-footer">
+                <a [routerLink]="[component.componentName]"
+                   class="ui-button ui-button-text">
+                    详细了解
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-common-pagination
+        [dataFilter]="dataFilter"
+        (changed)="getComponents($event)"
+        class="ui-display-block ui-margin-medium-top">
+</app-common-pagination>

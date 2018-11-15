@@ -1,0 +1,78 @@
+<div class="ui-width-large ui-margin-auto">
+    <form class="ui-form-stacked"
+          [formGroup]="loginInfo"
+          (ngSubmit)="login()">
+        <h2 class="ui-h2 ui-margin-medium-bottom">用户登录</h2>
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="loginName">
+                        登录名
+                    </label>
+                    <div *ngIf="f.loginName.errors && f.loginName.touched"
+                         class="ui-text-danger">
+                        <span *ngIf="f.loginName.errors.required">请填写用户名</span>
+                    </div>
+                </div>
+            </div>
+            <input class="ui-input"
+                   formControlName="loginName"
+                   id="loginName"
+                   type="text"
+                   [class.ui-form-danger]="f.loginName.errors && f.loginName.touched"
+                   [class.ui-form-success]="!f.loginName.errors && f.loginName.touched"
+                   placeholder="请输入用户名">
+        </div>
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="password">
+                        密码
+                    </label>
+                    <ul class="ui-subnav ui-margin-remove" ui-margin>
+                        <li>
+                            <a class="ui-link-text"
+                               tabindex="-1"
+                               routerLink="../request-reset">
+                                忘了密码？
+                            </a>
+
+                        </li>
+                        <li *ngIf="f.password.errors && f.password.touched">
+                                <span class="ui-text-danger"
+                                      *ngIf="f.password.errors.required">
+                                    请填写密码
+                                </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input class="ui-input"
+                   formControlName="password"
+                   [class.ui-form-danger]="f.password.errors && f.password.touched"
+                   [class.ui-form-success]="!f.password.errors && f.password.touched"
+                   id="password"
+                   type="password"
+                   placeholder="密码">
+        </div>
+        <label class="ui-margin">
+            <input class="ui-checkbox"
+                   formControlName="rememberMe"
+                   type="checkbox">
+            在这台电脑上记住我
+        </label>
+        <div class="ui-margin-medium-top ui-text-center">
+            <button type="submit"
+                    [disabled]="!loginInfo.valid"
+                    class="ui-button ui-button-primary ui-button-large ui-width-1-2">
+                登录
+            </button>
+        </div>
+        <p class="ui-text-center">
+            还没有账号？
+            <a routerLink="../register">
+                去注册
+            </a>
+        </p>
+    </form>
+</div>
