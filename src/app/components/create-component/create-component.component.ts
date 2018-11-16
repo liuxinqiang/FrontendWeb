@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BuildService} from '../services/build.service';
 import {Subscription} from 'rxjs';
-import {retry} from 'rxjs/internal/operators';
 
 @Component({
     selector: 'app-create-component',
@@ -18,16 +17,10 @@ export class CreateComponentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._buildService.sendMessage({
-            event: 'builder',
-            data: 'test...',
-        });
+        this._buildService.sendMessage('hello wrold');
         this._buildSub$ = this._buildService.onMessage()
-            .pipe(
-                retry()
-            )
             .subscribe(data => {
-                console.log('收到信息了...');
+                console.log('builder 收到信息了...');
                 console.log(data);
             });
     }

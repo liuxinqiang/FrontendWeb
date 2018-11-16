@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IWSMessageInterface} from 'app/common/interfaces/websocket.interface';
-import {map} from 'rxjs/internal/operators';
-import {IResponseInterface} from '../../common/interfaces/response.interface';
+import {filter, map, retry} from 'rxjs/internal/operators';
 import {WsConnectionService} from '../../common/services/ws/ws-connection.service';
 
 @Injectable()
@@ -13,7 +12,9 @@ export class BuildService {
 
     onMessage(): Observable<any> {
         return this._wsConnection.connection.pipe(
-            map((res: IResponseInterface) => res.data),
+            filter((res: IWSMessageInterface) => res.event === 'builder'),
+            map((res: IWSMessageInterface) => res.data),
+            retry()
         );
     }
 
@@ -21,8 +22,10 @@ export class BuildService {
         this._wsConnection.disConnection();
     }
 
-    sendMessage(message: IWSMessageInterface) {
-        this._wsConnection.connection.next(message);
+    sendMessage(data: any) {
+        this._wsConnection.connection.next({
+            event: 'builder',
+            data,
+        });
     }
-
 }
