@@ -8,6 +8,7 @@ import {CommonComponentsModule} from 'app/common/components/common-components.mo
 import {ComponentsService} from './services/components.service';
 import {ComponentsSharedModule} from './shared/components-shared.module';
 import {TagsService} from './services/tags.service';
+import {BuildService} from './services/build.service';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import {TagsService} from './services/tags.service';
     providers: [
         ComponentsService,
         TagsService,
+        BuildService,
     ]
 })
 export class ComponentsModule {

@@ -8,4 +8,7 @@ export const environment = {
     mainAPI: {
         url: '/api',
     },
+    builder: {
+        url: 'ws://localhost:3010/api/live',
+    },
 };

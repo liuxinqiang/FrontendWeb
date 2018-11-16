@@ -12,6 +12,6 @@ export class ErrorsHandler implements ErrorHandler {
     handleError(error: Error | HttpErrorResponse) {
         const router = this.injector.get(Router);
         console.error(error);
-        router.navigate(['/error']).then();
+        // router.navigate(['/error']).then();
     }
 }
