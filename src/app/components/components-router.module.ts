@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PublicComponentsComponent} from './public-components/public-components.component';
-import {CreateComponentComponent} from './create-component/create-component.component';
 import {AuthGuard} from '../common/guards/auth.guard';
 import {ComponentDetailComponent} from './shared/component-detail/component-detail.component';
 import {EntryComponent} from './entry/entry.component';
@@ -30,8 +29,8 @@ const routes: Routes = [
                 loadChildren: './my-components/my-components.module#MyComponentsModule'
             },
             {
-                path: 'create-component',
-                component: CreateComponentComponent,
+                path: 'component-create',
+                loadChildren: './component-create/component-create.module#ComponentCreateModule',
                 canActivate: [AuthGuard],
             }
         ],
@@ -53,5 +52,4 @@ export const ComponentsRouterComponents = [
     HomeComponent,
     EntryComponent,
     PublicComponentsComponent,
-    CreateComponentComponent,
 ];

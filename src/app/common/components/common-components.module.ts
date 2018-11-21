@@ -7,6 +7,7 @@ import {RouterModule} from '@angular/router';
 import { NumberToArrayPipe } from './number-to-array.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
 import { MathCeilPipe } from './math-ceil.pipe';
+import {ObjectFirstKeyPipe} from './object-first-key.pipe';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { MathCeilPipe } from './math-ceil.pipe';
         NumberToArrayPipe,
         PaginationComponent,
         MathCeilPipe,
+        ObjectFirstKeyPipe,
     ],
     imports: [
         CommonModule,
@@ -25,6 +27,7 @@ import { MathCeilPipe } from './math-ceil.pipe';
         HeaderbarComponent,
         PaginationComponent,
         NumberToArrayPipe,
+        ObjectFirstKeyPipe,
     ]
 })
 export class CommonComponentsModule {

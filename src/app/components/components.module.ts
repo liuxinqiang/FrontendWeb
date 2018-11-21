@@ -18,7 +18,7 @@ import {BuildService} from './services/build.service';
         CommonModule,
         ComponentsRouterModule,
         CommonComponentsModule,
-        ComponentsSharedModule
+        ComponentsSharedModule,
     ],
     providers: [
         ComponentsService,

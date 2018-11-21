@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
     styles: []
 })
 export class LoginComponent implements OnInit {
-    private _returnUrl: string;
+    readonly _returnUrl: string;
 
     loginInfo = this._fb.group({
         loginName: ['liuxinqiang', Validators.required],

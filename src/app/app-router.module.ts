@@ -36,7 +36,7 @@ const mainRoutes: Routes = [
                     },
                     {
                         name: '新建组件',
-                        path: '/components/create-component',
+                        path: '/components/component-create',
                         rule: 1,
                     }
                 ],
