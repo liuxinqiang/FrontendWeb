@@ -8,12 +8,13 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
     mainForm = new FormGroup({
-        title: new FormControl('我的第一个组件', [
+        title: new FormControl('', [
             Validators.required,
+            Validators.pattern(/^[a-z0-9_\u4e00-\u9eff]+$/),
             Validators.minLength(2),
             Validators.maxLength(32),
         ]),
-        name: new FormControl('myComponent', [
+        name: new FormControl('', [
             Validators.required,
             Validators.pattern(/^(?![0-9_])[a-zA-Z0-9_]+$/),
             Validators.minLength(2),
@@ -27,8 +28,8 @@ export class HomeComponent implements OnInit {
         buildCmd: new FormControl('npm run build', [Validators.required]),
         type: new FormControl('template'),
         template: new FormControl('vue-component'),
-        file: new FormControl(),
-        gitRepo: new FormControl()
+        file: new FormControl(''),
+        gitRepo: new FormControl(''),
     });
 
     get f() {
@@ -42,7 +43,10 @@ export class HomeComponent implements OnInit {
             this.f.file.clearValidators();
         }
         if (type === 'git') {
-            this.f.gitRepo.setValidators(Validators.required);
+            this.f.gitRepo.setValidators([
+                Validators.required,
+                Validators.pattern(/(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\.git)(\/?|\#[-\d\w._]+?)$/),
+            ]);
         } else {
             this.f.gitRepo.clearValidators();
         }
@@ -57,5 +61,9 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.f.type.valueChanges
             .subscribe(this.injectValidateRulesBaseOnType.bind(this));
+    }
+
+    create() {
+        TopUI.notification('123123');
     }
 }

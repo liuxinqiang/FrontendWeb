@@ -1,8 +1,9 @@
 <div class="ui-width-large ui-margin-auto">
     <h2 class="ui-h2 ui-margin-medium-bottom">新建组件</h2>
     <form class="ui-form-stacked"
-          [formGroup]="mainForm"
-          (ngSubmit)="next()">
+            (keydown.enter)="$event.preventDefault()"
+            [formGroup]="mainForm"
+            (ngSubmit)="create()">
         <div class="ui-margin">
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">
@@ -10,14 +11,18 @@
                         标题
                     </label>
                     <div *ngIf="f.title.errors && f.title.touched"
-                         class="ui-text-danger">
-                        <span *ngIf="(f.title.errors | objectFirstKey) === 'required'">
+                         class="ui-text-danger"
+                        [ngSwitch]="f.title.errors | objectFirstKey">
+                        <span *ngSwitchCase="'required'">
                             请填写组件标题
                         </span>
-                        <span *ngIf="(f.title.errors | objectFirstKey) === 'minlength'">
+                        <span *ngSwitchCase="'pattern'">
+                            只能输入中文、英文、数字、下划线
+                        </span>
+                        <span *ngSwitchCase="'minlength'">
                             最少 {{f.title.errors.minlength.requiredLength}} 个字符
                         </span>
-                        <span *ngIf="(f.title.errors | objectFirstKey) === 'maxlength'">
+                        <span *ngSwitchCase="'maxlength'">
                             最大 {{f.title.errors.maxlength.requiredLength}} 个字符
                         </span>
                     </div>
@@ -39,17 +44,18 @@
                             名称
                         </label>
                         <div *ngIf="f.name.errors && f.name.touched"
-                             class="ui-text-danger">
-                            <span *ngIf="f.name.errors.required">
+                             class="ui-text-danger"
+                             [ngSwitch]="f.name.errors | objectFirstKey">
+                            <span *ngSwitchCase="'required'">
                                 请填写组件名称
                             </span>
-                            <span *ngIf="f.name.errors.pattern">
+                            <span *ngSwitchCase="'pattern'">
                                 允许字母、数字及下划线，以字母开头
                             </span>
-                            <span *ngIf="f.name.errors.minlength">
+                            <span *ngSwitchCase="'minlength'">
                                 最少 {{f.name.errors.minlength.requiredLength}} 个字符
                             </span>
-                            <span *ngIf="f.name.errors.maxlength">
+                            <span *ngSwitchCase="'maxlength'">
                                 最大 {{f.name.errors.maxlength.requiredLength}} 个字符
                             </span>
                         </div>
@@ -70,11 +76,12 @@
                             版本
                         </label>
                         <div *ngIf="f.version.errors && f.version.touched"
-                             class="ui-text-danger">
-                            <span *ngIf="(f.version.errors | objectFirstKey) === 'required'">
+                             class="ui-text-danger"
+                             [ngSwitch]="f.version.errors | objectFirstKey">
+                            <span *ngSwitchCase="'required'">
                                 请提供版本号
                             </span>
-                            <span *ngIf="(f.version.errors | objectFirstKey) === 'pattern'">
+                            <span *ngSwitchCase="'pattern'">
                                 版本格式不正确
                             </span>
                         </div>
@@ -195,10 +202,14 @@
                     <div *ngIf="f.gitRepo.errors !== null
                                 && f.gitRepo.errors
                                 && f.gitRepo.touched"
-                         class="ui-text-danger">
-                        <span *ngIf="f.gitRepo.errors.required">
+                         class="ui-text-danger"
+                         [ngSwitch]="f.gitRepo.errors | objectFirstKey">
+                        <span *ngSwitchCase="'required'">
                              请输入要同步的 Git 仓库地址
                         </span>
+                        <span *ngSwitchCase="'pattern'">
+                            Git仓库地址格式不正确
+                       </span>
                     </div>
                 </div>
             </div>
