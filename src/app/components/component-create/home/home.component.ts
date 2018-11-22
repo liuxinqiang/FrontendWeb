@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import * as FS from 'vendor/fs.js';
-import * as pify from 'vendor/pify.js';
-import * as git from 'vendor/git.js';
-
 @Component({
     selector: 'app-create-component',
     templateUrl: './home.component.html',
@@ -62,36 +58,9 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    initGit() {
-        const fsOptions = {
-            fs: 'IndexedDB',
-            options: {}
-        };
-        FS.configure(fsOptions, async function (err) {
-            const fs = FS.BFSRequire('fs');
-            git.plugins.set('fs', fs);
-            const pfs = pify(fs);
-
-            const dir = 'liuxinqiang_components_test'
-            // await pfs.mkdir(dir);
-            await pfs.readdir(dir);
-            await git.clone({
-                dir,
-                url: 'https://git-midea.liuxinqiang.com/async-components/FormDesignerCustomServiceTemplate.git',
-                ref: 'master',
-                singleBranch: true,
-                depth: 10
-            });
-            const test = await pfs.readdir(dir);
-            console.log(test);
-        });
-    }
-
     ngOnInit() {
         this.f.type.valueChanges
             .subscribe(this.injectValidateRulesBaseOnType.bind(this));
-        this.initGit();
-
     }
 
     create() {

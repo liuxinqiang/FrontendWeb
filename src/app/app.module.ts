@@ -9,7 +9,6 @@ import {ErrorsHandler} from './common/handlers/errors-handler';
 import {HttpCustomInterceptor} from './common/interceptors/http-custom.interceptor';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import {registerLocaleData} from '@angular/common';
-import {CommonComponentsModule} from './common/components/common-components.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -23,7 +22,6 @@ registerLocaleData(localeZhHans, 'zh-Hans');
         AppRouterModule,
         TransferHttpCacheModule,
         HttpClientModule,
-        CommonComponentsModule,
     ],
     providers: [
         Title,

@@ -44,6 +44,14 @@ const mainRoutes: Routes = [
         }
     },
     {
+        path: 'editor',
+        loadChildren: './editor/editor.module#EditorModule',
+        canActivate: [AuthGuard],
+        data: {
+            noHeader: true,
+        }
+    },
+    {
         path: 'user',
         loadChildren: './user/user.module#UserModule',
     },
