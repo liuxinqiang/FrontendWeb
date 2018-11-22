@@ -14,12 +14,19 @@ import {AuthService} from '../services/auth/auth.service';
 @Injectable()
 export class HttpCustomInterceptor implements HttpInterceptor {
 
-    constructor(private _authService: AuthService) {}
+    constructor(
+        private _authService: AuthService,
+        ) {}
 
     private _handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             TopUI.notification('无网络链接...', {status: 'danger'});
         } else {
+            switch(error.error.statusCode) {
+                case 401:
+                    this._authService.goToLogin();
+                    break;
+            }
             TopUI.notification(error.error.message, {status: 'danger'});
         }
         return throwError(error);
@@ -37,7 +44,7 @@ export class HttpCustomInterceptor implements HttpInterceptor {
         return next.handle(request)
             .pipe(
                 retry(2),
-                catchError(this._handleError)
+                catchError(this._handleError.bind(this))
             );
     }
 }
