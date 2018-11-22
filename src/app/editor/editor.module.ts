@@ -4,6 +4,8 @@ import {EditorRoutersComponents, EditorRoutingModule} from './editor-routing.mod
 import {FilesService} from './services/files.service';
 import {GitService} from './services/git.service';
 import {EditorService} from './services/editor.service';
+import {MonacoEditorModule} from 'ngx-monaco-editor';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -12,6 +14,8 @@ import {EditorService} from './services/editor.service';
     imports: [
         CommonModule,
         EditorRoutingModule,
+        FormsModule,
+        MonacoEditorModule.forRoot(),
     ],
     providers: [
         FilesService,

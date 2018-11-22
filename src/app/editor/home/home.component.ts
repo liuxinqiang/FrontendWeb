@@ -13,6 +13,9 @@ export class HomeComponent implements OnInit {
     ) {
     }
 
+    editorOptions = {theme: 'vs-dark', language: 'javascript'};
+    code = 'function x() {\nconsole.log("Hello world!");\n}';
+
     ngOnInit() {
         this._gitService.initGit()
             .then(data => {
