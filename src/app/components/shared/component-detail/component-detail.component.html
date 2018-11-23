@@ -7,4 +7,15 @@
               class="ui-label">{{tag.name}}
         </span>
     </div>
+    <p>
+        <a class="ui-button ui-button-primary"
+           routerLink="/editor"
+           [queryParams]="{
+               type: 'component',
+               component: component.componentName,
+               url: router.url
+           }">
+            编辑器
+        </a>
+    </p>
 </ng-container>

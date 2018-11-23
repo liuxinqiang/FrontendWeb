@@ -1,5 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
+import {ActivatedRoute} from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+
+interface IQueryObj {
+    component: string;
+    type: string;
+    url: string;
+};
 
 @Component({
     selector: 'app-home',
@@ -8,13 +16,28 @@ import {GitService} from '../services/git.service';
 })
 export class HomeComponent implements OnInit {
 
+    query: IQueryObj;
+
     constructor(
         private _gitService: GitService,
+        private _activeRoute: ActivatedRoute,
+        @Inject(DOCUMENT) private _document: any,
     ) {
+        _activeRoute.queryParams.subscribe((data: IQueryObj) => {
+            this.query = data;
+        });
     }
 
     editorOptions = {theme: 'vs-dark', language: 'javascript'};
     code = 'function x() {\nconsole.log("Hello world!");\n}';
+
+    getCode() {
+        let newCode = '';
+        for(let i = 0; i <= 100; i++) {
+            newCode += this.code;
+        }
+        return newCode;
+    }
 
     ngOnInit() {
         this._gitService.initGit()

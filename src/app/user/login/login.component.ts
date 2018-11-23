@@ -23,9 +23,9 @@ export class LoginComponent implements OnInit {
         private _fb: FormBuilder,
         private _authService: AuthService,
         private _router: Router,
-        private _activedRoute: ActivatedRoute,
+        private _activeRoute: ActivatedRoute,
     ) {
-        this._returnUrl = this._activedRoute.snapshot.queryParams.returnUrl;
+        this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
     }
 
     ngOnInit() {
@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
     login() {
         this._authService.login(this.loginInfo.value)
             .subscribe(() => {
-                console.log(this._returnUrl);
                 this._router.navigate([this._returnUrl || '/projects']);
             }, error => {
                 this.loginInfo.controls.password.reset();
