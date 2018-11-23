@@ -1,10 +1,30 @@
+:host {
+  color: #bbb;
+  font-size: 14px;
+
+  /deep/ .ui-card-default {
+    background: #353535;
+  }
+
+  /deep/ a, .ui-link {
+    color: inherit;
+
+    &:hover {
+      color: #63a1de;
+      text-decoration: none;
+    }
+  }
+}
+
 .main-editor-top {
   background: #2D2D2D;
   height: 30px;
 }
+
 .main-editor {
   height: ~'calc(100% - 30px)';
   overflow: hidden;
+
   /deep/ .editor-container {
     height: 100%;
   }

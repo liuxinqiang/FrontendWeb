@@ -1,13 +1,27 @@
-<header class="ui-container ui-container-expand">
+<header class="ui-container-expand">
     <div class="ui-grid">
-        <div class="ui-width-1-2">
-            标题
-        </div>
         <div class="ui-width-expand">
-            中间区域
+            <a class="ui-link-reset ui-margin-small-left">
+                CoreFormRender
+            </a>
+            <div class="ui-inline ui-light">
+                <a class="ui-margin-small-left">
+                    <span ui-icon="icon:git-branch"></span>
+                    master
+                </a>
+                <div ui-drop="mode: click;offset:11">
+                    <div class="ui-card ui-card-body ui-card-default">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
+                </div>
+            </div>
         </div>
         <div class="ui-width-auto">
-            <a [routerLink]="backUrl">返回</a>
+            <a [routerLink]="backUrl"
+               class=" ui-margin-small-right">
+                退出
+                <span ui-icon="icon:chevron-right"
+                      class="text-icon-fix"></span>
+            </a>
         </div>
     </div>
 </header>
