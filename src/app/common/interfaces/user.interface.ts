@@ -11,4 +11,5 @@ export interface IUserInterface {
     rule: number;
     timezone: 'Asia/Shanghai';
     updateTime: string;
+    gitLibToken: string;
 }

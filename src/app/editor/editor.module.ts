@@ -14,6 +14,7 @@ import { FilesPanelComponent } from './editor-nav-panel/files-panel/files-panel.
 import { SearchPanelComponent } from './editor-nav-panel/search-panel/search-panel.component';
 import { ConfigPanelComponent } from './editor-nav-panel/config-panel/config-panel.component';
 import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-panel.component';
+import {EditorService} from './services/editor.service';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-pan
         MonacoEditorModule.forRoot(),
     ],
     providers: [
+        EditorService,
         FilesService,
         GitService,
         EditorPanelService,
