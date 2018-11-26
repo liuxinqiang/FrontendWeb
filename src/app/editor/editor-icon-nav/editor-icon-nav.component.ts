@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {EditorService} from '../services/editor.service';
+import {EditorPanelService} from '../services/editor-panel.service';
 
 @Component({
     selector: 'app-editor-icon-nav',
@@ -32,7 +32,7 @@ export class EditorIconNavComponent {
     ];
 
     constructor(
-        public editorService: EditorService,
+        public editorPanelService: EditorPanelService,
     ) {
     }
 

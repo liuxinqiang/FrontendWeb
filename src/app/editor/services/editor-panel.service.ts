@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {INavPanelType} from '../interfaces/panel.interface';
 @Injectable()
-export class EditorService {
+export class EditorPanelService {
 
     private _activePanelSubject: BehaviorSubject<INavPanelType>;
     public activePanel$: Observable<INavPanelType>;

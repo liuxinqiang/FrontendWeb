@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {EditorService} from '../services/editor.service';
+import {EditorPanelService} from '../services/editor-panel.service';
 
 @Component({
     selector: 'app-editor-nav-panel',
@@ -9,7 +9,7 @@ import {EditorService} from '../services/editor.service';
 export class EditorNavPanelComponent implements OnInit {
 
     constructor(
-        public editorService: EditorService,
+        public editorPanelService: EditorPanelService,
     ) {
     }
 

@@ -1,6 +1,9 @@
-<app-files-panel *ngIf="editorService.activePanelValue === 'files'"
+<app-files-panel *ngIf="editorPanelService.activePanelValue === 'files'"
     class="ui-display-block ui-margin-bottom">
 </app-files-panel>
-<app-search-panel *ngIf="editorService.activePanelValue === 'search'"></app-search-panel>
-<app-config-panel *ngIf="editorService.activePanelValue === 'config'"></app-config-panel>
-<app-deploy-panel *ngIf="editorService.activePanelValue === 'deploy'"></app-deploy-panel>
+<app-search-panel *ngIf="editorPanelService.activePanelValue === 'search'">
+</app-search-panel>
+<app-config-panel *ngIf="editorPanelService.activePanelValue === 'config'">
+</app-config-panel>
+<app-deploy-panel *ngIf="editorPanelService.activePanelValue === 'deploy'">
+</app-deploy-panel>

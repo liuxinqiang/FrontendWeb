@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute} from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import {EditorService} from '../services/editor.service';
+import {EditorPanelService} from '../services/editor-panel.service';
 
 interface IQueryObj {
     component: string;
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     query: IQueryObj;
 
     constructor(
-        public editorService: EditorService,
+        public editorPanelService: EditorPanelService,
         private _gitService: GitService,
         private _activeRoute: ActivatedRoute,
         @Inject(DOCUMENT) private _document: any,

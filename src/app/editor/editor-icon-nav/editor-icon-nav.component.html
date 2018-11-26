@@ -1,11 +1,13 @@
 <ul class="ui-iconnav ui-iconnav-vertical ui-margin-remove-top">
     <li *ngFor="let nav of navMenus"
         [ngClass]="{
-            'ui-active': editorService.activePanelValue === nav.id
+            'ui-active': editorPanelService.activePanelValue === nav.id
         }">
         <a class="ui-text-center"
            [attr.ui-icon]="'ratio:1.3;icon: ' + nav.icon"
-           (click)="editorService.activePanelValue === nav.id ? editorService.changeActivePanel(null) : editorService.changeActivePanel(nav.id)">
+           (click)="editorPanelService.activePanelValue === nav.id
+           ? editorPanelService.changeActivePanel(null)
+           : editorPanelService.changeActivePanel(nav.id)">
         </a>
     </li>
 </ul>

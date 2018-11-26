@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {EditorRoutersComponents, EditorRoutingModule} from './editor-routing.module';
 import {FilesService} from './services/files.service';
 import {GitService} from './services/git.service';
-import {EditorService} from './services/editor.service';
+import {EditorPanelService} from './services/editor-panel.service';
 import {MonacoEditorModule} from 'ngx-monaco-editor';
 import {FormsModule} from '@angular/forms';
 import {EditorHeaderComponent} from './header/header.component';
@@ -36,7 +36,7 @@ import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-pan
     providers: [
         FilesService,
         GitService,
-        EditorService,
+        EditorPanelService,
     ],
 })
 export class EditorModule {
