@@ -27,14 +27,23 @@ export class FilesService {
         });
     }
 
-    async getTree(path: string, result = [], mode: IGetTreeMode = 'tree'): Promise<ITreeNode[] | string[]> {
+    async getTree(
+        path: string,
+        result = [],
+        mode: IGetTreeMode = 'tree',
+        ignoreList: string[] = ['.git']
+    ): Promise<ITreeNode[] | string[]> {
         const files = await this.fs.readdir(path);
         files.forEach(async (file) => {
-            const fileStat = await this.fs.stat(path + '/' + file);
+            const realPath = path + '/' + file;
+            if (ignoreList.filter(ignoreMark => (path + '/' + ignoreMark) === realPath).length) {
+                return;
+            }
+            const fileStat = await this.fs.stat(realPath);
             if (mode === 'tree') {
                 const singleFile: ITreeNode = {
                     file,
-                    path: path + '/' + file,
+                    path: realPath,
                     ext: file.substr(file.lastIndexOf('.') + 1),
                     isDirectory: false,
                     active: false,
@@ -44,14 +53,14 @@ export class FilesService {
                 if (fileStat.isDirectory()) {
                     singleFile.isDirectory = true;
                     singleFile.ext = '';
-                    await this.getTree(path + '/' + file, singleFile.children, mode);
+                    await this.getTree(realPath, singleFile.children, mode, ignoreList);
                 }
                 result.push(singleFile);
             } else {
                 if (fileStat.isDirectory()) {
-                    result = await this.getTree(path + '/' + file, result);
+                    result = await this.getTree(realPath, result);
                 } else {
-                    result.push(path + '/' + file);
+                    result.push(realPath);
                 }
             }
         });
