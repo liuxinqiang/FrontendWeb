@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
     templateUrl: './login.component.html',
     styles: []
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
     readonly _returnUrl: string;
 
     loginInfo = this._fb.group({
@@ -19,17 +19,12 @@ export class LoginComponent implements OnInit {
     });
 
     constructor(
-        private _title: Title,
         private _fb: FormBuilder,
         private _authService: AuthService,
         private _router: Router,
         private _activeRoute: ActivatedRoute,
     ) {
         this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
-    }
-
-    ngOnInit() {
-        this._title.setTitle('用户登录');
     }
 
     get f() {

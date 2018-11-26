@@ -9,7 +9,7 @@
                     <span ui-icon="icon:git-branch"></span>
                     master
                 </a>
-                <div ui-drop="mode: click;offset:11">
+                <div [attr.ui-drop]="headerDropConfig">
                     <div class="ui-card ui-card-body ui-card-default">
                         分支切换
                     </div>
@@ -20,7 +20,7 @@
                     <span ui-icon="icon:cloud-upload"></span>
                     保存
                 </a>
-                <div ui-drop="mode: click;offset:11">
+                <div [attr.ui-drop]="headerDropConfig">
                     <div class="ui-card ui-card-body ui-card-default">
                         保存页面
                     </div>
@@ -45,7 +45,7 @@
                 </a>
             </ng-template>
             <a [routerLink]="backUrl"
-               ui-tooltip="退出"
+               ui-tooltip="返回"
                class=" ui-margin-small-right">
                 <span ui-icon="icon:sign-out"
                       class="text-icon-fix"></span>

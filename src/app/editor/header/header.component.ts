@@ -9,6 +9,8 @@ import {DomService} from 'app/common/services/dom.service';
 })
 export class EditorHeaderComponent implements OnInit, OnDestroy {
 
+    headerDropConfig = 'mode: click;offset:11;animation: ui-animation-slide-top-small';
+
     fullScreenMode = false;
 
     constructor(

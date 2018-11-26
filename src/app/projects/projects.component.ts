@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +9,8 @@ export class ProjectsComponent implements OnInit {
 
   users: number[] = [];
 
-  constructor(private title: Title) {}
-
   ngOnInit() {
     this.message = 'Hello';
-    this.title.setTitle('项目管理');
   }
   sayHello() {
     TopUI.notification('Hello!');

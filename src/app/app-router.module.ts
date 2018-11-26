@@ -9,16 +9,23 @@ const mainRoutes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'components',
+        data: {
+            title: '首页',
+        },
     },
     {
         path: 'projects',
         loadChildren: './projects/projects.module#ProjectsModule',
         canActivate: [AuthGuard],
+        data: {
+            title: '项目中心',
+        },
     },
     {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule',
         data: {
+            title: '组件库',
             mainMenu: {
                 name: '组件库',
                 path: '/components',
@@ -49,19 +56,29 @@ const mainRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
             noHeader: true,
+            title: '编辑器',
         }
     },
     {
         path: 'user',
         loadChildren: './user/user.module#UserModule',
+        data: {
+            title: '用户中心',
+        },
     },
     {
         path: 'error',
         component: ErrorComponent,
+        data: {
+            title: '出错了',
+        },
     },
     {
         path: '**',
         component: NotFoundComponent,
+        data: {
+            title: '页面未找到',
+        },
     },
 ];
 

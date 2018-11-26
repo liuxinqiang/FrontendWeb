@@ -10,6 +10,10 @@ import {EditorHeaderComponent} from './header/header.component';
 import { MainEditorTopComponent } from './main-editor-top/main-editor-top.component';
 import { EditorIconNavComponent } from './editor-icon-nav/editor-icon-nav.component';
 import { EditorNavPanelComponent } from './editor-nav-panel/editor-nav-panel.component';
+import { FilesPanelComponent } from './editor-nav-panel/files-panel/files-panel.component';
+import { SearchPanelComponent } from './editor-nav-panel/search-panel/search-panel.component';
+import { ConfigPanelComponent } from './editor-nav-panel/config-panel/config-panel.component';
+import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-panel.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +22,10 @@ import { EditorNavPanelComponent } from './editor-nav-panel/editor-nav-panel.com
         MainEditorTopComponent,
         EditorIconNavComponent,
         EditorNavPanelComponent,
+        FilesPanelComponent,
+        SearchPanelComponent,
+        ConfigPanelComponent,
+        DeployPanelComponent,
     ],
     imports: [
         CommonModule,

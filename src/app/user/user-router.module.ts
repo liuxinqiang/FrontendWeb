@@ -14,18 +14,30 @@ const routes: Routes = [
             {
                 path: 'login',
                 component: LoginComponent,
+                data: {
+                    title: '用户登录',
+                },
             },
             {
                 path: 'register',
                 component: RegisterComponent,
+                data: {
+                    title: '用户注册',
+                },
             },
             {
                 path: 'request-reset',
                 component: RequestResetComponent,
+                data: {
+                    title: '请求重置密码',
+                },
             },
             {
                 path: 'reset',
                 component: ResetComponent,
+                data: {
+                    title: '重置密码',
+                },
             },
         ],
     },
