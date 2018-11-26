@@ -1,15 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+import {EditorService} from '../services/editor.service';
 
 @Component({
-  selector: 'app-editor-icon-nav',
-  templateUrl: './editor-icon-nav.component.html',
-  styleUrls: ['./editor-icon-nav.component.less']
+    selector: 'app-editor-icon-nav',
+    templateUrl: './editor-icon-nav.component.html',
+    styleUrls: ['./editor-icon-nav.component.less']
 })
-export class EditorIconNavComponent implements OnInit {
+export class EditorIconNavComponent {
 
-  constructor() { }
+    navMenus = [
+        {
+            id: 'files',
+            name: '文件',
+            icon: 'folder',
+        },
+        {
+            id: 'search',
+            name: '搜索',
+            icon: 'search',
+        },
+        {
+            id: 'config',
+            name: '配置',
+            icon: 'cog',
+        },
+        {
+            id: 'deploy',
+            name: '部署',
+            icon: 'cloud-upload',
+        },
+    ];
 
-  ngOnInit() {
-  }
+    constructor(
+        public editorService: EditorService,
+    ) {
+    }
 
 }

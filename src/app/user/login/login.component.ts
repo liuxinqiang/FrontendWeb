@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
+import {Component} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {AuthService} from 'app/common/services/auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -25,7 +24,6 @@ export class LoginComponent {
         private _activeRoute: ActivatedRoute,
     ) {
         this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
-        console.log(this._returnUrl);
     }
 
     get f() {

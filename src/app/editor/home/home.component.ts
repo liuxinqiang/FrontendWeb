@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute} from '@angular/router';
 import { DOCUMENT } from '@angular/common';
+import {EditorService} from '../services/editor.service';
 
 interface IQueryObj {
     component: string;
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
     query: IQueryObj;
 
     constructor(
+        public editorService: EditorService,
         private _gitService: GitService,
         private _activeRoute: ActivatedRoute,
         @Inject(DOCUMENT) private _document: any,
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit {
 
     getCode() {
         let newCode = '';
-        for(let i = 0; i <= 100; i++) {
+        for (let i = 0; i <= 100; i++) {
             newCode += this.code;
         }
         return newCode;
