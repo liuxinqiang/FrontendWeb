@@ -25,6 +25,7 @@ export class LoginComponent {
         private _activeRoute: ActivatedRoute,
     ) {
         this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
+        console.log(this._returnUrl);
     }
 
     get f() {
@@ -34,7 +35,7 @@ export class LoginComponent {
     login() {
         this._authService.login(this.loginInfo.value)
             .subscribe(() => {
-                this._router.navigate([this._returnUrl || '/projects']);
+                this._router.navigateByUrl('/editor?type=component&component=subform&url=%2Fcomponents%2Fpublic%2Fsubform' || '/projects');
             }, error => {
                 this.loginInfo.controls.password.reset();
             });
