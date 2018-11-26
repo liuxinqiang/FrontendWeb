@@ -1,14 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute} from '@angular/router';
-import { DOCUMENT } from '@angular/common';
 import {EditorPanelService} from '../services/editor-panel.service';
-
-interface IQueryObj {
-    component: string;
-    type: string;
-    url: string;
-};
+import {EditorService} from '../services/editor.service';
+import {IEditorQuery} from '../interfaces/files.interface';
 
 @Component({
     selector: 'app-home',
@@ -17,15 +12,15 @@ interface IQueryObj {
 })
 export class HomeComponent implements OnInit {
 
-    query: IQueryObj;
+    query: IEditorQuery;
 
     constructor(
         public editorPanelService: EditorPanelService,
         private _gitService: GitService,
+        private _editorService: EditorService,
         private _activeRoute: ActivatedRoute,
-        @Inject(DOCUMENT) private _document: any,
     ) {
-        _activeRoute.queryParams.subscribe((data: IQueryObj) => {
+        _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
             this.query = data;
         });
     }
@@ -42,14 +37,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._gitService.initGit()
-            .then(data => {
-                console.log('获取成功...');
-                console.log(data);
-            })
-            .catch(e => {
-                console.log('获取失败');
-                console.log(e);
-            });
+        this._editorService.init(this.query).then();
     }
 }

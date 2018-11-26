@@ -1,16 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as FS from 'vendor/fs.js';
 import * as pify from 'vendor/pify.js';
-
-export type IGetTreeMode = 'tree' | 'directories';
-
-export interface ITreeNode {
-    file: string;
-    path: string;
-    ext: string;
-    isDirectory: boolean;
-    children: ITreeNode[];
-}
+import {IGetTreeMode, ITreeNode} from '../interfaces/panel.interface';
 
 @Injectable()
 export class FilesService {
@@ -46,6 +37,8 @@ export class FilesService {
                     path: path + '/' + file,
                     ext: file.substr(file.lastIndexOf('.') + 1),
                     isDirectory: false,
+                    active: false,
+                    opened: false,
                     children: [],
                 };
                 if (fileStat.isDirectory()) {

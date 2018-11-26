@@ -1,41 +1,6 @@
 <h5 class="ui-h5 ui-margin-small-top ui-margin-remove-bottom">文件列表</h5>
-<ul class="file-list ui-margin-remove ui-padding-remove-left">
-    <li class="folder open">
-        <a>
-            <span ui-icon="icon:triangle-right"></span>
-            src
-        </a>
-        <ul class="file-list">
-            <li class="folder open">
-                <a>
-                    <span ui-icon="icon:triangle-right"></span>
-                    src
-                </a>
-                <ul class="file-list">
-                    <li class="folder open">
-                        <a>
-                            <span ui-icon="icon:triangle-right"></span>
-                            src
-                        </a>
-                        <ul class="file-list">
-                            <li class="folder ui-active">
-                                <a>
-                                    <span ui-icon="icon:triangle-right"></span>
-                                    src
-                                </a>
-                            </li>
-                            <li><a>package.json</a></li>
-                            <li><a>index.vue</a></li>
-                        </ul>
-                    </li>
-                    <li><a>package.json</a></li>
-                    <li><a>index.vue</a></li>
-                </ul>
-            </li>
-            <li><a>package.json</a></li>
-            <li><a>index.vue</a></li>
-        </ul>
-    </li>
-    <li><a>package.json</a></li>
-    <li><a>index.vue</a></li>
-</ul>
+<app-files-list-render
+        class="file-list-render"
+        (nodeSelect)="nodeSelect($event)"
+        [filesList]="editorService.files">
+</app-files-list-render>
