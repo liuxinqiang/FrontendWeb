@@ -1,3 +1,20 @@
-<p>
-  main-editor-top works!
-</p>
+<ul class="active-files-list ui-margin-remove">
+    <li *ngFor="let file of editorService.activeFilesList"
+        [ngClass]="editorService.activeFile !== null
+                   && editorService.activeFile.path === file.path
+                   ? 'ui-active' : 'ui-visible-toggle'"
+        class="ui-display-inline-block">
+        <a class="ui-link-reset file-name"
+            (click)="editorService.setActiveFile(file)">
+            {{file.file}}
+        </a>
+        <a class="ui-link-reset"
+           (click)="editorService.removeActiveFile(file)"
+           [ngClass]="{
+                'ui-invisible-hover': editorService.activeFile === null
+                                      || editorService.activeFile.path !== file.path
+            }"
+           ui-icon="icon:close;ratio:.8">
+        </a>
+    </li>
+</ul>

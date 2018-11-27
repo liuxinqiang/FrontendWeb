@@ -16,6 +16,7 @@ import { ConfigPanelComponent } from './editor-nav-panel/config-panel/config-pan
 import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-panel.component';
 import {EditorService} from './services/editor.service';
 import { FilesListRenderComponent } from './editor-nav-panel/files-panel/files-list-render/files-list-render.component';
+import { MainEditorComponent } from './main-editor/main-editor.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { FilesListRenderComponent } from './editor-nav-panel/files-panel/files-l
         ConfigPanelComponent,
         DeployPanelComponent,
         FilesListRenderComponent,
+        MainEditorComponent,
     ],
     imports: [
         CommonModule,

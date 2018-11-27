@@ -1,0 +1,11 @@
+<div class="overlay ui-text-center"
+    *ngIf="!code">
+    <p class="ui-margin-large-top">
+        当前没有选择任何文件....
+    </p>
+</div>
+<ngx-monaco-editor
+        class="main-editor"
+        [options]="editorOptions"
+        [ngModel]="code">
+</ngx-monaco-editor>

@@ -25,17 +25,6 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    editorOptions = {theme: 'vs-dark', language: 'javascript'};
-    code = 'function x() {\nconsole.log("Hello world!");\n}';
-
-    getCode() {
-        let newCode = '';
-        for (let i = 0; i <= 100; i++) {
-            newCode += this.code;
-        }
-        return newCode;
-    }
-
     ngOnInit() {
         this._editorService.init(this.query).then();
     }

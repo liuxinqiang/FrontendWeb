@@ -10,11 +10,7 @@
     <div class="ui-width-expand ui-height-1-1">
         <app-main-editor-top class="ui-display-block main-editor-top">
         </app-main-editor-top>
-        <ngx-monaco-editor
-                class="ui-display-block main-editor"
-                [options]="editorOptions"
-                [ngModel]="getCode()">
-        </ngx-monaco-editor>
+        <app-main-editor class="ui-display-block ui-position-relative main-editor-container">
+        </app-main-editor>
     </div>
-
 </div>

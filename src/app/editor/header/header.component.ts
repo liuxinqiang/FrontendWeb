@@ -28,7 +28,6 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
     }
 
     exitFullScreen() {
-        console.log('run...');
         this._domService.disableFullScreen();
         this.fullScreenMode = false;
     }

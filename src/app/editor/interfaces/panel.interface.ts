@@ -5,11 +5,11 @@ export type IGetTreeMode = 'tree' | 'directories';
 export interface ITreeNode {
     file: string;
     path: string;
-    ext: string;
-    active: boolean;
-    opened: boolean;
-    isDirectory: boolean;
-    children: ITreeNode[];
+    ext?: string;
+    active?: boolean;
+    opened?: boolean;
+    isDirectory?: boolean;
+    children?: ITreeNode[];
 }
 
 export interface IActiveFilesStorage {

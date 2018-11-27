@@ -24,12 +24,41 @@ export class EditorService {
         this.files$ = this._filesSubject.asObservable();
         this.activeFilesList$ = this._activeFilesListSubject.asObservable();
         this.activeFile$ = this._activeFileSubject.asObservable();
-        this.activeFilesList$.subscribe(newFileList => {
-            if (!newFileList.length
-                || !newFileList.filter(file => file.path === this.activeFile.path).length) {
-                this._activeFileSubject.next(null);
+    }
+
+    setActiveFile(node: ITreeNode) {
+        this._activeFileSubject.next(node);
+        this.addActiveFile(node);
+    }
+
+    addActiveFile(node: ITreeNode) {
+        if (this.activeFilesList.filter(file => file.path === node.path)[0]) {
+            return;
+        }
+        const newFileList = Array.from(this.activeFilesList);
+        newFileList.push(node);
+        this._activeFilesListSubject.next(newFileList);
+    }
+
+    removeActiveFile(node: ITreeNode) {
+        let toDeleteIndex = -1;
+        const newFileList = Array.from(this.activeFilesList);
+        newFileList.forEach((file, index) => {
+            if (file.path === node.path) {
+                toDeleteIndex = index;
             }
         });
+        if (toDeleteIndex !== -1) {
+            newFileList.splice(toDeleteIndex, 1);
+        }
+        if (!newFileList.length) {
+            this._activeFileSubject.next(null);
+        } else if (node.path === this.activeFile.path) {
+            const activeCursor = toDeleteIndex > (newFileList.length - 1)
+                ? (newFileList.length - 1) : toDeleteIndex;
+            this._activeFileSubject.next(newFileList[activeCursor]);
+        }
+        this._activeFilesListSubject.next(newFileList);
     }
 
     public get files(): ITreeNode[] {
