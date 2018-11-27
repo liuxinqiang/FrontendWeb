@@ -1,18 +1,18 @@
 <ul class="active-files-list ui-margin-remove">
-    <li *ngFor="let file of editorService.activeFilesList"
-        [ngClass]="editorService.activeFile !== null
-                   && editorService.activeFile.path === file.path
+    <li *ngFor="let file of filesManagerService.activeFilesList"
+        [ngClass]="filesManagerService.activeFile !== null
+                   && filesManagerService.activeFile.path === file.path
                    ? 'ui-active' : 'ui-visible-toggle'"
         class="ui-display-inline-block">
         <a class="ui-link-reset file-name"
-            (click)="editorService.setActiveFile(file)">
+            (click)="filesManagerService.setActiveFile(file)">
             {{file.file}}
         </a>
         <a class="ui-link-reset"
-           (click)="editorService.removeActiveFile(file)"
+           (click)="filesManagerService.removeActiveFile(file)"
            [ngClass]="{
-                'ui-invisible-hover': editorService.activeFile === null
-                                      || editorService.activeFile.path !== file.path
+                'ui-invisible-hover': filesManagerService.activeFile === null
+                                      || filesManagerService.activeFile.path !== file.path
             }"
            ui-icon="icon:close;ratio:.8">
         </a>

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {EditorService} from '../services/editor.service';
+import {FilesManagerService} from '../services/files-manager.service';
 
 @Component({
     selector: 'app-main-editor-top',
@@ -9,7 +9,7 @@ import {EditorService} from '../services/editor.service';
 export class MainEditorTopComponent implements OnInit {
 
     constructor(
-        public editorService: EditorService,
+        public filesManagerService: FilesManagerService,
     ) {
     }
 

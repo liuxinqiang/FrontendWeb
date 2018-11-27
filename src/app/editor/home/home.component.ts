@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute} from '@angular/router';
 import {EditorPanelService} from '../services/editor-panel.service';
-import {EditorService} from '../services/editor.service';
+import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 
 @Component({
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     constructor(
         public editorPanelService: EditorPanelService,
         private _gitService: GitService,
-        private _editorService: EditorService,
+        private _filesManagerService: FilesManagerService,
         private _activeRoute: ActivatedRoute,
     ) {
         _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
@@ -26,6 +26,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._editorService.init(this.query).then();
+        this._filesManagerService.init(this.query).then();
     }
 }

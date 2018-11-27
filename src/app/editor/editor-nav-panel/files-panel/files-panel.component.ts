@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {EditorService} from '../../services/editor.service';
+import {FilesManagerService} from '../../services/files-manager.service';
 import {ITreeNode} from '../../interfaces/panel.interface';
 
 function markNode(array: ITreeNode[], prop, value) {
@@ -19,7 +19,7 @@ function markNode(array: ITreeNode[], prop, value) {
 export class FilesPanelComponent implements OnInit {
 
     constructor(
-        public editorService: EditorService,
+        public filesManagerService: FilesManagerService,
     ) {
     }
 
@@ -30,12 +30,12 @@ export class FilesPanelComponent implements OnInit {
         if (node.isDirectory) {
             node.opened = !node.opened;
         } else {
-            this.editorService.setActiveFile({
+            this.filesManagerService.setActiveFile({
                 file: node.file,
                 path: node.path,
                 ext: node.ext,
             });
-            markNode(this.editorService.files, 'active', false);
+            markNode(this.filesManagerService.files, 'active', false);
             node.active = true;
         }
     }

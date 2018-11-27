@@ -14,7 +14,7 @@ import { FilesPanelComponent } from './editor-nav-panel/files-panel/files-panel.
 import { SearchPanelComponent } from './editor-nav-panel/search-panel/search-panel.component';
 import { ConfigPanelComponent } from './editor-nav-panel/config-panel/config-panel.component';
 import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-panel.component';
-import {EditorService} from './services/editor.service';
+import {FilesManagerService} from './services/files-manager.service';
 import { FilesListRenderComponent } from './editor-nav-panel/files-panel/files-list-render/files-list-render.component';
 import { MainEditorComponent } from './main-editor/main-editor.component';
 
@@ -39,7 +39,7 @@ import { MainEditorComponent } from './main-editor/main-editor.component';
         MonacoEditorModule.forRoot(),
     ],
     providers: [
-        EditorService,
+        FilesManagerService,
         FilesService,
         GitService,
         EditorPanelService,

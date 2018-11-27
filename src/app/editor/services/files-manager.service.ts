@@ -6,7 +6,7 @@ import {LocalStorageService} from 'app/common/services/storage/local-storage.ser
 import {IEditorQuery} from '../interfaces/files.interface';
 
 @Injectable()
-export class EditorService {
+export class FilesManagerService {
     private _filesSubject: BehaviorSubject<ITreeNode[]>;
     private _activeFilesListSubject: BehaviorSubject<ITreeNode[]>;
     private _activeFileSubject: BehaviorSubject<ITreeNode>;
