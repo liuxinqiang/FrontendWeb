@@ -12,19 +12,24 @@ export class PublicComponentsComponent implements OnInit {
 
     dataList: IComponentInterface[];
 
-    dataFilter: DataFilter;
+    dataFilter: DataFilter = new DataFilter(1, 12);
 
     constructor(
         private _componentsService: ComponentsService,
     ) {
     }
 
-    getComponents(dataFilter = new DataFilter(1, 12)) {
-        this._componentsService.getAllPublicComponentsList(dataFilter)
+    getComponents() {
+        this._componentsService.getAllPublicComponentsList(this.dataFilter)
             .subscribe((res: IResponseInterface) => {
                 this.dataList = res.data;
                 this.dataFilter = res.dataFilter;
             });
+    }
+
+    searchAction(keyword: string): void {
+        this.dataFilter.keyWord = keyword ? keyword : undefined;
+        this.getComponents();
     }
 
     ngOnInit() {
