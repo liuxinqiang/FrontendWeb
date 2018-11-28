@@ -3,11 +3,13 @@ import {FilesManagerService} from './files-manager.service';
 import {FilesService} from './files.service';
 import {filter} from 'rxjs/operators';
 import {EditorMapConfig} from '../editor.config';
+import {Subscription} from 'rxjs';
 
 @Injectable()
 export class EditorsManagerService {
-
+    private _container: HTMLDivElement;
     private _editor;
+    private _activeFileSubscription: Subscription;
 
     constructor(
         private _filesManagerService: FilesManagerService,
@@ -15,17 +17,22 @@ export class EditorsManagerService {
     ) {
     }
     clear() {
-        // const models = monaco.editor.getModels();
-        // models.forEach(model => model.dispose());
+        const models = monaco.editor.getModels();
+        models.forEach(model => model.dispose());
+        this._editor = undefined;
+        this._activeFileSubscription.unsubscribe();
     }
 
     changeActiveEditorMode() {
-        this._filesManagerService.activeFile$
+        this._activeFileSubscription = this._filesManagerService.activeFile$
             .pipe(
                 filter(file => {
                     if (file !== null) {
                         return true;
                     } else {
+                        if (this._editor) {
+                            this._editor.setModel(null);
+                        }
                         return false;
                     }
                 })
@@ -43,19 +50,20 @@ export class EditorsManagerService {
                         await this._fileService.writeTextFile(file.path, model.getValue());
                     });
                 }
-                this._editor.setModel(model);
+                if (!this._editor) {
+                    this._editor = monaco.editor.create(this._container, {
+                        model: model,
+                        theme: 'vs-dark',
+                        language: 'text/plain',
+                    });
+                } else {
+                    this._editor.setModel(model);
+                }
             });
     }
 
     init(editorContainer: HTMLDivElement) {
-        this._editor = monaco.editor.create(editorContainer, {
-            model: null,
-            theme: 'vs-dark',
-            language: 'text/plain',
-        });
-        // monaco.editor
-        // this._editor = editor;
-        // this._emptyModel = monaco.editor.createModel('', 'text/plain', monaco.Uri.parse('/'));
+        this._container = editorContainer;
         this.changeActiveEditorMode();
     }
 }
