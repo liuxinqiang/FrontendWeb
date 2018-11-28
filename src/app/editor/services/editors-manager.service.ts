@@ -4,6 +4,18 @@ import {FilesService} from './files.service';
 import {filter} from 'rxjs/operators';
 import {EditorMapConfig} from '../editor.config';
 import {Subscription} from 'rxjs';
+import {ITreeNode} from '../interfaces/panel.interface';
+//
+// function getFlatFiles (files: ITreeNode[]) {
+//     let result = [];
+//     function flatFiles(array: ITreeNode[]) {
+//         array.forEach(item => {
+//             if (!item.isDirectory) {
+//                 result.push(item);
+//             } else if
+//         });
+//     }
+// }
 
 @Injectable()
 export class EditorsManagerService {
@@ -23,7 +35,13 @@ export class EditorsManagerService {
         this._activeFileSubscription.unsubscribe();
     }
 
-    changeActiveEditorMode() {
+    // setModelsBaseOnFiles() {
+    //     this._filesManagerService.files$.subscribe(files => {
+    //
+    //     });
+    // }
+
+    setModelBaseOnActiveFile() {
         this._activeFileSubscription = this._filesManagerService.activeFile$
             .pipe(
                 filter(file => {
@@ -64,6 +82,6 @@ export class EditorsManagerService {
 
     init(editorContainer: HTMLDivElement) {
         this._container = editorContainer;
-        this.changeActiveEditorMode();
+        this.setModelBaseOnActiveFile();
     }
 }
