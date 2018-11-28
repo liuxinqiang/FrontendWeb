@@ -4,10 +4,6 @@
         当前没有选择任何文件....
     </p>
 </div>
-<ngx-monaco-editor
-        class="main-editor"
-        [options]="{
-            theme: 'vs-dark'
-        }"
-        (onInit)="editorLoaded($event)">
-</ngx-monaco-editor>
+<div class="editor-container"
+     #editorContainer>
+</div>

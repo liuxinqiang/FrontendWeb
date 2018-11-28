@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute} from '@angular/router';
 import {EditorPanelService} from '../services/editor-panel.service';
@@ -11,7 +11,7 @@ import {EditorsManagerService} from '../services/editors-manager.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     query: IEditorQuery;
 
@@ -47,5 +47,10 @@ export class HomeComponent implements OnInit {
             this.loadedCount++;
             this.loadCompleteHook();
         });
+    }
+
+    ngOnDestroy(): void {
+        this._filesManagerService.clear();
+        this._editorsManagerService.clear();
     }
 }

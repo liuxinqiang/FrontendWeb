@@ -61,6 +61,11 @@ export class FilesManagerService {
         this._activeFilesListSubject.next(newFileList);
     }
 
+    clear() {
+        this._activeFilesListSubject.next([]);
+        this._activeFileSubject.next(null);
+    }
+
     public get files(): ITreeNode[] {
         return this._filesSubject.value;
     }

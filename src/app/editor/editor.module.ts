@@ -4,7 +4,6 @@ import {EditorRoutersComponents, EditorRoutingModule} from './editor-routing.mod
 import {FilesService} from './services/files.service';
 import {GitService} from './services/git.service';
 import {EditorPanelService} from './services/editor-panel.service';
-import {MonacoEditorModule} from 'ngx-monaco-editor';
 import {FormsModule} from '@angular/forms';
 import {EditorHeaderComponent} from './header/header.component';
 import { MainEditorTopComponent } from './main-editor-top/main-editor-top.component';
@@ -37,7 +36,6 @@ import {EditorsManagerService} from './services/editors-manager.service';
         CommonModule,
         EditorRoutingModule,
         FormsModule,
-        MonacoEditorModule.forRoot(),
     ],
     providers: [
         FilesManagerService,
