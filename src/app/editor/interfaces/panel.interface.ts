@@ -5,6 +5,7 @@ export type IGetTreeMode = 'tree' | 'directories';
 export interface ITreeNode {
     file: string;
     path:  string;
+    size?: number;
     ext?: string;
     active?: boolean;
     opened?: boolean;

@@ -17,6 +17,7 @@ import { DeployPanelComponent } from './editor-nav-panel/deploy-panel/deploy-pan
 import {FilesManagerService} from './services/files-manager.service';
 import { FilesListRenderComponent } from './editor-nav-panel/files-panel/files-list-render/files-list-render.component';
 import { MainEditorComponent } from './main-editor/main-editor.component';
+import {EditorsManagerService} from './services/editors-manager.service';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { MainEditorComponent } from './main-editor/main-editor.component';
         FilesService,
         GitService,
         EditorPanelService,
+        EditorsManagerService,
     ],
 })
 export class EditorModule {

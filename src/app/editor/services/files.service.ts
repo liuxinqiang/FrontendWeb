@@ -27,6 +27,15 @@ export class FilesService {
         });
     }
 
+    async readTextFile(path): Promise<string> {
+        return this.fs.readFile(path)
+            .then(data => data.toString());
+    }
+
+    async writeTextFile(path, content): Promise<boolean> {
+        return this.fs.writeFile(path, content, 'utf-8');
+    }
+
     async getTree(
         path: string,
         result = [],
@@ -43,6 +52,7 @@ export class FilesService {
             if (mode === 'tree') {
                 const singleFile: ITreeNode = {
                     file,
+                    size: fileStat.size,
                     path: realPath,
                     ext: file.substr(file.lastIndexOf('.') + 1),
                     isDirectory: false,
