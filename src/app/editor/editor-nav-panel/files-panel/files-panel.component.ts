@@ -34,6 +34,7 @@ export class FilesPanelComponent implements OnInit {
                 file: node.file,
                 path: node.path,
                 ext: node.ext,
+                url: node.url,
             });
             markNode(this.filesManagerService.files, 'active', false);
             node.active = true;

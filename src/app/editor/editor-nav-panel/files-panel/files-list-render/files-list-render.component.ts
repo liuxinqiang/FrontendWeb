@@ -21,5 +21,4 @@ export class FilesListRenderComponent implements OnInit {
     selectNodeAction(node) {
         this.nodeSelect.emit(node);
     }
-
 }

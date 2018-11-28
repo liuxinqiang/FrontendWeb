@@ -53,6 +53,7 @@ export class FilesService {
                 const singleFile: ITreeNode = {
                     file,
                     size: fileStat.size,
+                    url: `file://local/${realPath}`,
                     path: realPath,
                     ext: file.substr(file.lastIndexOf('.') + 1),
                     isDirectory: false,

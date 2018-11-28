@@ -15,9 +15,9 @@ export class MainEditorComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const baseUrl = '/assets/monaco';
+        const baseUrl = '/assets';
         const onGotAmdLoader: any = () => {
-            (<any>window).require.config({paths: {'vs': baseUrl}});
+            (<any>window).require.config({paths: {'vs': baseUrl + '/monaco/vs'}});
             (<any>window).require.config({
                 'vs/nls': {
                     availableLanguages: {
@@ -32,7 +32,7 @@ export class MainEditorComponent implements OnInit, AfterViewInit {
         if (!(<any>window).require) {
             const loaderScript: HTMLScriptElement = document.createElement('script');
             loaderScript.type = 'text/javascript';
-            loaderScript.src = `${baseUrl}/loader.js`;
+            loaderScript.src = `${baseUrl}/monaco/vs/loader.js`;
             loaderScript.addEventListener('load', onGotAmdLoader);
             document.body.appendChild(loaderScript);
         } else {
