@@ -1,7 +1,5 @@
 export type INavPanelType = 'files' | 'search' | 'config' | 'deploy' | null;
 
-export type IGetTreeMode = 'tree' | 'directories';
-
 export interface ITreeNode {
     file: string;
     path:  string;
