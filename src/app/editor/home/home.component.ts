@@ -8,7 +8,6 @@ import {EditorsManagerService} from '../services/editors-manager.service';
 import {LoadingService} from '../services/loading.service';
 import {
     trigger,
-    state,
     style,
     animate,
     transition,
@@ -56,6 +55,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) {
         _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
             this.query = data;
+            const url = decodeURIComponent(data.url);
+            this._editorsManagerService.setReadOnly(!url.includes('/my-components/'));
         });
     }
 

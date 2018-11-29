@@ -11,4 +11,7 @@ export const environment = {
     builder: {
         url: 'ws://localhost:3010/api/live',
     },
+    gitMidea: {
+        url: 'https://git-midea.liuxinqiang.com',
+    }
 };

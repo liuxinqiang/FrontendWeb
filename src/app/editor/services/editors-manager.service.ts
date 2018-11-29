@@ -24,6 +24,7 @@ function getFlatFiles (files: ITreeNode[]) {
 
 @Injectable()
 export class EditorsManagerService {
+    private _readOnlyMode = false;
     private _container: HTMLDivElement;
     private _activeFileSubscription: Subscription;
     private _filesSubscription: Subscription;
@@ -34,6 +35,15 @@ export class EditorsManagerService {
         private _fileService: FilesService,
         private _loadingService: LoadingService,
     ) {}
+
+    setReadOnly(value) {
+        this._readOnlyMode = value;
+    }
+
+    public get readOnly (): boolean {
+        return this._readOnlyMode;
+    }
+
     clear() {
         const models = monaco.editor.getModels();
         models.forEach(model => model.dispose());
@@ -82,6 +92,7 @@ export class EditorsManagerService {
                         model: model,
                         theme: 'vs-dark',
                         language: 'text/plain',
+                        readOnly: this._readOnlyMode,
                     });
                 } else {
                     this.editor.setModel(model);

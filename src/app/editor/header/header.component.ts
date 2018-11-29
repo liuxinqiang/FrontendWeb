@@ -1,6 +1,6 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomService} from 'app/common/services/dom.service';
+import {EditorsManagerService} from '../services/editors-manager.service';
 
 @Component({
     selector: 'app-editor-header',
@@ -15,6 +15,7 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
 
     constructor(
         private _domService: DomService,
+        public editorManagerService: EditorsManagerService,
     ) {}
 
     @Input() backUrl = '/';

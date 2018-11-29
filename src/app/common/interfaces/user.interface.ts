@@ -1,3 +1,8 @@
+export interface IUserMetaData {
+    gitMidea?: {
+        token: string;
+    };
+}
 export interface IUserInterface {
     avatar: null | 'string';
     createTime: string;
@@ -5,11 +10,10 @@ export interface IUserInterface {
     isActive: boolean;
     lang: 'zh-CN' | 'en-GB';
     loginName: string;
-    metaData: object;
+    metaData: IUserMetaData;
     name: string;
     phone: string;
     rule: number;
     timezone: 'Asia/Shanghai';
     updateTime: string;
-    gitLibToken: string;
 }

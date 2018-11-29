@@ -6,4 +6,7 @@ export const environment = {
     builder: {
         url: 'wss://frontend.liuxinqiang.com/api/live',
     },
+    gitMidea: {
+        url: 'https://git-midea.liuxinqiang.com',
+    }
 };

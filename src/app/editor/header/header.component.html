@@ -1,13 +1,11 @@
 <header class="ui-container-expand">
     <div class="ui-grid">
         <div class="ui-width-expand">
-            <a class="ui-link-reset ui-margin-small-left">
-                CoreFormRender
-            </a>
             <div class="ui-inline ui-margin-small-left">
                 <a class="ui-margin-small-left">
-                    <span ui-icon="icon:git-branch"></span>
-                    master
+                    <span class="text-icon-fix"
+                          ui-icon="icon:home"></span>
+                    人员选择器
                 </a>
                 <div [attr.ui-drop]="headerDropConfig">
                     <div class="ui-card ui-card-body ui-card-default">
@@ -15,17 +13,35 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-inline ui-margin-small-left">
-                <a class="ui-margin-small-left">
-                    <span ui-icon="icon:cloud-upload"></span>
-                    保存
-                </a>
-                <div [attr.ui-drop]="headerDropConfig">
-                    <div class="ui-card ui-card-body ui-card-default">
-                        保存页面
+            <ng-container *ngIf="!editorManagerService.readOnly">
+                <div class="ui-inline ui-margin-small-left">
+                    <a class="ui-margin-small-left">
+                        <span class="text-icon-fix"
+                              ui-icon="icon:git-branch"></span>
+                        master
+                    </a>
+                    <div [attr.ui-drop]="headerDropConfig">
+                        <div class="ui-card ui-card-body ui-card-default">
+                            分支切换
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="ui-inline ui-margin-small-left">
+                    <a class="ui-margin-small-left with-notify">
+                        <span class="text-icon-fix"
+                              ui-icon="icon:server"></span>
+                        同步
+                        <span class="ui-badge ui-position-top-right">
+                            9
+                        </span>
+                    </a>
+                    <div [attr.ui-drop]="headerDropConfig">
+                        <div class="ui-card ui-card-body ui-card-default">
+                            保存页面
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
         </div>
         <div class="ui-width-auto">
             <a ui-tooltip="全屏"
