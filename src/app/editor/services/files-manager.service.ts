@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {IActiveFilesStorage, ITreeNode} from '../interfaces/panel.interface';
 import {GitService} from './git.service';
-import {LocalStorageService} from 'app/common/services/storage/local-storage.service';
+import {LocalStorageService} from 'app/common/services/local-storage.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 
 @Injectable()

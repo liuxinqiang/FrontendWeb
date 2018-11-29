@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import * as git from 'vendor/git.js';
 import {FilesService} from './files.service';
-import {AuthService} from '../../common/services/auth/auth.service';
 import {LoadingService} from './loading.service';
+import {AuthService} from '../../user/services/auth.service';
 
 @Injectable()
 export class GitService {
@@ -81,7 +81,7 @@ export class GitService {
             await this._filesService.fs.mkdir(dir);
             await git.clone({
                 oauth2format: 'gitlab',
-                token: this._authService.currentUserValue.user.metaData.gitMidea.token,
+                token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
                 dir,
                 url: gitRepo,
                 ref: branch,

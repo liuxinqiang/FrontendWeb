@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IWSMessageInterface} from 'app/common/interfaces/websocket.interface';
 import {filter, map, retry} from 'rxjs/internal/operators';
-import {WsConnectionService} from '../../common/services/ws/ws-connection.service';
+import {WsConnectionService} from 'app/common/services/ws-connection.service';
 
 @Injectable()
 export class BuildService {

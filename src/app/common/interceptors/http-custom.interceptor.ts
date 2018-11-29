@@ -9,7 +9,7 @@ import {
 import {Observable, throwError} from 'rxjs';
 import {retry} from 'rxjs/operators';
 import {catchError} from 'rxjs/internal/operators';
-import {AuthService} from '../services/auth/auth.service';
+import {AuthService} from 'app/user/services/auth.service';
 
 @Injectable()
 export class HttpCustomInterceptor implements HttpInterceptor {
@@ -40,6 +40,14 @@ export class HttpCustomInterceptor implements HttpInterceptor {
                     'X-Auth-Token': currentUser.token,
                 }
             });
+            if (currentUser.user.authTokens.gitMidea &&
+                currentUser.user.authTokens.gitMidea.token) {
+                request = request.clone({
+                    setHeaders: {
+                        'Private-Token': currentUser.user.authTokens.gitMidea.token,
+                    }
+                });
+            }
         }
         return next.handle(request)
             .pipe(

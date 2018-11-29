@@ -4,8 +4,8 @@ import {isPlatformBrowser} from '@angular/common';
 import {ILoginUserInterface} from 'app/common/interfaces/response.interface';
 import {Subscription} from 'rxjs';
 import {IMainMenuInterface} from '../../interfaces/menu.interface';
-import {GetMainMenuService} from '../../services/auth/get-main-menu.service';
-import {AuthService} from '../../services/auth/auth.service';
+import {GetMainMenuService} from '../services/get-main-menu.service';
+import {AuthService} from 'app/user/services/auth.service';
 
 @Component({
     selector: 'app-common-main-menu',

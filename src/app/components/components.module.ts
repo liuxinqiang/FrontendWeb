@@ -5,7 +5,6 @@ import {
     ComponentsRouterModule
 } from './components-router.module';
 import {CommonComponentsModule} from 'app/common/components/common-components.module';
-import {ComponentsService} from './services/components.service';
 import {ComponentsSharedModule} from './shared/components-shared.module';
 import {TagsService} from './services/tags.service';
 import {BuildService} from './services/build.service';
@@ -21,7 +20,6 @@ import {BuildService} from './services/build.service';
         ComponentsSharedModule,
     ],
     providers: [
-        ComponentsService,
         TagsService,
         BuildService,
     ]

@@ -9,7 +9,7 @@ import {
     ILoginResponseInterface, ILoginUserInterface,
 } from 'app/common/interfaces/response.interface';
 import {Router} from '@angular/router';
-import {LocalStorageService} from 'app/common/services/storage/local-storage.service';
+import {LocalStorageService} from 'app/common/services/local-storage.service';
 
 @Injectable({
     providedIn: 'root'

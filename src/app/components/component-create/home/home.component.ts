@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {GitMideaService} from '../../../common/services/git-midea.service';
 
 @Component({
     selector: 'app-create-component',
@@ -7,6 +8,11 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
     styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
+    constructor(
+        private _gitMideaService: GitMideaService,
+    ) {
+    }
+
     mainForm = new FormGroup({
         title: new FormControl('', [
             Validators.required,
@@ -61,6 +67,16 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.f.type.valueChanges
             .subscribe(this.injectValidateRulesBaseOnType.bind(this));
+        this._gitMideaService.getProjectsList()
+            .subscribe(data => {
+                console.log('data');
+                console.log(data);
+            });
+        this._gitMideaService.user()
+            .subscribe(data => {
+                console.log('users');
+                console.log(data);
+            });
     }
 
     create() {

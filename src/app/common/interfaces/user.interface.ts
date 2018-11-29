@@ -1,4 +1,4 @@
-export interface IUserMetaData {
+export interface IUserAuthToken {
     gitMidea?: {
         token: string;
     };
@@ -10,7 +10,8 @@ export interface IUserInterface {
     isActive: boolean;
     lang: 'zh-CN' | 'en-GB';
     loginName: string;
-    metaData: IUserMetaData;
+    metaData: object;
+    authTokens: IUserAuthToken;
     name: string;
     phone: string;
     rule: number;

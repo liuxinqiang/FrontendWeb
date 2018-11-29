@@ -6,10 +6,12 @@ import {map} from 'rxjs/internal/operators';
 import {Observable} from 'rxjs';
 import {IComponentInterface} from '../interfaces/component.interface';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class ComponentsService {
 
-    private _urlPrefix = '/asyncComponent';
+    private _urlPrefix = environment.mainAPI.url + '/asyncComponent';
 
     constructor(
         private _http: HttpClient,
@@ -18,7 +20,7 @@ export class ComponentsService {
 
     getComponent(componentName: string): Observable<IComponentInterface> {
         return this._http.get(
-            `${environment.mainAPI.url}${this._urlPrefix}/detail`,
+            `${this._urlPrefix}/detail`,
             {
                 params: {
                     componentName,
@@ -37,7 +39,7 @@ export class ComponentsService {
             tags,
         } = dataFilter;
         return this._http.post(
-            `${environment.mainAPI.url}${this._urlPrefix}/allPublicComponents`,
+            `${this._urlPrefix}/allPublicComponents`,
             {
                 pageIndex,
                 pageSize,
@@ -56,7 +58,7 @@ export class ComponentsService {
             params['loginName'] = loginName;
         }
         return this._http.post(
-            `${environment.mainAPI.url}${this._urlPrefix}/getComponentsByUser`,
+            `${this._urlPrefix}/getComponentsByUser`,
             {
                 pageIndex,
                 pageSize,
