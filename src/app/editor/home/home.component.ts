@@ -6,11 +6,38 @@ import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 import {EditorsManagerService} from '../services/editors-manager.service';
 import {LoadingService} from '../services/loading.service';
+import {
+    trigger,
+    state,
+    style,
+    animate,
+    transition,
+} from '@angular/animations';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.less']
+    styleUrls: ['./home.component.less'],
+    animations: [
+        trigger('loading', [
+            transition(':enter', [
+                style({
+                    opacity: 0
+                }),
+                animate('.3s ease-in-out', style({
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    opacity: 1
+                }),
+                animate('.3s ease-in-out', style({
+                    opacity: 0
+                }))
+            ])
+        ])
+    ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
 

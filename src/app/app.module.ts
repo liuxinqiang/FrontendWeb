@@ -9,6 +9,7 @@ import {ErrorsHandler} from './common/handlers/errors-handler';
 import {HttpCustomInterceptor} from './common/interceptors/http-custom.interceptor';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import {registerLocaleData} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -19,6 +20,7 @@ registerLocaleData(localeZhHans, 'zh-Hans');
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'my-app'}),
+        BrowserAnimationsModule,
         AppRouterModule,
         TransferHttpCacheModule,
         HttpClientModule,
