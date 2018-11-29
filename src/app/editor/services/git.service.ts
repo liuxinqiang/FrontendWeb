@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as git from 'vendor/git.js';
 import {FilesService} from './files.service';
 import {AuthService} from '../../common/services/auth/auth.service';
+import {LoadingService} from './loading.service';
 
 @Injectable()
 export class GitService {
@@ -9,6 +10,7 @@ export class GitService {
     constructor(
         private _filesService: FilesService,
         private _authService: AuthService,
+        private _loadingServie: LoadingService,
     ) {
     }
 
@@ -19,6 +21,7 @@ export class GitService {
         singleBranch = false
     ): Promise<any[]> {
         const fs = await this._filesService.init();
+        this._loadingServie.setState('设置代码仓库');
         git.plugins.set('fs', fs);
         let exist;
         try {

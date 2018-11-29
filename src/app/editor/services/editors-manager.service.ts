@@ -5,6 +5,7 @@ import {filter} from 'rxjs/operators';
 import {EditorMapConfig} from '../editor.config';
 import {Subscription} from 'rxjs';
 import {ITreeNode} from '../interfaces/panel.interface';
+import {LoadingService} from './loading.service';
 
 function getFlatFiles (files: ITreeNode[]) {
     const result = [];
@@ -24,19 +25,19 @@ function getFlatFiles (files: ITreeNode[]) {
 @Injectable()
 export class EditorsManagerService {
     private _container: HTMLDivElement;
-    private _editor;
     private _activeFileSubscription: Subscription;
     private _filesSubscription: Subscription;
+    public editor;
 
     constructor(
         private _filesManagerService: FilesManagerService,
         private _fileService: FilesService,
-    ) {
-    }
+        private _loadingService: LoadingService,
+    ) {}
     clear() {
         const models = monaco.editor.getModels();
         models.forEach(model => model.dispose());
-        this._editor = undefined;
+        this.editor = undefined;
         this._activeFileSubscription.unsubscribe();
         this._filesSubscription.unsubscribe();
     }
@@ -55,6 +56,7 @@ export class EditorsManagerService {
                     await this._fileService.writeTextFile(file.path, model.getValue());
                 });
             }
+            this._loadingService.setState('');
             this.setModelBaseOnActiveFile();
         });
     }
@@ -66,8 +68,8 @@ export class EditorsManagerService {
                     if (file !== null) {
                         return true;
                     } else {
-                        if (this._editor) {
-                            this._editor.setModel(null);
+                        if (this.editor) {
+                            this.editor.setModel(null);
                         }
                         return false;
                     }
@@ -75,19 +77,26 @@ export class EditorsManagerService {
             )
             .subscribe(async file => {
                 const model = monaco.editor.getModel(monaco.Uri.parse(file.url));
-                if (!this._editor) {
-                    this._editor = monaco.editor.create(this._container, {
+                if (!this.editor) {
+                    this.editor = monaco.editor.create(this._container, {
                         model: model,
                         theme: 'vs-dark',
                         language: 'text/plain',
                     });
                 } else {
-                    this._editor.setModel(model);
+                    this.editor.setModel(model);
                 }
             });
     }
 
+    layout() {
+        if (this.editor) {
+            this.editor.layout();
+        }
+    }
+
     init(editorContainer: HTMLDivElement) {
+        this._loadingService.setState('设置编辑器');
         this._container = editorContainer;
         this.setModelsBaseOnFiles();
     }

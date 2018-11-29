@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {EditorPanelService} from '../services/editor-panel.service';
+import {EditorsManagerService} from '../services/editors-manager.service';
 
 @Component({
     selector: 'app-editor-icon-nav',
@@ -33,7 +34,19 @@ export class EditorIconNavComponent {
 
     constructor(
         public editorPanelService: EditorPanelService,
+        private _editorManagerService: EditorsManagerService,
     ) {
+    }
+
+    changePanel(id) {
+        if (this.editorPanelService.activePanelValue === id) {
+            this.editorPanelService.changeActivePanel(null);
+        } else {
+            this.editorPanelService.changeActivePanel(id);
+        }
+        setTimeout(() => {
+            this._editorManagerService.layout();
+        }, 0);
     }
 
 }

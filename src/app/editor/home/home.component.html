@@ -11,7 +11,16 @@
         <app-main-editor-top class="ui-display-block main-editor-top">
         </app-main-editor-top>
         <app-main-editor class="ui-display-block ui-position-relative main-editor-container"
-            (loadComplete)="mainEditorLoaded($event)">
+                         (loadComplete)="mainEditorLoaded($event)">
         </app-main-editor>
+    </div>
+</div>
+<div *ngIf="loadingService.state"
+     class="ui-position-cover ui-dark ui-overlay ui-overlay-primary ui-flex ui-flex-center ui-flex-middle">
+    <div class="ui-text-center">
+        <div ui-spinner></div>
+        <p>
+            {{loadingService.state}} <span class="dot-loading">...</span>
+        </p>
     </div>
 </div>

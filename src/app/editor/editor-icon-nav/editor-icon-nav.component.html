@@ -5,9 +5,7 @@
         }">
         <a class="ui-text-center"
            [attr.ui-icon]="'ratio:1.3;icon: ' + nav.icon"
-           (click)="editorPanelService.activePanelValue === nav.id
-           ? editorPanelService.changeActivePanel(null)
-           : editorPanelService.changeActivePanel(nav.id)">
+           (click)="changePanel(nav.id)">
         </a>
     </li>
 </ul>

@@ -5,6 +5,7 @@ import {EditorPanelService} from '../services/editor-panel.service';
 import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 import {EditorsManagerService} from '../services/editors-manager.service';
+import {LoadingService} from '../services/loading.service';
 
 @Component({
     selector: 'app-home',
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _mainEditor: any;
 
     constructor(
+        public loadingService: LoadingService,
         public editorPanelService: EditorPanelService,
         private _gitService: GitService,
         private _editorsManagerService: EditorsManagerService,
