@@ -81,7 +81,7 @@ export class FilesManagerService {
     async init(component: IComponentInterface) {
         const newFiles = await this._gitService.initGit(component);
         const activeFiles: IActiveFilesStorage = this._localStorage.getItem('ActiveFiles');
-        if (activeFiles && activeFiles[ 'component_' + component.componentName]) {
+        if (activeFiles && activeFiles['component_' + component.componentName]) {
             const activeState = activeFiles['component_' + component.componentName];
             this._activeFilesListSubject.next(activeState.list);
             this._activeFileSubject.next(activeState.file);

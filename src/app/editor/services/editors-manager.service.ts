@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {FilesManagerService} from './files-manager.service';
 import {FilesService} from './files.service';
 import {filter} from 'rxjs/operators';
-import {EditorMapConfig} from '../editor.config';
+import {EditorMapConfig, IgnoredEditorTypes} from '../editor.config';
 import {Subscription} from 'rxjs';
 import {ITreeNode} from '../interfaces/panel.interface';
 import {LoadingService, LoadingState} from './loading.service';
 
-function getFlatFiles (files: ITreeNode[]) {
+function getFlatFiles(files: ITreeNode[]) {
     const result = [];
+
     function flatFiles(array: ITreeNode[]) {
         array.forEach(item => {
             if (!item.isDirectory) {
@@ -18,6 +19,7 @@ function getFlatFiles (files: ITreeNode[]) {
             }
         });
     }
+
     flatFiles(files);
     return result;
 }
@@ -34,13 +36,14 @@ export class EditorsManagerService {
         private _filesManagerService: FilesManagerService,
         private _fileService: FilesService,
         private _loadingService: LoadingService,
-    ) {}
+    ) {
+    }
 
     setReadOnly(value) {
         this._readOnlyMode = value;
     }
 
-    public get readOnly (): boolean {
+    public get readOnly(): boolean {
         return this._readOnlyMode;
     }
 
@@ -60,15 +63,18 @@ export class EditorsManagerService {
         this._filesSubscription = this._filesManagerService.files$.subscribe(async files => {
             const flatFiles = getFlatFiles(files);
             for (const file of flatFiles) {
-                const value = await this._fileService.readTextFile(file.path);
+                const ignoredType = IgnoredEditorTypes.indexOf(file.ext) >= 0;
+                const value = ignoredType ? file.path : await this._fileService.readTextFile(file.path);
                 const model = monaco.editor.createModel(
                     value,
                     EditorMapConfig[file.ext] || 'text/plain',
                     monaco.Uri.parse(file.url)
                 );
-                model.onDidChangeContent(async () => {
-                    await this._fileService.writeTextFile(file.path, model.getValue());
-                });
+                if (!ignoredType) {
+                    model.onDidChangeContent(async () => {
+                        await this._fileService.writeTextFile(file.path, model.getValue());
+                    });
+                }
             }
             this._loadingService.setState({
                 state: LoadingState.success

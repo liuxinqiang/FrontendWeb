@@ -5,9 +5,18 @@ import {LoadingService, LoadingState} from './loading.service';
 import {AuthService} from '../../user/services/auth.service';
 import {environment} from '../../../environments/environment';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
+import {BehaviorSubject} from 'rxjs';
+import {ITreeNode} from '../interfaces/panel.interface';
+
+interface GitStatus {
+    unstaged: number;
+    modified: number;
+}
 
 @Injectable()
 export class GitService {
+
+    private _status: BehaviorSubject<any>;
 
     private _dir: string;
 
@@ -31,7 +40,6 @@ export class GitService {
     }
 
     async getBranches() {
-
         // const info = await git.getRemoteInfo({
         //     url: 'https://git-midea.liuxinqiang.com/test',
         //     oauth2format: 'gitlab',
@@ -40,14 +48,14 @@ export class GitService {
         // console.log('remote info...');
         // console.log(info);
 
-        const currentBranch = await git.currentBranch({ dir: this._dir });
+        const currentBranch = await git.currentBranch({dir: this._dir});
         console.log('current branches');
         console.log(currentBranch);
 
-        const branches = await git.listBranches({ dir: this._dir });
+        const branches = await git.listBranches({dir: this._dir});
         console.log('local branches');
         console.log(branches);
-        const remoteBranches = await git.listBranches({ dir: this._dir, remote: 'origin' });
+        const remoteBranches = await git.listBranches({dir: this._dir, remote: 'origin'});
         console.log('remote branches');
         console.log(remoteBranches);
     }
@@ -57,10 +65,46 @@ export class GitService {
         private _authService: AuthService,
         private _loadingService: LoadingService
     ) {
-        // setTimeout(() => {
-        //     this.getStatus().then();
-        //     this.getBranches().then();
-        // }, 5000);
+    }
+
+
+    getFilesTree(files) {
+        const result: ITreeNode[] = [];
+        files.forEach(file => {
+            const filePaths = file.split('/');
+            let parentNode = result;
+            let pathPrefix = this._dir + '/';
+            for (let i = 0; i < filePaths.length; i++) {
+                const currentFilePath = filePaths[i];
+                const fileNode: ITreeNode = {
+                    file: currentFilePath,
+                    url: `file://local/${pathPrefix + currentFilePath}`,
+                    path: pathPrefix + currentFilePath,
+                    ext: file.substr(file.lastIndexOf('.') + 1),
+                    isDirectory: false,
+                    active: false,
+                    opened: false,
+                    children: [],
+                };
+                if (i === filePaths.length - 1) {
+                    parentNode.push(fileNode);
+                } else {
+                    const findParentNode = parentNode.filter((subFile: ITreeNode) => {
+                        return subFile.file === currentFilePath && subFile.isDirectory;
+                    })[0];
+                    if (!findParentNode) {
+                        fileNode.isDirectory = true;
+                        fileNode.ext = currentFilePath;
+                        parentNode.push(fileNode);
+                        parentNode = fileNode.children;
+                    } else {
+                        parentNode = findParentNode.children;
+                    }
+                    pathPrefix +=  currentFilePath + '/';
+                }
+            }
+        });
+        return result;
     }
 
     async initGit(component: IComponentInterface): Promise<any[]> {
@@ -90,6 +134,7 @@ export class GitService {
                 depth: 20
             });
         }
-        return this._filesService.getTree(this._dir);
+        const files = await git.listFiles({dir: this._dir});
+        return this.getFilesTree(files);
     }
 }

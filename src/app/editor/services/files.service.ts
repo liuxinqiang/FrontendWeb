@@ -1,37 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as FS from 'vendor/fs.js';
 import * as pify from 'vendor/pify.js';
-import {ITreeNode} from '../interfaces/panel.interface';
 import {LoadingService, LoadingState} from './loading.service';
-
-async function getFilesTree(path, fs, ignoreList, result) {
-    const files = await fs.readdir(path);
-    for (const file of files) {
-        const realPath = path + '/' + file;
-        const isIgnore = ignoreList.filter(ignoreMark => (path + '/' + ignoreMark) === realPath)[0];
-        if (!isIgnore) {
-            const fileStat = await fs.stat(realPath);
-            const singleFile: ITreeNode = {
-                file,
-                size: fileStat.size,
-                url: `file://local/${realPath}`,
-                path: realPath,
-                ext: file.substr(file.lastIndexOf('.') + 1),
-                isDirectory: false,
-                active: false,
-                opened: false,
-                children: [],
-            };
-            if (fileStat.isDirectory()) {
-                singleFile.isDirectory = true;
-                singleFile.ext = '';
-                await getFilesTree(realPath, fs, ignoreList, singleFile.children);
-            }
-            result.push(singleFile);
-        }
-    }
-    return result;
-}
 
 @Injectable()
 export class FilesService {
@@ -72,14 +42,5 @@ export class FilesService {
 
     async writeTextFile(path, content): Promise<boolean> {
         return this.fs.writeFile(path, content, 'utf-8');
-    }
-
-    async getTree(
-        path: string,
-        ignoreList: string[] = ['.git']
-    ): Promise<ITreeNode[]> {
-        const result = [];
-        await getFilesTree(path, this.fs, ignoreList, result);
-        return result;
     }
 }

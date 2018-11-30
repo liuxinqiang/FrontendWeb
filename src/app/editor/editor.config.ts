@@ -9,3 +9,5 @@ export const EditorMapConfig = {
     scss: 'scss',
     json: 'json'
 };
+
+export const IgnoredEditorTypes = ['png', 'jpg', 'zip'];

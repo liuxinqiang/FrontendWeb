@@ -35,7 +35,6 @@ import {ComponentService} from '../services/component.service';
     ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
     query: IEditorQuery;
 
     private _interval;
@@ -89,6 +88,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this._interval = setInterval(() => {
+            const a = this.loadingService.state.state;
+        }, 1000);
         this._componentService.init(this.query)
             .then((component) => {
                 return this._filesManagerService.init(component);
@@ -108,5 +110,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._filesManagerService.clear();
         this._editorsManagerService.clear();
+        if (this._interval) {
+            clearInterval(this._interval);
+        }
     }
 }
