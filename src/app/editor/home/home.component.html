@@ -15,7 +15,7 @@
         </app-main-editor>
     </div>
 </div>
-<div *ngIf="showLoading()"
+<div *ngIf="loadingService.state.state !== 'SUCCESS'"
      @loading
      [ngClass]="loadingService.state.state === 'LOADING' ? 'ui-overlay-primary' : 'ui-overlay-danger'"
      class="ui-position-cover ui-dark ui-overlay ui-flex ui-flex-center ui-flex-middle">

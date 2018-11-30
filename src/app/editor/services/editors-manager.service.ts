@@ -79,6 +79,7 @@ export class EditorsManagerService {
             this._loadingService.setState({
                 state: LoadingState.success
             });
+            console.log('end...');
             this.setModelBaseOnActiveFile();
         });
     }

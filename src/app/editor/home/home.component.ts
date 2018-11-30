@@ -6,7 +6,7 @@ import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 import {EditorsManagerService} from '../services/editors-manager.service';
 import {LoadingService, LoadingState} from '../services/loading.service';
-import {animate, style, transition, trigger,} from '@angular/animations';
+import {animate, style, transition, trigger} from '@angular/animations';
 import {ComponentService} from '../services/component.service';
 
 @Component({

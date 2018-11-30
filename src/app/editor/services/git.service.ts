@@ -2,11 +2,11 @@ import {Injectable} from '@angular/core';
 import * as git from 'vendor/git.js';
 import {FilesService} from './files.service';
 import {LoadingService, LoadingState} from './loading.service';
-import {AuthService} from '../../user/services/auth.service';
-import {environment} from '../../../environments/environment';
+import {AuthService} from 'app/user/services/auth.service';
+import {environment} from 'environments/environment';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
 import {BehaviorSubject} from 'rxjs';
-import {ITreeNode} from '../interfaces/panel.interface';
+import {GetFilesTreeMethod} from '../methods/files-tree.method';
 
 interface GitStatus {
     unstaged: number;
@@ -67,46 +67,6 @@ export class GitService {
     ) {
     }
 
-
-    getFilesTree(files) {
-        const result: ITreeNode[] = [];
-        files.forEach(file => {
-            const filePaths = file.split('/');
-            let parentNode = result;
-            let pathPrefix = this._dir + '/';
-            for (let i = 0; i < filePaths.length; i++) {
-                const currentFilePath = filePaths[i];
-                const fileNode: ITreeNode = {
-                    file: currentFilePath,
-                    url: `file://local/${pathPrefix + currentFilePath}`,
-                    path: pathPrefix + currentFilePath,
-                    ext: file.substr(file.lastIndexOf('.') + 1),
-                    isDirectory: false,
-                    active: false,
-                    opened: false,
-                    children: [],
-                };
-                if (i === filePaths.length - 1) {
-                    parentNode.push(fileNode);
-                } else {
-                    const findParentNode = parentNode.filter((subFile: ITreeNode) => {
-                        return subFile.file === currentFilePath && subFile.isDirectory;
-                    })[0];
-                    if (!findParentNode) {
-                        fileNode.isDirectory = true;
-                        fileNode.ext = currentFilePath;
-                        parentNode.push(fileNode);
-                        parentNode = fileNode.children;
-                    } else {
-                        parentNode = findParentNode.children;
-                    }
-                    pathPrefix +=  currentFilePath + '/';
-                }
-            }
-        });
-        return result;
-    }
-
     async initGit(component: IComponentInterface): Promise<any[]> {
         this._dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
         const gitRepo = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
@@ -135,6 +95,6 @@ export class GitService {
             });
         }
         const files = await git.listFiles({dir: this._dir});
-        return this.getFilesTree(files);
+        return GetFilesTreeMethod(files, this._dir);
     }
 }
