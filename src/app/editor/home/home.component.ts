@@ -63,12 +63,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        window.history.back();
-    }
-
-    goToSource() {
         if (this.query.url) {
             this._router.navigateByUrl(decodeURIComponent(this.query.url));
+        } else {
+            window.history.back();
         }
     }
 
@@ -87,8 +85,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this._componentService.init(this.query)
             .then((component) => {
-                console.log('component');
-                console.log(component);
                 return this._filesManagerService.init(component);
             })
             .then(() => {
@@ -100,7 +96,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                     state: LoadingState.fail,
                     message: typeof error === 'string' ? error : '初始化失败',
                 });
-                console.log('初始化失败');
             });
     }
 

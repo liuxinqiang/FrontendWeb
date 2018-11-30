@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomService} from 'app/common/services/dom.service';
 import {EditorsManagerService} from '../services/editors-manager.service';
+import {ComponentService} from '../services/component.service';
 
 @Component({
     selector: 'app-editor-header',
@@ -16,7 +17,9 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
     constructor(
         private _domService: DomService,
         public editorManagerService: EditorsManagerService,
-    ) {}
+        public componentService: ComponentService,
+    ) {
+    }
 
     @Input() backUrl = '/';
 
@@ -26,11 +29,17 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
     fullScreen() {
         this._domService.enableFullScreen();
         this.fullScreenMode = true;
+        setTimeout(() => {
+            this.editorManagerService.layout();
+        }, 100);
     }
 
     exitFullScreen() {
         this._domService.disableFullScreen();
         this.fullScreenMode = false;
+        setTimeout(() => {
+            this.editorManagerService.layout();
+        }, 100);
     }
 
     ngOnDestroy(): void {

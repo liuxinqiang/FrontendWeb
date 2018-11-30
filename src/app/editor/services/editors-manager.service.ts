@@ -70,7 +70,6 @@ export class EditorsManagerService {
                     await this._fileService.writeTextFile(file.path, model.getValue());
                 });
             }
-            console.log('success');
             this._loadingService.setState({
                 state: LoadingState.success
             });

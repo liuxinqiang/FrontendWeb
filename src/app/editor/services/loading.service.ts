@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+
+let lever1Timer, lever2Timer;
 
 export enum LoadingState {
     loading = 'LOADING',
@@ -30,5 +32,23 @@ export class LoadingService {
 
     setState(newState: ILoading) {
         this._listener.next(newState);
+        if (lever1Timer) {
+            clearTimeout(lever1Timer);
+        }
+        if (lever2Timer) {
+            clearTimeout(lever2Timer);
+        }
+        if (newState.state !== LoadingState.loading) {
+            return;
+        }
+        const message = newState.message;
+        lever1Timer = setTimeout(() => {
+            newState.message = '任务仍在运行：' + message;
+            this._listener.next(newState);
+        }, 3000);
+        lever2Timer = setTimeout(() => {
+            newState.message = '请耐心等待下，任务仍然在运行：' + message;
+            this._listener.next(newState);
+        }, 10000);
     }
 }

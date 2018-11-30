@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {FilesManagerService} from '../services/files-manager.service';
 
 @Component({
     selector: 'app-main-editor',
@@ -6,6 +7,8 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, View
     styleUrls: ['./main-editor.component.less']
 })
 export class MainEditorComponent implements OnInit, AfterViewInit {
+
+    constructor(public filesService: FilesManagerService) {}
 
     @ViewChild('editorContainer') _editorContainer: ElementRef;
 

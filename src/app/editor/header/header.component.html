@@ -1,11 +1,12 @@
 <header class="ui-container-expand">
     <div class="ui-grid">
         <div class="ui-width-expand">
-            <div class="ui-inline ui-margin-small-left">
+            <div class="ui-inline ui-margin-small-left"
+                *ngIf="componentService.componentInfo">
                 <a class="ui-margin-small-left">
                     <span class="text-icon-fix"
                           ui-icon="icon:home"></span>
-                    人员选择器
+                    {{componentService.componentInfo.name}}
                 </a>
                 <div [attr.ui-drop]="headerDropConfig">
                     <div class="ui-card ui-card-body ui-card-default">
