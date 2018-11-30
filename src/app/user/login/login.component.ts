@@ -33,7 +33,7 @@ export class LoginComponent {
     login() {
         this._authService.login(this.loginInfo.value)
             .subscribe(() => {
-                this._router.navigateByUrl('/editor?type=component&component=subform&url=%2Fcomponents%2Fpublic%2Fsubform' || '/projects');
+                this._router.navigateByUrl(this._returnUrl || '/projects');
             }, error => {
                 this.loginInfo.controls.password.reset();
             });

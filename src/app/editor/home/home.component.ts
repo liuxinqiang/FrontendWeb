@@ -1,17 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {EditorPanelService} from '../services/editor-panel.service';
 import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 import {EditorsManagerService} from '../services/editors-manager.service';
-import {LoadingService} from '../services/loading.service';
-import {
-    trigger,
-    style,
-    animate,
-    transition,
-} from '@angular/animations';
+import {LoadingService, LoadingState} from '../services/loading.service';
+import {animate, style, transition, trigger,} from '@angular/animations';
 import {ComponentService} from '../services/component.service';
 
 @Component({
@@ -54,12 +49,27 @@ export class HomeComponent implements OnInit, OnDestroy {
         private _filesManagerService: FilesManagerService,
         private _componentService: ComponentService,
         private _activeRoute: ActivatedRoute,
+        private _router: Router,
     ) {
         _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
             this.query = data;
             const url = decodeURIComponent(data.url);
             this._editorsManagerService.setReadOnly(!url.includes('/my-components/'));
         });
+    }
+
+    reload() {
+        window.location.reload();
+    }
+
+    goBack() {
+        window.history.back();
+    }
+
+    goToSource() {
+        if (this.query.url) {
+            this._router.navigateByUrl(decodeURIComponent(this.query.url));
+        }
     }
 
     loadCompleteHook() {
@@ -85,7 +95,11 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.loadedCount++;
                 this.loadCompleteHook();
             })
-            .catch(e => {
+            .catch(error => {
+                this.loadingService.setState({
+                    state: LoadingState.fail,
+                    message: typeof error === 'string' ? error : '初始化失败',
+                });
                 console.log('初始化失败');
             });
     }

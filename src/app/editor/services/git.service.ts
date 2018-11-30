@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import * as git from 'vendor/git.js';
 import {FilesService} from './files.service';
-import {LoadingService} from './loading.service';
+import {LoadingService, LoadingState} from './loading.service';
 import {AuthService} from '../../user/services/auth.service';
-import {IEditorQuery} from '../interfaces/files.interface';
 import {environment} from '../../../environments/environment';
-import {ComponentService} from './component.service';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
 
 @Injectable()
@@ -59,17 +57,20 @@ export class GitService {
         private _authService: AuthService,
         private _loadingService: LoadingService
     ) {
-        setTimeout(() => {
-            this.getStatus().then();
-            this.getBranches().then();
-        }, 5000);
+        // setTimeout(() => {
+        //     this.getStatus().then();
+        //     this.getBranches().then();
+        // }, 5000);
     }
 
     async initGit(component: IComponentInterface): Promise<any[]> {
         this._dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
         const gitRepo = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
         const fs = await this._filesService.init();
-        this._loadingService.setState('设置代码仓库');
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '设置代码仓库',
+        });
         git.plugins.set('fs', fs);
         let exist;
         try {
@@ -84,8 +85,9 @@ export class GitService {
                 token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
                 dir: this._dir,
                 url: gitRepo,
-                ref: 'master',
+                ref: component.repo.gitMidea.branch,
                 singleBranch: true,
+                depth: 20
             });
         }
         return this._filesService.getTree(this._dir);

@@ -5,7 +5,7 @@ import {filter} from 'rxjs/operators';
 import {EditorMapConfig} from '../editor.config';
 import {Subscription} from 'rxjs';
 import {ITreeNode} from '../interfaces/panel.interface';
-import {LoadingService} from './loading.service';
+import {LoadingService, LoadingState} from './loading.service';
 
 function getFlatFiles (files: ITreeNode[]) {
     const result = [];
@@ -48,8 +48,12 @@ export class EditorsManagerService {
         const models = monaco.editor.getModels();
         models.forEach(model => model.dispose());
         this.editor = undefined;
-        this._activeFileSubscription.unsubscribe();
-        this._filesSubscription.unsubscribe();
+        if (this._activeFileSubscription) {
+            this._activeFileSubscription.unsubscribe();
+        }
+        if (this._filesSubscription) {
+            this._filesSubscription.unsubscribe();
+        }
     }
 
     setModelsBaseOnFiles() {
@@ -66,7 +70,10 @@ export class EditorsManagerService {
                     await this._fileService.writeTextFile(file.path, model.getValue());
                 });
             }
-            this._loadingService.setState('');
+            console.log('success');
+            this._loadingService.setState({
+                state: LoadingState.success
+            });
             this.setModelBaseOnActiveFile();
         });
     }
@@ -107,7 +114,10 @@ export class EditorsManagerService {
     }
 
     init(editorContainer: HTMLDivElement) {
-        this._loadingService.setState('设置编辑器');
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '设置编辑器',
+        });
         this._container = editorContainer;
         this.setModelsBaseOnFiles();
     }

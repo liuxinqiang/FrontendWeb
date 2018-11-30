@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import * as FS from 'vendor/fs.js';
 import * as pify from 'vendor/pify.js';
 import {ITreeNode} from '../interfaces/panel.interface';
-import {LoadingService} from './loading.service';
+import {LoadingService, LoadingState} from './loading.service';
 
 async function getFilesTree(path, fs, ignoreList, result) {
     const files = await fs.readdir(path);
@@ -48,7 +48,10 @@ export class FilesService {
     };
 
     init(): Promise<any> {
-        this._loadingService.setState('设置文件系统');
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '设置文件系统',
+        });
         return new Promise((resolve, reject) => {
             FS.configure(this.options, (err) => {
                 if (err) {

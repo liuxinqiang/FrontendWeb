@@ -2,6 +2,7 @@ import {IUserInterface} from 'app/common/interfaces/user.interface';
 
 export interface IComponentRepoInterface {
     gitMidea?: {
+        branch: string;
         path: string;
         id: number;
     };
