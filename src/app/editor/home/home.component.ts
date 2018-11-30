@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     query: IEditorQuery;
 
+    private _interval;
+
     private loadedCount = 0;
     private _mainEditor: any;
 
@@ -68,6 +70,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else {
             window.history.back();
         }
+    }
+
+    showLoading() {
+        return this.loadingService.state.state !== 'SUCCESS';
     }
 
     loadCompleteHook() {
