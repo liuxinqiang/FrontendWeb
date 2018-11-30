@@ -12,6 +12,7 @@ import {
     animate,
     transition,
 } from '@angular/animations';
+import {ComponentService} from '../services/component.service';
 
 @Component({
     selector: 'app-home',
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private _gitService: GitService,
         private _editorsManagerService: EditorsManagerService,
         private _filesManagerService: FilesManagerService,
+        private _componentService: ComponentService,
         private _activeRoute: ActivatedRoute,
     ) {
         _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
@@ -73,10 +75,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._filesManagerService.init(this.query).then(() => {
-            this.loadedCount++;
-            this.loadCompleteHook();
-        });
+        this._componentService.init(this.query)
+            .then((component) => {
+                console.log('component');
+                console.log(component);
+                return this._filesManagerService.init(component);
+            })
+            .then(() => {
+                this.loadedCount++;
+                this.loadCompleteHook();
+            })
+            .catch(e => {
+                console.log('初始化失败');
+            });
     }
 
     ngOnDestroy(): void {

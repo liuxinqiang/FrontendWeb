@@ -77,6 +77,11 @@ export class HomeComponent implements OnInit {
                 console.log('users');
                 console.log(data);
             });
+        this._gitMideaService.groups()
+            .subscribe(data => {
+                console.log('groups');
+                console.log(data);
+            });
     }
 
     create() {

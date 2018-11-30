@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {IActiveFilesStorage, ITreeNode} from '../interfaces/panel.interface';
 import {GitService} from './git.service';
 import {LocalStorageService} from 'app/common/services/local-storage.service';
-import {IEditorQuery} from '../interfaces/files.interface';
+import {IComponentInterface} from '../../components/interfaces/component.interface';
 
 @Injectable()
 export class FilesManagerService {
@@ -78,11 +78,11 @@ export class FilesManagerService {
         return this._activeFilesListSubject.value;
     }
 
-    async init(query: IEditorQuery) {
-        const newFiles = await this._gitService.initGit();
+    async init(component: IComponentInterface) {
+        const newFiles = await this._gitService.initGit(component);
         const activeFiles: IActiveFilesStorage = this._localStorage.getItem('ActiveFiles');
-        if (activeFiles && activeFiles[query.type + '_' + query.name]) {
-            const activeState = activeFiles[query.type + '_' + query.name];
+        if (activeFiles && activeFiles[ 'component_' + component.componentName]) {
+            const activeState = activeFiles['component_' + component.componentName];
             this._activeFilesListSubject.next(activeState.list);
             this._activeFileSubject.next(activeState.file);
         }

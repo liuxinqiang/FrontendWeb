@@ -3,6 +3,10 @@ import * as git from 'vendor/git.js';
 import {FilesService} from './files.service';
 import {LoadingService} from './loading.service';
 import {AuthService} from '../../user/services/auth.service';
+import {IEditorQuery} from '../interfaces/files.interface';
+import {environment} from '../../../environments/environment';
+import {ComponentService} from './component.service';
+import {IComponentInterface} from '../../components/interfaces/component.interface';
 
 @Injectable()
 export class GitService {
@@ -53,7 +57,7 @@ export class GitService {
     constructor(
         private _filesService: FilesService,
         private _authService: AuthService,
-        private _loadingServie: LoadingService,
+        private _loadingService: LoadingService
     ) {
         setTimeout(() => {
             this.getStatus().then();
@@ -61,33 +65,29 @@ export class GitService {
         }, 5000);
     }
 
-    async initGit(
-        dir = 'liuxinqiang_components_test',
-        gitRepo = 'https://git-midea.liuxinqiang.com/Frontend/UI.git',
-        branch = 'master',
-        singleBranch = false
-    ): Promise<any[]> {
-        this._dir = dir;
+    async initGit(component: IComponentInterface): Promise<any[]> {
+        this._dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
+        const gitRepo = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
         const fs = await this._filesService.init();
-        this._loadingServie.setState('设置代码仓库');
+        this._loadingService.setState('设置代码仓库');
         git.plugins.set('fs', fs);
         let exist;
         try {
-            exist = await this._filesService.fs.exists(dir);
+            exist = await this._filesService.fs.exists(this._dir);
         } catch (e) {
             exist = true;
         }
         if (!exist) {
-            await this._filesService.fs.mkdir(dir);
+            await this._filesService.fs.mkdir(this._dir);
             await git.clone({
                 oauth2format: 'gitlab',
                 token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
-                dir,
+                dir: this._dir,
                 url: gitRepo,
-                ref: branch,
-                singleBranch
+                ref: 'master',
+                singleBranch: true,
             });
         }
-        return this._filesService.getTree(dir);
+        return this._filesService.getTree(this._dir);
     }
 }

@@ -1,6 +1,7 @@
 export interface IUserAuthToken {
     gitMidea?: {
         token: string;
+        id: number;
     };
 }
 export interface IUserInterface {

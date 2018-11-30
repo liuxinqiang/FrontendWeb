@@ -1,5 +1,12 @@
 import {IUserInterface} from 'app/common/interfaces/user.interface';
 
+export interface IComponentRepoInterface {
+    gitMidea?: {
+        path: string;
+        id: number;
+    };
+}
+
 export interface IComponentInterface {
     name: string;
     componentName: string;
@@ -11,4 +18,5 @@ export interface IComponentInterface {
     updateTime: string;
     users: IUserInterface[];
     versions: any[];
-};
+    repo: IComponentRepoInterface;
+}

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from 'environments/environment';
+import {AuthService} from 'app/user/services/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +11,7 @@ export class GitMideaService {
 
     constructor(
         private _http: HttpClient,
+        private _authService: AuthService,
     ) {
     }
 
@@ -22,7 +24,7 @@ export class GitMideaService {
     }
 
     getProjectsList() {
-        return this._http.get(this.urlPrefix + '/projects');
+        return this._http.get(this.urlPrefix + '/users/' + this._authService.currentUserValue.user.authTokens.gitMidea.id + '/projects');
     }
     // user
     users() {
@@ -31,5 +33,9 @@ export class GitMideaService {
 
     user() {
         return this._http.get(this.urlPrefix + '/user');
+    }
+
+    groups() {
+        return this._http.get(this.urlPrefix + '/groups');
     }
 }
