@@ -15,23 +15,23 @@
         </app-main-editor>
     </div>
 </div>
-<div *ngIf="loadingService.state.state !== 'SUCCESS'"
+<div *ngIf="loading && loading.state !== 'SUCCESS'"
      @loading
-     [ngClass]="loadingService.state.state === 'LOADING' ? 'ui-overlay-primary' : 'ui-overlay-danger'"
+     [ngClass]="loading.state === 'LOADING' ? 'ui-overlay-primary' : 'ui-overlay-danger'"
      class="ui-position-cover ui-dark ui-overlay ui-flex ui-flex-center ui-flex-middle">
     <div class="ui-text-center">
-        <ng-container *ngIf="loadingService.state.state === 'LOADING';else fail">
+        <ng-container *ngIf="loading.state === 'LOADING';else fail">
             <div ui-spinner>
             </div>
             <p>
-                {{loadingService.state.message}} <span class="dot-loading">...</span>
+                {{loading.message}} <span class="dot-loading">...</span>
             </p>
         </ng-container>
         <ng-template #fail>
             <a (click)="reload()" ui-icon="icon: refresh; ratio: 2">
             </a>
             <ul class="ui-list">
-                <li>{{loadingService.state.message}}</li>
+                <li>{{loading.message}}</li>
                 <li><a (click)="goBack()">返回</a></li>
             </ul>
         </ng-template>

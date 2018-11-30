@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {GitService} from '../services/git.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EditorPanelService} from '../services/editor-panel.service';
 import {FilesManagerService} from '../services/files-manager.service';
 import {IEditorQuery} from '../interfaces/files.interface';
 import {EditorsManagerService} from '../services/editors-manager.service';
-import {LoadingService, LoadingState} from '../services/loading.service';
+import {ILoading, LoadingService, LoadingState} from '../services/loading.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ComponentService} from '../services/component.service';
 
@@ -37,26 +37,24 @@ import {ComponentService} from '../services/component.service';
 export class HomeComponent implements OnInit, OnDestroy {
     query: IEditorQuery;
 
+    loading: ILoading;
+
     private _interval;
 
     private loadedCount = 0;
     private _mainEditor: any;
 
     constructor(
-        public loadingService: LoadingService,
         public editorPanelService: EditorPanelService,
+        private _loadingService: LoadingService,
         private _gitService: GitService,
         private _editorsManagerService: EditorsManagerService,
         private _filesManagerService: FilesManagerService,
         private _componentService: ComponentService,
         private _activeRoute: ActivatedRoute,
         private _router: Router,
+        private _ref: ChangeDetectorRef,
     ) {
-        _activeRoute.queryParams.subscribe((data: IEditorQuery) => {
-            this.query = data;
-            const url = decodeURIComponent(data.url);
-            this._editorsManagerService.setReadOnly(!url.includes('/my-components/'));
-        });
     }
 
     reload() {
@@ -69,10 +67,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else {
             window.history.back();
         }
-    }
-
-    showLoading() {
-        return this.loadingService.state.state !== 'SUCCESS';
     }
 
     loadCompleteHook() {
@@ -88,11 +82,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._interval = setInterval(() => {
-            if (this.loadingService.state) {
-                return 1;
-            }
-        }, 1000);
+        this._activeRoute.queryParams.subscribe((data: IEditorQuery) => {
+            this.query = data;
+            const url = decodeURIComponent(data.url);
+            this._editorsManagerService.setReadOnly(!url.includes('/my-components/'));
+        });
+        this._loadingService.listener$.subscribe(data => {
+            this.loading = data;
+            this._ref.detectChanges();
+        });
         this._componentService.init(this.query)
             .then((component) => {
                 return this._filesManagerService.init(component);
@@ -102,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.loadCompleteHook();
             })
             .catch(error => {
-                this.loadingService.setState({
+                this._loadingService.setState({
                     state: LoadingState.fail,
                     message: typeof error === 'string' ? error : '初始化失败',
                 });

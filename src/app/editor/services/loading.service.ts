@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 let lever1Timer, lever2Timer;
 
@@ -19,11 +19,14 @@ export class LoadingService {
 
     private _listener: BehaviorSubject<ILoading>;
 
+    public listener$: Observable<ILoading>;
+
     constructor() {
         this._listener = new BehaviorSubject({
             state: LoadingState.loading,
             message: '加载中',
         });
+        this.listener$ = this._listener.asObservable();
     }
 
     public get state(): ILoading {
