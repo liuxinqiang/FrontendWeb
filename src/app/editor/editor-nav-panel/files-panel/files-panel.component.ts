@@ -72,12 +72,7 @@ export class FilesPanelComponent implements OnInit {
         if (node.isDirectory) {
             node.opened = !node.opened;
         } else {
-            this.filesManagerService.setActiveFile({
-                file: node.file,
-                path: node.path,
-                ext: node.ext,
-                url: node.url,
-            });
+            this.filesManagerService.setActiveFile(node.path);
         }
     }
 

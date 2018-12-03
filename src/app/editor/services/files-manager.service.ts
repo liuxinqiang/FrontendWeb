@@ -26,9 +26,28 @@ export class FilesManagerService {
         this.activeFile$ = this._activeFileSubject.asObservable();
     }
 
-    setActiveFile(node: ITreeNode) {
-        this._activeFileSubject.next(node);
-        this.addActiveFile(node);
+    setActiveFile(filePath: string) {
+        let fileNode;
+        let parentNode = this.files;
+        const filePaths = filePath.split('/');
+
+        for (let i = 1; i < filePaths.length; i ++) {
+            const name = filePaths[i];
+            if (i === (filePaths.length - 1)) {
+                fileNode = parentNode.filter(file => !file.isDirectory && file.file === name)[0];
+            } else {
+                const tempParentNode = parentNode.filter(file => file.isDirectory && file.file === name)[0];
+                if (tempParentNode) {
+                    parentNode = tempParentNode.children;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (fileNode) {
+            this._activeFileSubject.next(fileNode);
+            this.addActiveFile(fileNode);
+        }
     }
 
     addActiveFile(node: ITreeNode) {

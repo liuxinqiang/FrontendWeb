@@ -5,7 +5,7 @@
                    ? 'ui-active' : 'ui-visible-toggle'"
         class="ui-display-inline-block">
         <a class="ui-link-reset file-name"
-            (click)="filesManagerService.setActiveFile(file)">
+            (click)="filesManagerService.setActiveFile(file.path)">
             {{file.file}}
         </a>
         <a class="ui-link-reset"

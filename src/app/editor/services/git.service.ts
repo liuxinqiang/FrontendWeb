@@ -33,7 +33,7 @@ export class GitService {
 
     private _status: BehaviorSubject<GitStatus>;
 
-    private _dir: string;
+    public projectDir: string;
 
     private _calcStatusTimer;
 
@@ -73,7 +73,7 @@ export class GitService {
         calcStatusComplete = false;
         const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
         const status = await git.statusMatrix({
-            dir: this._dir
+            dir: this.projectDir
         });
         this._status.next({
             deleted: status.filter(row => row[WORKDIR] === 0)
@@ -103,20 +103,20 @@ export class GitService {
         // console.log('remote info...');
         // console.log(info);
 
-        const currentBranch = await git.currentBranch({dir: this._dir});
+        const currentBranch = await git.currentBranch({dir: this.projectDir});
         console.log('current branches');
         console.log(currentBranch);
 
-        const branches = await git.listBranches({dir: this._dir});
+        const branches = await git.listBranches({dir: this.projectDir});
         console.log('local branches');
         console.log(branches);
-        const remoteBranches = await git.listBranches({dir: this._dir, remote: 'origin'});
+        const remoteBranches = await git.listBranches({dir: this.projectDir, remote: 'origin'});
         console.log('remote branches');
         console.log(remoteBranches);
     }
 
     async initGit(component: IComponentInterface): Promise<any[]> {
-        this._dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
+        this.projectDir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
         const gitRepo = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
         const fs = await this._filesService.init();
         this._loadingService.setState({
@@ -126,23 +126,23 @@ export class GitService {
         git.plugins.set('fs', fs);
         let exist;
         try {
-            exist = await this._filesService.fs.exists(this._dir);
+            exist = await this._filesService.fs.exists(this.projectDir);
         } catch (e) {
             exist = true;
         }
         if (!exist) {
-            await this._filesService.fs.mkdir(this._dir);
+            await this._filesService.fs.mkdir(this.projectDir);
             await git.clone({
                 oauth2format: 'gitlab',
                 token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
-                dir: this._dir,
+                dir: this.projectDir,
                 url: gitRepo,
                 ref: component.repo.gitMidea.branch,
                 singleBranch: true,
                 depth: 5
             });
         }
-        const files = await git.listFiles({dir: this._dir});
-        return GetFilesTreeMethod(files, this._dir);
+        const files = await git.listFiles({dir: this.projectDir});
+        return GetFilesTreeMethod(files, this.projectDir);
     }
 }
