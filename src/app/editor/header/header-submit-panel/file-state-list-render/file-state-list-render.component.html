@@ -1,0 +1,9 @@
+<ul class="ui-grid ui-grid-small ui-child-width-1-2"
+    *ngIf="list.length; else empty">
+    <li *ngFor="let file of list">
+        <span>{{file}}</span>
+    </li>
+</ul>
+<ng-template #empty>
+    <p class="ui-text-center">文件列表为空...</p>
+</ng-template>

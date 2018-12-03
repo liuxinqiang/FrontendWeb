@@ -98,7 +98,25 @@ export class EditorsManagerService {
                 })
             )
             .subscribe(async file => {
-                const model = monaco.editor.getModel(monaco.Uri.parse(file.url));
+                this._loadingService.setState({
+                    state: LoadingState.loading,
+                    message: '正在读取 ' + file.file,
+                });
+                let model = monaco.editor.getModel(monaco.Uri.parse(file.url));
+                if (model === null) {
+                    const ignoredType = IgnoredEditorTypes.indexOf(file.ext) >= 0;
+                    const value = ignoredType ? file.path : await this._fileService.readTextFile(file.path);
+                    model = monaco.editor.createModel(
+                        value,
+                        EditorMapConfig[file.ext] || 'text/plain',
+                        monaco.Uri.parse(file.url)
+                    );
+                    if (!ignoredType) {
+                        model.onDidChangeContent(async () => {
+                            await this._fileService.writeTextFile(file.path, model.getValue());
+                        });
+                    }
+                }
                 if (!this.editor) {
                     this.editor = monaco.editor.create(this._container, {
                         model: model,
@@ -109,6 +127,10 @@ export class EditorsManagerService {
                 } else {
                     this.editor.setModel(model);
                 }
+                this._loadingService.setState({
+                    state: LoadingState.success,
+                    message: '读取成功',
+                });
             });
     }
 
@@ -120,10 +142,11 @@ export class EditorsManagerService {
 
     init(editorContainer: HTMLDivElement) {
         this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '设置编辑器',
+            state: LoadingState.success,
+            message: '设置完成',
         });
         this._container = editorContainer;
-        this.setModelsBaseOnFiles();
+        this.setModelBaseOnActiveFile();
+        // this.setModelsBaseOnFiles();
     }
 }

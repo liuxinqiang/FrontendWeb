@@ -19,6 +19,8 @@ import { MainEditorComponent } from './main-editor/main-editor.component';
 import {EditorsManagerService} from './services/editors-manager.service';
 import {LoadingService} from './services/loading.service';
 import {ComponentService} from './services/component.service';
+import { HeaderSubmitPanelComponent } from './header/header-submit-panel/header-submit-panel.component';
+import { FileStateListRenderComponent } from './header/header-submit-panel/file-state-list-render/file-state-list-render.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +35,8 @@ import {ComponentService} from './services/component.service';
         DeployPanelComponent,
         FilesListRenderComponent,
         MainEditorComponent,
+        HeaderSubmitPanelComponent,
+        FileStateListRenderComponent,
     ],
     imports: [
         CommonModule,

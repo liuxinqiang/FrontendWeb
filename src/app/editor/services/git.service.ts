@@ -8,10 +8,12 @@ import {IComponentInterface} from '../../components/interfaces/component.interfa
 import {BehaviorSubject} from 'rxjs';
 import {GetFilesTreeMethod} from '../methods/files-tree.method';
 
+let calcStatusComplete = false;
+
 interface GitStatus {
-    deleted: string[];
     unStaged: string[];
     modified: string[];
+    deleted: string[];
 }
 
 @Injectable()
@@ -55,7 +57,20 @@ export class GitService {
         return value.unStaged.length || value.modified.length;
     }
 
+    public get statusTotalArray(): [Number, Number, Number] {
+        const value = this._status.getValue();
+        return [
+            value.unStaged.length,
+            value.modified.length,
+            value.deleted.length,
+        ];
+    }
+
     async calcStatus() {
+        if (1 > 0) {
+            return;
+        }
+        calcStatusComplete = false;
         const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
         const status = await git.statusMatrix({
             dir: this._dir
@@ -69,10 +84,13 @@ export class GitService {
                 .map(row => row[FILE]),
 
         });
+        calcStatusComplete = true;
         if (!this._calcStatusTimer) {
             this._calcStatusTimer = setInterval(() => {
-                this.calcStatus().then();
-            }, 1000);
+                if (calcStatusComplete) {
+                    this.calcStatus().then();
+                }
+            }, 2000);
         }
     }
 
@@ -121,7 +139,7 @@ export class GitService {
                 url: gitRepo,
                 ref: component.repo.gitMidea.branch,
                 singleBranch: true,
-                depth: 20
+                depth: 5
             });
         }
         const files = await git.listFiles({dir: this._dir});

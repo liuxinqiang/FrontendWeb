@@ -3,7 +3,7 @@
         <div class="ui-width-expand">
             <div class="ui-inline ui-margin-small-left ui-margin-small-right"
                  *ngIf="componentService.componentInfo">
-                <a>
+                <a class="header-text">
                     <span class="text-icon-fix"
                           ui-icon="icon:home"></span>
                     {{componentService.componentInfo.name}}
@@ -16,7 +16,7 @@
             </div>
             <ng-container *ngIf="!editorManagerService.readOnly">
                 <div class="ui-inline ui-margin-small-left ui-margin-small-right">
-                    <a>
+                    <a class="header-text">
                         <span class="text-icon-fix"
                               ui-icon="icon:git-branch"></span>
                         master
@@ -28,9 +28,10 @@
                     </div>
                 </div>
                 <div class="ui-inline ui-margin-small-left ui-margin-small-right">
-                    <a [ngClass]="{
-                        'ui-active': gitService.statusTotal
-                    }">
+                    <a class="header-text"
+                       [ngClass]="{
+                            'ui-active': gitService.statusTotal
+                       }">
                         <span class="text-icon-fix"
                               ui-icon="icon:cloud-upload">
                         </span>
@@ -42,13 +43,13 @@
                         </span>
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">
-                        <div class="ui-card ui-card-body ui-card-default">
-                            {{gitService.status | json}}
+                        <div class="ui-card ui-card-body ui-card-small ui-card-default">
+                            <app-header-submit-panel></app-header-submit-panel>
                         </div>
                     </div>
                 </div>
                 <div class="ui-inline ui-margin-small-left ui-margin-small-right">
-                    <a>
+                    <a class="header-text">
                         <span class="text-icon-fix"
                               ui-icon="icon:cloud-download">
                         </span>
@@ -66,14 +67,14 @@
             <a ui-tooltip="全屏"
                *ngIf="!fullScreenMode;else disableFullScreen"
                (click)="fullScreen()"
-               class=" ui-margin-small-right">
+               class="header-text ui-margin-small-right">
                 <span ui-icon="icon:expand"
                       class="text-icon-fix"></span>
             </a>
             <ng-template #disableFullScreen>
                 <a ui-tooltip="退出全屏"
                    (click)="exitFullScreen()"
-                   class=" ui-margin-small-right">
+                   class="header-text ui-margin-small-right">
                 <span ui-icon="icon:shrink"
                       class="text-icon-fix">
                 </span>
@@ -81,7 +82,7 @@
             </ng-template>
             <a [routerLink]="backUrl"
                ui-tooltip="返回"
-               class=" ui-margin-small-right">
+               class="header-text ui-margin-small-right">
                 <span ui-icon="icon:sign-out"
                       class="text-icon-fix"></span>
             </a>

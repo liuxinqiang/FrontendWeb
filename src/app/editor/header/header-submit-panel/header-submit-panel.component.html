@@ -1,0 +1,47 @@
+<ul ui-tab class="ui-child-width-expand submit-tab ui-margin-remove">
+    <li>
+        <a>
+            暂存区
+            <sup *ngIf="gitService.statusTotalArray[0]">
+                {{gitService.statusTotalArray[0]}}
+            </sup>
+        </a>
+    </li>
+    <li>
+        <a>
+            待提交
+            <sup *ngIf="gitService.statusTotalArray[1]">
+                {{gitService.statusTotalArray[1]}}
+            </sup>
+        </a>
+    </li>
+    <li>
+        <a>
+            已删除
+            <sup *ngIf="gitService.statusTotalArray[2]">
+                {{gitService.statusTotalArray[2]}}
+            </sup>
+        </a>
+    </li>
+</ul>
+
+<ul class="ui-switcher ui-margin">
+    <li>
+        <app-file-state-list-render
+                [list]="gitService.status.unStaged">
+        </app-file-state-list-render>
+    </li>
+    <li>
+        <app-file-state-list-render
+                [list]="gitService.status.modified">
+        </app-file-state-list-render>
+    </li>
+    <li>
+        <app-file-state-list-render
+                [list]="gitService.status.deleted">
+        </app-file-state-list-render>
+    </li>
+</ul>
+<a class="ui-button ui-button-editor ui-button-small ui-width-1-1">
+    提交
+</a>
