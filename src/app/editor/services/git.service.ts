@@ -9,34 +9,71 @@ import {BehaviorSubject} from 'rxjs';
 import {GetFilesTreeMethod} from '../methods/files-tree.method';
 
 interface GitStatus {
-    unstaged: number;
-    modified: number;
+    deleted: string[];
+    unStaged: string[];
+    modified: string[];
 }
 
 @Injectable()
 export class GitService {
 
-    private _status: BehaviorSubject<any>;
+    constructor(
+        private _filesService: FilesService,
+        private _authService: AuthService,
+        private _loadingService: LoadingService
+    ) {
+        this._status = new BehaviorSubject({
+            deleted: [],
+            unStaged: [],
+            modified: [],
+        });
+    }
+
+    private _status: BehaviorSubject<GitStatus>;
 
     private _dir: string;
 
-    async getStatus() {
-        console.time('status');
+    private _calcStatusTimer;
+
+    public clear() {
+        this._status.next({
+            deleted: [],
+            unStaged: [],
+            modified: [],
+        });
+        if (this._calcStatusTimer) {
+            clearInterval(this._calcStatusTimer);
+        }
+    }
+
+    public get status() {
+        return this._status.getValue();
+    }
+
+    public get statusTotal(): Number {
+        const value = this._status.getValue();
+        return value.unStaged.length || value.modified.length;
+    }
+
+    async calcStatus() {
         const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
-        console.log('./' + this._dir + '/.git');
         const status = await git.statusMatrix({
             dir: this._dir
         });
-        console.log('deleted...');
-        console.log(status.filter(row => row[WORKDIR] === 0)
-            .map(row => row[FILE]));
-        console.log('unstaged...');
-        console.log(status.filter(row => row[WORKDIR] !== row[STAGE])
-            .map(row => row[FILE]));
-        console.log('modified');
-        console.log(status.filter(row => row[HEAD] !== row[WORKDIR])
-            .map(row => row[FILE]));
-        console.timeEnd('status');
+        this._status.next({
+            deleted: status.filter(row => row[WORKDIR] === 0)
+                .map(row => row[FILE]),
+            unStaged: status.filter(row => row[WORKDIR] !== row[STAGE])
+                .map(row => row[FILE]),
+            modified: status.filter(row => row[HEAD] !== row[WORKDIR])
+                .map(row => row[FILE]),
+
+        });
+        if (!this._calcStatusTimer) {
+            this._calcStatusTimer = setInterval(() => {
+                this.calcStatus().then();
+            }, 1000);
+        }
     }
 
     async getBranches() {
@@ -58,13 +95,6 @@ export class GitService {
         const remoteBranches = await git.listBranches({dir: this._dir, remote: 'origin'});
         console.log('remote branches');
         console.log(remoteBranches);
-    }
-
-    constructor(
-        private _filesService: FilesService,
-        private _authService: AuthService,
-        private _loadingService: LoadingService
-    ) {
     }
 
     async initGit(component: IComponentInterface): Promise<any[]> {

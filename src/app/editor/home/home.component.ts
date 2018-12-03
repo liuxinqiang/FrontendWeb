@@ -75,7 +75,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     loadCompleteHook() {
         if (this.loadedCount === 2) {
             this._editorsManagerService.init(this._mainEditor);
+            this.afterLoaded();
         }
+    }
+
+    afterLoaded() {
+        this._gitService.calcStatus().then();
     }
 
     mainEditorLoaded(editor) {
@@ -113,6 +118,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._filesManagerService.clear();
         this._editorsManagerService.clear();
+        this._gitService.clear();
         if (this._interval) {
             clearInterval(this._interval);
         }

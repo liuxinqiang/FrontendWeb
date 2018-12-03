@@ -1,9 +1,9 @@
 <header class="ui-container-expand">
     <div class="ui-grid">
         <div class="ui-width-expand">
-            <div class="ui-inline ui-margin-small-left"
-                *ngIf="componentService.componentInfo">
-                <a class="ui-margin-small-left">
+            <div class="ui-inline ui-margin-small-left ui-margin-small-right"
+                 *ngIf="componentService.componentInfo">
+                <a>
                     <span class="text-icon-fix"
                           ui-icon="icon:home"></span>
                     {{componentService.componentInfo.name}}
@@ -15,8 +15,8 @@
                 </div>
             </div>
             <ng-container *ngIf="!editorManagerService.readOnly">
-                <div class="ui-inline ui-margin-small-left">
-                    <a class="ui-margin-small-left">
+                <div class="ui-inline ui-margin-small-left ui-margin-small-right">
+                    <a>
                         <span class="text-icon-fix"
                               ui-icon="icon:git-branch"></span>
                         master
@@ -27,14 +27,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-inline ui-margin-small-left">
-                    <a class="ui-margin-small-left with-notify">
+                <div class="ui-inline ui-margin-small-left ui-margin-small-right">
+                    <a [ngClass]="{
+                        'ui-active': gitService.statusTotal
+                    }">
                         <span class="text-icon-fix"
-                              ui-icon="icon:server"></span>
-                        同步
-                        <span class="ui-badge ui-position-top-right">
-                            9
+                              ui-icon="icon:cloud-upload">
                         </span>
+                        提交
+                        <span *ngIf="gitService.statusTotal"
+                              @counter
+                              class="ui-badge ui-position-top-right">
+                            {{gitService.statusTotal}}
+                        </span>
+                    </a>
+                    <div [attr.ui-drop]="headerDropConfig">
+                        <div class="ui-card ui-card-body ui-card-default">
+                            {{gitService.status | json}}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-inline ui-margin-small-left ui-margin-small-right">
+                    <a>
+                        <span class="text-icon-fix"
+                              ui-icon="icon:cloud-download">
+                        </span>
+                        更新
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">
                         <div class="ui-card ui-card-body ui-card-default">
