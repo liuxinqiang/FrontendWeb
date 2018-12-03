@@ -8,6 +8,7 @@ import {EditorsManagerService} from '../services/editors-manager.service';
 import {ILoading, LoadingService, LoadingState} from '../services/loading.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ComponentService} from '../services/component.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -37,7 +38,9 @@ import {ComponentService} from '../services/component.service';
 export class HomeComponent implements OnInit, OnDestroy {
     query: IEditorQuery;
 
-    loading: ILoading;
+    public loading: ILoading;
+
+    private _loadingSubscription: Subscription;
 
     private _interval;
 
@@ -87,7 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             const url = decodeURIComponent(data.url);
             this._editorsManagerService.setReadOnly(!url.includes('/my-components/'));
         });
-        this._loadingService.listener$.subscribe(data => {
+        this._loadingSubscription = this._loadingService.listener$.subscribe(data => {
             this.loading = data;
             this._ref.detectChanges();
         });
@@ -112,6 +115,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this._editorsManagerService.clear();
         if (this._interval) {
             clearInterval(this._interval);
+        }
+        if (this._loadingSubscription) {
+            this._loadingSubscription.unsubscribe();
         }
     }
 }
