@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GitService} from '../../services/git.service';
-import {GitStatus} from '../../interfaces/git.interface';
+import {GitStatus} from '../../models/git.model';
 import {Subscription} from 'rxjs';
 
 @Component({

@@ -11,7 +11,7 @@ import {GitMideaService} from 'app/common/services/git-midea.service';
 import {LocalStorageService} from 'app/common/services/local-storage.service';
 import {DirExistsMethod} from '../methods/dir-exists.method';
 import {ForceDeleteForlder} from '../methods/rm-rf.method';
-import {GitStatus} from '../interfaces/git.interface';
+import {GitStatus} from '../models/git.model';
 
 @Injectable()
 export class GitService {
