@@ -6,6 +6,7 @@ import {EditorMapConfig, IgnoredEditorTypes} from '../editor.config';
 import {Subscription} from 'rxjs';
 import {ITreeNode} from '../interfaces/panel.interface';
 import {LoadingService, LoadingState} from './loading.service';
+import {GitService} from './git.service';
 
 function getFlatFiles(files: ITreeNode[]) {
     const result = [];
@@ -36,6 +37,7 @@ export class EditorsManagerService {
         private _filesManagerService: FilesManagerService,
         private _fileService: FilesService,
         private _loadingService: LoadingService,
+        private _gitService: GitService,
     ) {
     }
 
@@ -114,6 +116,7 @@ export class EditorsManagerService {
                     if (!ignoredType) {
                         model.onDidChangeContent(async () => {
                             await this._fileService.writeTextFile(file.path, model.getValue());
+                            await this._gitService.reCalcFileStatus(file.path);
                         });
                     }
                 }

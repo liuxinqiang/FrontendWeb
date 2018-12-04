@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {FilesManagerService} from '../../../services/files-manager.service';
 
 @Component({
     selector: 'app-file-state-list-render',
@@ -7,8 +8,10 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class FileStateListRenderComponent implements OnInit {
     @Input() list: string[] = [];
+    @Input() dir = '';
+    @Input() emptyMsg = '文件列表为空...';
 
-    constructor() {
+    constructor(public filesManagerService: FilesManagerService) {
     }
 
     ngOnInit() {

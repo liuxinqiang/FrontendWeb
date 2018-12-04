@@ -1,9 +1,11 @@
-<ul class="ui-grid ui-grid-small ui-child-width-1-2"
+<ul class="ui-list"
     *ngIf="list.length; else empty">
     <li *ngFor="let file of list">
-        <span>{{file}}</span>
+        <a (click)="filesManagerService.setActiveFile(file)">
+            {{file.substr(dir.length + 1)}}
+        </a>
     </li>
 </ul>
 <ng-template #empty>
-    <p class="ui-text-center">文件列表为空...</p>
+    <p class="ui-text-center">{{emptyMsg}}</p>
 </ng-template>

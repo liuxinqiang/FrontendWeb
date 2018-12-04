@@ -75,12 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     loadCompleteHook() {
         if (this.loadedCount === 2) {
             this._editorsManagerService.init(this._mainEditor);
-            this.afterLoaded();
         }
-    }
-
-    afterLoaded() {
-        this._gitService.calcStatus().then();
     }
 
     mainEditorLoaded(editor) {

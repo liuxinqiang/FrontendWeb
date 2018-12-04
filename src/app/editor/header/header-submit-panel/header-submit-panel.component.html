@@ -15,33 +15,30 @@
             </sup>
         </a>
     </li>
+</ul>
+<ul class="ui-switcher ui-margin ui-margin-remove-bottom">
     <li>
-        <a>
-            已删除
-            <sup *ngIf="gitService.statusTotalArray[2]">
-                {{gitService.statusTotalArray[2]}}
-            </sup>
+        <app-file-state-list-render
+                emptyMsg="暂存区为空"
+                [dir]="gitService.projectDir"
+                [list]="gitService.status.unStaged">
+        </app-file-state-list-render>
+        <a *ngIf="gitService.status.unStaged.length"
+           class="ui-button ui-button-editor ui-button-small ui-width-1-1"
+           (click)="gitService.add()">
+            保存暂存区
+        </a>
+    </li>
+    <li>
+        <app-file-state-list-render
+                emptyMsg="暂无待提交内容"
+                [dir]="gitService.projectDir"
+                [list]="gitService.status.staged">
+        </app-file-state-list-render>
+        <a *ngIf="gitService.status.staged.length"
+           class="ui-button ui-button-editor ui-button-small ui-width-1-1"
+           (click)="gitService.commit()">
+            提交 && 推送
         </a>
     </li>
 </ul>
-
-<ul class="ui-switcher ui-margin">
-    <li>
-        <app-file-state-list-render
-                [list]="gitService.status.unStaged">
-        </app-file-state-list-render>
-    </li>
-    <li>
-        <app-file-state-list-render
-                [list]="gitService.status.modified">
-        </app-file-state-list-render>
-    </li>
-    <li>
-        <app-file-state-list-render
-                [list]="gitService.status.deleted">
-        </app-file-state-list-render>
-    </li>
-</ul>
-<a class="ui-button ui-button-editor ui-button-small ui-width-1-1">
-    提交
-</a>

@@ -31,8 +31,8 @@ export class GitMideaService {
         return this._http.get(this.urlPrefix + '/users');
     }
 
-    user() {
-        return this._http.get(this.urlPrefix + '/user');
+    user(): Promise<any> {
+        return this._http.get(this.urlPrefix + '/user').toPromise();
     }
 
     groups() {

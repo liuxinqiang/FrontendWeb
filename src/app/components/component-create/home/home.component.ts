@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
                 console.log(data);
             });
         this._gitMideaService.user()
-            .subscribe(data => {
+            .then(data => {
                 console.log('users');
                 console.log(data);
             });

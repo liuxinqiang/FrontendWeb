@@ -7,13 +7,11 @@ import {environment} from 'environments/environment';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
 import {BehaviorSubject} from 'rxjs';
 import {GetFilesTreeMethod} from '../methods/files-tree.method';
-
-let calcStatusComplete = false;
+import {GitMideaService} from '../../common/services/git-midea.service';
 
 interface GitStatus {
     unStaged: string[];
-    modified: string[];
-    deleted: string[];
+    staged: string[];
 }
 
 @Injectable()
@@ -22,12 +20,12 @@ export class GitService {
     constructor(
         private _filesService: FilesService,
         private _authService: AuthService,
-        private _loadingService: LoadingService
+        private _loadingService: LoadingService,
+        private _gitMideaService: GitMideaService,
     ) {
         this._status = new BehaviorSubject({
-            deleted: [],
+            staged: [],
             unStaged: [],
-            modified: [],
         });
     }
 
@@ -35,63 +33,135 @@ export class GitService {
 
     public projectDir: string;
 
-    private _calcStatusTimer;
-
-    public clear() {
+    private _initStatus() {
         this._status.next({
-            deleted: [],
+            staged: [],
             unStaged: [],
-            modified: [],
         });
-        if (this._calcStatusTimer) {
-            clearInterval(this._calcStatusTimer);
+    }
+
+    public get status(): GitStatus {
+        return this._status.getValue();
+    }
+
+    public async add() {
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '计算待保存文件',
+        });
+        const FILE = 0, WORKDIR = 2, STAGE = 3;
+        const status = await this._calcStatus();
+        const stagedFiles = status.filter(row => row[WORKDIR] !== row[STAGE])
+            .map(row => row[FILE]);
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '共需保存' + stagedFiles.length + '个文件',
+        });
+        for (let i = 0; i < stagedFiles.length; i++) {
+            await git.add({ dir: this.projectDir, filepath: stagedFiles[i] });
+        }
+        this._initStatus();
+        await this._calcStatus();
+        this._loadingService.setState({
+            state: LoadingState.success,
+            message: '保存成功',
+        });
+    }
+
+    public async commit() {
+        const user: any = await this._gitMideaService.user();
+        const {name, email} = user;
+        const sha = await git.commit({
+            dir: this.projectDir,
+            author: {
+                name,
+                email,
+            },
+            message: '从浏览器开始的第一个提交'
+        });
+
+        const pushResponse = await git.push({
+            dir: this.projectDir,
+            remote: 'origin',
+            ref: 'master',
+            oauth2format: 'gitlab',
+            token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
+        });
+        console.log(pushResponse);
+
+        this._initStatus();
+        await this._calcStatus();
+    }
+
+    private _addUnStaged(filePath) {
+        const states = Object.assign({}, this.status);
+        if (states.unStaged.indexOf(filePath) === -1) {
+            states.unStaged.push(filePath);
+            this._status.next(states);
         }
     }
 
-    public get status() {
-        return this._status.getValue();
+    private _addStaged(filePath) {
+        const states = Object.assign({}, this.status);
+        if (states.staged.indexOf(filePath) === -1) {
+            states.staged.push(filePath);
+            this._status.next(states);
+        }
+    }
+
+    private _deleteUnStaged(filePath) {
+        const states = Object.assign({}, this.status);
+        const findPath = states.unStaged.indexOf(filePath);
+        if (findPath >= 0) {
+            states.unStaged.splice(findPath, 1);
+            this._status.next(states);
+        }
+    }
+
+    public async reCalcFileStatus(filepath: string): Promise<void> {
+        const pathExist = this.status.unStaged.filter(path => path === filepath)[0];
+        const state = await git.status({
+            dir: this.projectDir,
+            filepath: filepath.substr(this.projectDir.length + 1)
+        });
+        if (pathExist && ['unmodified', '*unmodified'].indexOf(state) >= 0) {
+            this._deleteUnStaged(filepath);
+        } else if (!pathExist && ['*modified', '*deleted', '*added'].indexOf(state) >= 0) {
+            this._addUnStaged(filepath);
+        }
+    }
+
+    public clear() {
+        this._initStatus();
     }
 
     public get statusTotal(): Number {
         const value = this._status.getValue();
-        return value.unStaged.length || value.modified.length;
+        return value.unStaged.length || value.staged.length;
     }
 
-    public get statusTotalArray(): [Number, Number, Number] {
+    public get statusTotalArray(): [Number, Number] {
         const value = this._status.getValue();
         return [
             value.unStaged.length,
-            value.modified.length,
-            value.deleted.length,
+            value.staged.length
         ];
     }
 
-    async calcStatus() {
-        if (1 > 0) {
-            return;
-        }
-        calcStatusComplete = false;
+    async _calcStatus() {
         const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
         const status = await git.statusMatrix({
             dir: this.projectDir
         });
-        this._status.next({
-            deleted: status.filter(row => row[WORKDIR] === 0)
-                .map(row => row[FILE]),
-            unStaged: status.filter(row => row[WORKDIR] !== row[STAGE])
-                .map(row => row[FILE]),
-            modified: status.filter(row => row[HEAD] !== row[WORKDIR])
-                .map(row => row[FILE]),
-
+        status.map(row => {
+            const filePath = this.projectDir + '/' + row[FILE];
+            if (row[WORKDIR] !== row[STAGE]) {
+                this._addUnStaged(filePath);
+            } else if (row[HEAD] !== row[WORKDIR]) {
+                this._addStaged(filePath);
+            }
         });
-        calcStatusComplete = true;
-        if (!this._calcStatusTimer) {
-            this._calcStatusTimer = setInterval(() => {
-                if (calcStatusComplete) {
-                    this.calcStatus().then();
-                }
-            }, 2000);
-        }
+        return status;
     }
 
     async getBranches() {
@@ -142,6 +212,8 @@ export class GitService {
                 depth: 5
             });
         }
+        // calc status
+        this._calcStatus().then();
         const files = await git.listFiles({dir: this.projectDir});
         return GetFilesTreeMethod(files, this.projectDir);
     }
