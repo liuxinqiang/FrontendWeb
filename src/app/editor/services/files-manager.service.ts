@@ -4,6 +4,9 @@ import {IActiveFilesStorage, ITreeNode} from '../interfaces/panel.interface';
 import {GitService} from './git.service';
 import {LocalStorageService} from 'app/common/services/local-storage.service';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
+import * as git from '../../../vendor/git';
+import {GetFilesTreeMethod} from '../methods/files-tree.method';
+import {ComponentService} from './component.service';
 
 @Injectable()
 export class FilesManagerService {
@@ -16,7 +19,8 @@ export class FilesManagerService {
 
     constructor(
         private _gitService: GitService,
-        private _localStorage: LocalStorageService
+        private _localStorage: LocalStorageService,
+        private _componentService: ComponentService,
     ) {
         this._filesSubject = new BehaviorSubject<ITreeNode[]>([]);
         this._activeFilesListSubject = new BehaviorSubject<ITreeNode[]>([]);
@@ -97,8 +101,10 @@ export class FilesManagerService {
         return this._activeFilesListSubject.value;
     }
 
-    async init(component: IComponentInterface) {
-        const newFiles = await this._gitService.initGit(component);
+    async init() {
+        const component: IComponentInterface = this._componentService.component;
+        const files = await git.listFiles({dir: this._gitService.projectDir});
+        const newFiles = GetFilesTreeMethod(files, this._gitService.projectDir);
         const activeFiles: IActiveFilesStorage = this._localStorage.getItem('ActiveFiles');
         if (activeFiles && activeFiles['component_' + component.componentName]) {
             const activeState = activeFiles['component_' + component.componentName];

@@ -1,7 +1,8 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {GitService} from '../../services/git.service';
 import {GitStatus} from '../../models/git.model';
 import {Subscription} from 'rxjs';
+import {GitActionService} from '../../services/git-action.service';
+import {GitService} from '../../services/git.service';
 
 @Component({
     selector: 'app-header-submit-panel',
@@ -10,11 +11,14 @@ import {Subscription} from 'rxjs';
 })
 export class HeaderSubmitPanelComponent implements OnInit, OnDestroy {
 
+    message: string;
+
     private _switcherSubscription: Subscription;
 
     @ViewChild('switcher') switcherRef: ElementRef;
 
     constructor(
+        public gitActionService: GitActionService,
         public gitService: GitService,
     ) {
     }
@@ -33,7 +37,7 @@ export class HeaderSubmitPanelComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this._switcherSubscription = this.gitService.status$.subscribe(newState => {
+        this._switcherSubscription = this.gitActionService.status$.subscribe(newState => {
             this.autoSetSwitcher(newState);
         });
     }

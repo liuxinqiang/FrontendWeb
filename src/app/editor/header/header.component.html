@@ -30,16 +30,16 @@
                 <div class="ui-inline ui-margin-small-left ui-margin-small-right">
                     <a class="header-text"
                        [ngClass]="{
-                            'ui-active': gitService.statusTotal
+                            'ui-active': gitActionService.statusTotal
                        }">
                         <span class="text-icon-fix"
                               ui-icon="icon:cloud-upload">
                         </span>
                         提交
-                        <span *ngIf="gitService.statusTotal"
+                        <span *ngIf="gitActionService.statusTotal"
                               @counter
                               class="ui-badge ui-position-top-right">
-                            {{gitService.statusTotal}}
+                            {{gitActionService.statusTotal}}
                         </span>
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">

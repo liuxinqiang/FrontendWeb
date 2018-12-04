@@ -9,6 +9,8 @@ import {ILoading, LoadingService, LoadingState} from '../services/loading.servic
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ComponentService} from '../services/component.service';
 import {Subscription} from 'rxjs';
+import {GitActionService} from '../services/git-action.service';
+import {FileService} from '../services/file.service';
 
 @Component({
     selector: 'app-home',
@@ -42,15 +44,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     private _loadingSubscription: Subscription;
 
-    private _interval;
-
     private loadedCount = 0;
     private _mainEditor: any;
 
     constructor(
         public editorPanelService: EditorPanelService,
         private _loadingService: LoadingService,
+        private _fileService: FileService,
         private _gitService: GitService,
+        private _gitActionService: GitActionService,
         private _editorsManagerService: EditorsManagerService,
         private _filesManagerService: FilesManagerService,
         private _componentService: ComponentService,
@@ -95,8 +97,17 @@ export class HomeComponent implements OnInit, OnDestroy {
             this._ref.detectChanges();
         });
         this._componentService.init(this.query)
-            .then((component) => {
-                return this._filesManagerService.init(component);
+            .then(() => {
+                return this._fileService.init();
+            })
+            .then(() => {
+                return this._gitService.init();
+            })
+            .then(() => {
+                return this._gitActionService.init();
+            })
+            .then(() => {
+                return this._filesManagerService.init();
             })
             .then(() => {
                 this.loadedCount++;
@@ -113,10 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._filesManagerService.clear();
         this._editorsManagerService.clear();
-        this._gitService.clear();
-        if (this._interval) {
-            clearInterval(this._interval);
-        }
+        this._gitActionService.clear();
         if (this._loadingSubscription) {
             this._loadingSubscription.unsubscribe();
         }

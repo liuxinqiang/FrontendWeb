@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {FilesManagerService} from './files-manager.service';
-import {FilesService} from './files.service';
+import {FileService} from './file.service';
 import {filter} from 'rxjs/operators';
 import {EditorMapConfig, IgnoredEditorTypes} from '../editor.config';
 import {Subscription} from 'rxjs';
 import {ITreeNode} from '../interfaces/panel.interface';
 import {LoadingService, LoadingState} from './loading.service';
 import {GitService} from './git.service';
+import {GitActionService} from './git-action.service';
 
 function getFlatFiles(files: ITreeNode[]) {
     const result = [];
@@ -35,9 +36,10 @@ export class EditorsManagerService {
 
     constructor(
         private _filesManagerService: FilesManagerService,
-        private _fileService: FilesService,
+        private _fileService: FileService,
         private _loadingService: LoadingService,
         private _gitService: GitService,
+        private _gitActionService: GitActionService,
     ) {
     }
 
@@ -116,7 +118,7 @@ export class EditorsManagerService {
                     if (!ignoredType) {
                         model.onDidChangeContent(async () => {
                             await this._fileService.writeTextFile(file.path, model.getValue());
-                            await this._gitService.reCalcFileStatus(file.path);
+                            await this._gitActionService.reCalcFileStatus(file.path);
                         });
                     }
                 }

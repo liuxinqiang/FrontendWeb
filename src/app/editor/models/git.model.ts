@@ -3,7 +3,6 @@ export class GitStatus {
         this.unStaged = unStaged;
         this.staged = staged;
     }
-
     unStaged: string[];
     staged: string[];
 }

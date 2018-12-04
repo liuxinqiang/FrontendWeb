@@ -8,35 +8,40 @@ import {LoadingService, LoadingState} from './loading.service';
 @Injectable()
 export class ComponentService {
 
-    private _componentInfoSubject: BehaviorSubject<IComponentInterface | null>;
-    private _componentInfo$: Observable<IComponentInterface | null>;
+    private _componentSubject: BehaviorSubject<IComponentInterface | null>;
+    public component$: Observable<IComponentInterface | null>;
 
-    public get componentInfo(): IComponentInterface | null {
-        return this._componentInfoSubject.getValue();
+    public get component(): IComponentInterface | null {
+        return this._componentSubject.getValue();
     }
 
     constructor(
         private _componentsService: ComponentsService,
         private _loadingService: LoadingService,
     ) {
-        this._componentInfoSubject = new BehaviorSubject(null);
-        this._componentInfo$ = this._componentInfoSubject.asObservable();
+        this._componentSubject = new BehaviorSubject(null);
+        this.component$ = this._componentSubject.asObservable();
     }
 
-    async init(query: IEditorQuery) {
+    async init(query: IEditorQuery): Promise<void> {
         this._loadingService.setState({
             state: LoadingState.loading,
             message: '获取组件信息',
         });
-        if (query.type === 'component' && query.name) {
-            return this._componentsService.getComponent(query.name)
-                .toPromise()
-                .then(component => {
-                    this._componentInfoSubject.next(component);
-                    return component;
-                });
-        } else {
-            return Promise.reject('Url参数错误');
-        }
+        return new Promise<void>((resolve, reject) => {
+            if (query.type === 'component' && query.name) {
+                this._componentsService.getComponent(query.name)
+                    .toPromise()
+                    .then(component => {
+                        this._componentSubject.next(component);
+                        resolve();
+                    })
+                    .catch(e => {
+                        reject('获取组件信息出错');
+                    });
+            } else {
+                 reject('Url参数错误');
+            }
+        });
     }
 }

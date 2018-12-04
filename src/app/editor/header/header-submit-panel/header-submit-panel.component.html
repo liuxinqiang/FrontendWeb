@@ -2,16 +2,24 @@
     <li>
         <a>
             暂存区
-            <sup *ngIf="gitService.statusTotalArray[0]">
-                {{gitService.statusTotalArray[0]}}
+            <sup *ngIf="gitActionService.statusTotalArray[0]">
+                {{gitActionService.statusTotalArray[0]}}
             </sup>
         </a>
     </li>
     <li>
         <a>
             待提交
-            <sup *ngIf="gitService.statusTotalArray[1]">
-                {{gitService.statusTotalArray[1]}}
+            <sup *ngIf="gitActionService.statusTotalArray[1]">
+                {{gitActionService.statusTotalArray[1]}}
+            </sup>
+        </a>
+    </li>
+    <li>
+        <a>
+            待推送
+            <sup>
+                1
             </sup>
         </a>
     </li>
@@ -21,11 +29,11 @@
         <app-file-state-list-render
                 emptyMsg="暂存区为空"
                 [dir]="gitService.projectDir"
-                [list]="gitService.status.unStaged">
+                [list]="gitActionService.status.unStaged">
         </app-file-state-list-render>
-        <a *ngIf="gitService.status.unStaged.length"
-           class="ui-button ui-button-editor ui-button-small ui-width-1-1"
-           (click)="gitService.add()">
+        <a *ngIf="gitActionService.status.unStaged.length"
+           class="ui-button ui-button-editor ui-button-small ui-display-block"
+           (click)="gitActionService.add()">
             保存暂存区
         </a>
     </li>
@@ -33,27 +41,30 @@
         <app-file-state-list-render
                 emptyMsg="暂无待提交内容"
                 [dir]="gitService.projectDir"
-                [list]="gitService.status.staged">
+                [list]="gitActionService.status.staged">
         </app-file-state-list-render>
-        <div *ngIf="gitService.status.staged.length"
-             class="ui-grid ui-grid-small">
-            <div class="ui-width-1-1 ui-margin-small-bottom">
-                <textarea rows="2"
-                          placeholder="日志信息..."
-                          class="ui-textarea"></textarea>
-            </div>
-            <div class="ui-width-1-2">
-                <a class="ui-button ui-button-editor ui-button-small ui-width-1-1"
-                   (click)="gitService.commit()">
-                    提交
-                </a>
-            </div>
-            <div class="ui-width-1-2">
-                <a class="ui-button ui-button-editor ui-button-small ui-width-1-1"
-                   (click)="gitService.commit()">
-                    提交并推送
-                </a>
-            </div>
-        </div>
+        <ng-container *ngIf="gitActionService.status.staged.length">
+           <textarea rows="2"
+                     [(ngModel)]="message"
+                     placeholder="请填写提交日志..."
+                     class="ui-textarea ui-display-block ui-margin-small-bottom"></textarea>
+            <a class="ui-button ui-button-editor ui-button-small ui-display-block"
+               [ngClass]="{
+                    'ui-disabled': !message
+                   }"
+               (click)="gitActionService.commit(message)">
+                提交
+            </a>
+        </ng-container>
+    </li>
+    <li>
+        推送数据
+        <a class="ui-button ui-button-editor ui-button-small ui-display-block"
+           [ngClass]="{
+                    'ui-disabled': !message
+                   }"
+           (click)="gitActionService.push()">
+            推送
+        </a>
     </li>
 </ul>

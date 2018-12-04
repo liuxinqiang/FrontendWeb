@@ -4,6 +4,7 @@ import {EditorsManagerService} from '../services/editors-manager.service';
 import {ComponentService} from '../services/component.service';
 import {GitService} from '../services/git.service';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {GitActionService} from '../services/git-action.service';
 
 @Component({
     selector: 'app-editor-header',
@@ -40,7 +41,7 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
         private _domService: DomService,
         public editorManagerService: EditorsManagerService,
         public componentService: ComponentService,
-        public gitService: GitService,
+        public gitActionService: GitActionService,
     ) {
     }
 

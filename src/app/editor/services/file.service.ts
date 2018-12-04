@@ -4,7 +4,7 @@ import * as pify from 'vendor/pify.js';
 import {LoadingService, LoadingState} from './loading.service';
 
 @Injectable()
-export class FilesService {
+export class FileService {
 
     constructor(
         private _loadingService: LoadingService,
@@ -30,7 +30,7 @@ export class FilesService {
                 }
                 const fs = FS.BFSRequire('fs');
                 this.fs = pify(fs);
-                resolve(fs);
+                resolve();
             });
         });
     }
