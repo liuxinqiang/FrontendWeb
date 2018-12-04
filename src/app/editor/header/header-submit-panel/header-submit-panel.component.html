@@ -1,4 +1,4 @@
-<ul ui-tab class="ui-child-width-expand submit-tab ui-margin-remove">
+<ul ui-tab #switcher class="ui-child-width-expand submit-tab ui-margin-remove">
     <li>
         <a>
             暂存区
@@ -35,10 +35,25 @@
                 [dir]="gitService.projectDir"
                 [list]="gitService.status.staged">
         </app-file-state-list-render>
-        <a *ngIf="gitService.status.staged.length"
-           class="ui-button ui-button-editor ui-button-small ui-width-1-1"
-           (click)="gitService.commit()">
-            提交 && 推送
-        </a>
+        <div *ngIf="gitService.status.staged.length"
+             class="ui-grid ui-grid-small">
+            <div class="ui-width-1-1 ui-margin-small-bottom">
+                <textarea rows="2"
+                          placeholder="日志信息..."
+                          class="ui-textarea"></textarea>
+            </div>
+            <div class="ui-width-1-2">
+                <a class="ui-button ui-button-editor ui-button-small ui-width-1-1"
+                   (click)="gitService.commit()">
+                    提交
+                </a>
+            </div>
+            <div class="ui-width-1-2">
+                <a class="ui-button ui-button-editor ui-button-small ui-width-1-1"
+                   (click)="gitService.commit()">
+                    提交并推送
+                </a>
+            </div>
+        </div>
     </li>
 </ul>

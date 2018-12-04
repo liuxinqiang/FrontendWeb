@@ -21,3 +21,15 @@ export interface IComponentInterface {
     versions: any[];
     repo: IComponentRepoInterface;
 }
+
+export class ComponentDetailStorage {
+    constructor(initComplete = false, openedFiles = [], currentActiveFile = '') {
+        this.initComplete = initComplete;
+        this.openedFiles = openedFiles;
+        this.currentActiveFile = currentActiveFile;
+    }
+
+    initComplete: boolean;
+    openedFiles: string[];
+    currentActiveFile: string;
+}

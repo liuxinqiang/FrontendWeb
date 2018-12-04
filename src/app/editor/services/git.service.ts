@@ -4,15 +4,14 @@ import {FilesService} from './files.service';
 import {LoadingService, LoadingState} from './loading.service';
 import {AuthService} from 'app/user/services/auth.service';
 import {environment} from 'environments/environment';
-import {IComponentInterface} from '../../components/interfaces/component.interface';
-import {BehaviorSubject} from 'rxjs';
+import {ComponentDetailStorage, IComponentInterface} from '../../components/interfaces/component.interface';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {GetFilesTreeMethod} from '../methods/files-tree.method';
-import {GitMideaService} from '../../common/services/git-midea.service';
-
-interface GitStatus {
-    unStaged: string[];
-    staged: string[];
-}
+import {GitMideaService} from 'app/common/services/git-midea.service';
+import {LocalStorageService} from 'app/common/services/local-storage.service';
+import {DirExistsMethod} from '../methods/dir-exists.method';
+import {ForceDeleteForlder} from '../methods/rm-rf.method';
+import {GitStatus} from '../interfaces/git.interface';
 
 @Injectable()
 export class GitService {
@@ -22,26 +21,29 @@ export class GitService {
         private _authService: AuthService,
         private _loadingService: LoadingService,
         private _gitMideaService: GitMideaService,
+        private _localStorage: LocalStorageService,
     ) {
-        this._status = new BehaviorSubject({
-            staged: [],
-            unStaged: [],
-        });
+        this._status = new BehaviorSubject(new GitStatus());
+        this.status$ = this._status.asObservable();
     }
 
     private _status: BehaviorSubject<GitStatus>;
 
+    public status$: Observable<GitStatus>;
+
     public projectDir: string;
 
-    private _initStatus() {
-        this._status.next({
-            staged: [],
-            unStaged: [],
-        });
-    }
+    public projectUrl: string;
 
     public get status(): GitStatus {
         return this._status.getValue();
+    }
+
+    public get authInfo(): object {
+        return {
+            oauth2format: 'gitlab',
+            token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
+        };
     }
 
     public async add() {
@@ -58,9 +60,9 @@ export class GitService {
             message: '共需保存' + stagedFiles.length + '个文件',
         });
         for (let i = 0; i < stagedFiles.length; i++) {
-            await git.add({ dir: this.projectDir, filepath: stagedFiles[i] });
+            await git.add({dir: this.projectDir, filepath: stagedFiles[i]});
         }
-        this._initStatus();
+        this._status.next(new GitStatus());
         await this._calcStatus();
         this._loadingService.setState({
             state: LoadingState.success,
@@ -84,12 +86,11 @@ export class GitService {
             dir: this.projectDir,
             remote: 'origin',
             ref: 'master',
-            oauth2format: 'gitlab',
-            token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
+            ...this.authInfo,
         });
         console.log(pushResponse);
 
-        this._initStatus();
+        this._status.next(new GitStatus());
         await this._calcStatus();
     }
 
@@ -132,7 +133,7 @@ export class GitService {
     }
 
     public clear() {
-        this._initStatus();
+        this._status.next(new GitStatus());
     }
 
     public get statusTotal(): Number {
@@ -187,31 +188,34 @@ export class GitService {
 
     async initGit(component: IComponentInterface): Promise<any[]> {
         this.projectDir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
-        const gitRepo = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
+        this.projectUrl = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
+        const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.projectDir)
+            || new ComponentDetailStorage();
+
         const fs = await this._filesService.init();
         this._loadingService.setState({
             state: LoadingState.loading,
             message: '设置代码仓库',
         });
         git.plugins.set('fs', fs);
-        let exist;
-        try {
-            exist = await this._filesService.fs.exists(this.projectDir);
-        } catch (e) {
-            exist = true;
+        let exist = await DirExistsMethod(this.projectDir, this._filesService.fs);
+        if (exist && !componentStorage.initComplete) {
+            await ForceDeleteForlder(this.projectDir, this._filesService.fs);
+            exist = false;
         }
         if (!exist) {
             await this._filesService.fs.mkdir(this.projectDir);
             await git.clone({
-                oauth2format: 'gitlab',
-                token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
+                ...this.authInfo,
                 dir: this.projectDir,
-                url: gitRepo,
+                url: this.projectUrl,
                 ref: component.repo.gitMidea.branch,
                 singleBranch: true,
                 depth: 5
             });
         }
+        componentStorage.initComplete = true;
+        this._localStorage.setItem(this.projectDir, componentStorage);
         // calc status
         this._calcStatus().then();
         const files = await git.listFiles({dir: this.projectDir});

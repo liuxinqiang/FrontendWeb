@@ -253,6 +253,16 @@ declare namespace TopUI {
 
     type Nestable = (element: string, options: NestableOptions) => any;
 
+    interface TabOptions {
+        group?: string;
+        animation?: string;
+        threshold?: string;
+        handleClass?: string;
+        dragCustomClass?: string;
+    }
+
+    type Tab = (element: string, options?: TabOptions) => any;
+
     interface SortableOptions {
         group?: string;
         animation?: string;
@@ -351,6 +361,7 @@ declare namespace TopUI {
     const notification: Notification;
     const search: Search;
     const nestable: Nestable;
+    const tab: Tab;
     const sortable: Sortable;
     const sticky: Sticky;
     const timepicker: Timepicker;
