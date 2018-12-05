@@ -158,12 +158,10 @@ export class GitActionService {
     }
 
     public async init() {
-        console.log(1);
         const allStatus = await statusMatrix({
             dir: this._gitService.dir,
             pattern: null,
         });
-        console.log(2);
         allStatus.map(row => {
             const filePath = this._gitService.dir + '/' + row[FILE];
             if (row[WORKDIR] !== row[STAGE]) {
