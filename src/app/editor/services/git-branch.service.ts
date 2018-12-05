@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import * as git from 'vendor/git.js';
+import {fetch, log} from 'vendor/git.js';
 import {GitService} from './git.service';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class GitBranchService {
     ) {}
 
     async getRemoteBranch() {
-        const info = await git.fetch({
+        const info = await fetch({
             ...this._gitService.authInfo,
             dir: this._gitService.dir,
             url: this._gitService.url,
@@ -18,14 +18,11 @@ export class GitBranchService {
             singleBranch: true,
             tags: true
         });
-        console.log('done');
-        console.log(info);
 
-        const commits = await git.log({
+        const commits = await log({
             dir: this._gitService.dir,
             depth: 10,
             ref: 'master'
         });
-        console.log(commits);
     }
 }

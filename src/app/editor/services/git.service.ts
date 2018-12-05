@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import * as git from 'vendor/git.js';
+import {clone, plugins} from 'vendor/git.js';
 import {FileService} from './file.service';
 import {LoadingService, LoadingState} from './loading.service';
 import {AuthService} from 'app/user/services/auth.service';
@@ -27,8 +27,6 @@ export class GitService {
 
     public url: string;
 
-    public branch: string;
-
     public get authInfo(): object {
         return {
             oauth2format: 'gitlab',
@@ -40,7 +38,6 @@ export class GitService {
         const component: IComponentInterface = this._componentService.component;
         this.dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
         this.url = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
-        this.branch = component.repo.gitMidea.branch;
         const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.dir)
             || new ComponentDetailStorage();
 
@@ -49,7 +46,7 @@ export class GitService {
             state: LoadingState.loading,
             message: '设置代码仓库',
         });
-        git.plugins.set('fs', fs);
+        plugins.set('fs', fs);
         let exist = await DirExistsMethod(this.dir, fs);
         if (exist && !componentStorage.initComplete) {
             await ForceDeleteForlder(this.dir, fs);
@@ -57,11 +54,11 @@ export class GitService {
         }
         if (!exist) {
             await fs.mkdir(this.dir);
-            await git.clone({
+            await clone({
                 ...this.authInfo,
                 dir: this.dir,
                 url: this.url,
-                ref: this.branch,
+                ref: component.repo.gitMidea.branch,
                 singleBranch: true,
                 depth: 5
             });

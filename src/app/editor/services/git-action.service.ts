@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {GitAsyncStatus, GitStatus} from '../models/git.model';
 import {LoadingService, LoadingState} from './loading.service';
-import * as git from '../../../vendor/git';
+import {add, commit, push, status, statusMatrix} from 'vendor/git';
 import {GitService} from './git.service';
 import {GitMideaService} from 'app/common/services/git-midea.service';
 
@@ -15,9 +15,9 @@ export class GitActionService {
 
     public status$: Observable<GitStatus>;
 
-    private _gitAsyncStatus: BehaviorSubject<GitAsyncStatus>;
+    private _asyncStatus: BehaviorSubject<GitAsyncStatus>;
 
-    public gitAsyncStatus$: Observable<GitAsyncStatus>;
+    public asyncStatus$: Observable<GitAsyncStatus>;
 
     constructor(
         private _loadingService: LoadingService,
@@ -26,10 +26,44 @@ export class GitActionService {
     ) {
         this._status = new BehaviorSubject(new GitStatus());
         this.status$ = this._status.asObservable();
+        this._asyncStatus = new BehaviorSubject(new GitAsyncStatus());
+        this.asyncStatus$ = this._asyncStatus.asObservable();
     }
 
     public get status(): GitStatus {
         return this._status.getValue();
+    }
+
+    public get pushStatusTotal(): Number {
+        const value = this._status.getValue();
+        return value.unStaged.length + value.staged.length + this.asyncStatus.toPush.length;
+    }
+
+    public get pullStatusTotal(): Number {
+        return this.asyncStatus.toPull.length;
+    }
+
+    public get statusTotalArray(): [Number, Number] {
+        const value = this._status.getValue();
+        return [
+            value.unStaged.length,
+            value.staged.length,
+        ];
+    }
+
+    public get asyncStatus(): GitAsyncStatus {
+        return this._asyncStatus.getValue();
+    }
+
+    public get asyncStatusCount(): { push: number; pull: number } {
+        return {
+            push: this.asyncStatus.toPush.length,
+            pull: this.asyncStatus.toPull.length,
+        };
+    }
+
+    public setAsyncStatus(newStatus: GitAsyncStatus) {
+        this._asyncStatus.next(newStatus);
     }
 
     public async add() {
@@ -37,15 +71,15 @@ export class GitActionService {
             state: LoadingState.loading,
             message: '计算待保存文件',
         });
-        const status = await this.init();
-        const stagedFiles = status.filter(row => row[WORKDIR] !== row[STAGE])
+        const allStatus = await this.init();
+        const stagedFiles = allStatus.filter(row => row[WORKDIR] !== row[STAGE])
             .map(row => row[FILE]);
         this._loadingService.setState({
             state: LoadingState.loading,
             message: '共需保存' + stagedFiles.length + '个文件',
         });
         for (let i = 0; i < stagedFiles.length; i++) {
-            await git.add({dir: this._gitService.dir, filepath: stagedFiles[i]});
+            await add({dir: this._gitService.dir, filepath: stagedFiles[i]});
         }
         this._status.next(new GitStatus());
         await this.init();
@@ -58,7 +92,7 @@ export class GitActionService {
     public async commit(message: string) {
         const user: any = await this._gitMideaService.user();
         const {name, email} = user;
-        const sha = await git.commit({
+        const sha = await commit({
             dir: this._gitService.dir,
             author: {
                 name,
@@ -71,7 +105,7 @@ export class GitActionService {
     }
 
     public async push() {
-        const pushResponse = await git.push({
+        const pushResponse = await push({
             dir: this._gitService.dir,
             remote: 'origin',
             ref: 'master',
@@ -108,7 +142,7 @@ export class GitActionService {
 
     public async reCalcFileStatus(filepath: string): Promise<void> {
         const pathExist = this.status.unStaged.filter(path => path === filepath)[0];
-        const state = await git.status({
+        const state = await status({
             dir: this._gitService.dir,
             filepath: filepath.substr(this._gitService.dir.length + 1)
         });
@@ -124,24 +158,12 @@ export class GitActionService {
         this._status.next(new GitStatus());
     }
 
-    public get statusTotal(): Number {
-        const value = this._status.getValue();
-        return value.unStaged.length || value.staged.length;
-    }
-
-    public get statusTotalArray(): [Number, Number] {
-        const value = this._status.getValue();
-        return [
-            value.unStaged.length,
-            value.staged.length,
-        ];
-    }
-
     public async init() {
-        const status = await git.statusMatrix({
-            dir: this._gitService.dir
+        const allStatus = await statusMatrix({
+            dir: this._gitService.dir,
+            pattern: null,
         });
-        status.map(row => {
+        allStatus.map(row => {
             const filePath = this._gitService.dir + '/' + row[FILE];
             if (row[WORKDIR] !== row[STAGE]) {
                 this._addUnStaged(filePath);
@@ -149,7 +171,7 @@ export class GitActionService {
                 this._addStaged(filePath);
             }
         });
-        return status;
+        return allStatus;
     }
 
 }

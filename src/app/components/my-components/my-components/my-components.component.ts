@@ -23,8 +23,6 @@ export class MyComponentsComponent implements OnInit {
             .subscribe((res: IResponseInterface) => {
                 this.dataList = res.data;
                 this.dataFilter = res.dataFilter;
-            }, error => {
-                console.log('get error....');
             });
     }
 

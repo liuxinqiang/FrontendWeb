@@ -26,6 +26,7 @@ export class GitMideaService {
     getProjectsList() {
         return this._http.get(this.urlPrefix + '/users/' + this._authService.currentUserValue.user.authTokens.gitMidea.id + '/projects');
     }
+
     // user
     users() {
         return this._http.get(this.urlPrefix + '/users');
@@ -37,5 +38,19 @@ export class GitMideaService {
 
     groups() {
         return this._http.get(this.urlPrefix + '/groups');
+    }
+
+    getCommits(projectId, branch?: string, since?: string): Promise<object> {
+        const params = {};
+        if (branch) {
+            params['ref_name'] = branch;
+        }
+        if (since) {
+            params['since'] = since;
+        }
+        return this._http.get(this.urlPrefix + '/projects/' + projectId + '/repository/commits', {
+            params,
+        })
+            .toPromise();
     }
 }

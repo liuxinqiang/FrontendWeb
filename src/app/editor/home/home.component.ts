@@ -114,6 +114,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.loadCompleteHook();
             })
             .catch(error => {
+                console.error(error);
                 this._loadingService.setState({
                     state: LoadingState.fail,
                     message: typeof error === 'string' ? error : '初始化失败',

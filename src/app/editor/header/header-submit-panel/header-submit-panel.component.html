@@ -18,8 +18,8 @@
     <li>
         <a>
             待推送
-            <sup>
-                1
+            <sup *ngIf="gitActionService.asyncStatusCount.push">
+                {{gitActionService.asyncStatusCount.push}}
             </sup>
         </a>
     </li>
@@ -59,7 +59,8 @@
     </li>
     <li>
         推送数据
-        <a class="ui-button ui-button-editor ui-button-small ui-display-block"
+        <a *ngIf="gitActionService.asyncStatusCount.push"
+           class="ui-button ui-button-editor ui-button-small ui-display-block"
            [ngClass]="{
                     'ui-disabled': !message
                    }"
