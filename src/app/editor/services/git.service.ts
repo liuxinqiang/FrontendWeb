@@ -23,9 +23,11 @@ export class GitService {
         private _componentService: ComponentService,
     ) {}
 
-    public projectDir: string;
+    public dir: string;
 
-    public projectUrl: string;
+    public url: string;
+
+    public branch: string;
 
     public get authInfo(): object {
         return {
@@ -36,9 +38,10 @@ export class GitService {
 
     async init(): Promise<void> {
         const component: IComponentInterface = this._componentService.component;
-        this.projectDir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
-        this.projectUrl = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
-        const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.projectDir)
+        this.dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
+        this.url = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
+        this.branch = component.repo.gitMidea.branch;
+        const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.dir)
             || new ComponentDetailStorage();
 
         const fs = this._fileService.fs;
@@ -47,23 +50,23 @@ export class GitService {
             message: '设置代码仓库',
         });
         git.plugins.set('fs', fs);
-        let exist = await DirExistsMethod(this.projectDir, fs);
+        let exist = await DirExistsMethod(this.dir, fs);
         if (exist && !componentStorage.initComplete) {
-            await ForceDeleteForlder(this.projectDir, fs);
+            await ForceDeleteForlder(this.dir, fs);
             exist = false;
         }
         if (!exist) {
-            await fs.mkdir(this.projectDir);
+            await fs.mkdir(this.dir);
             await git.clone({
                 ...this.authInfo,
-                dir: this.projectDir,
-                url: this.projectUrl,
-                ref: component.repo.gitMidea.branch,
+                dir: this.dir,
+                url: this.url,
+                ref: this.branch,
                 singleBranch: true,
                 depth: 5
             });
         }
         componentStorage.initComplete = true;
-        this._localStorage.setItem(this.projectDir, componentStorage);
+        this._localStorage.setItem(this.dir, componentStorage);
     }
 }

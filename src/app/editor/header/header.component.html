@@ -2,15 +2,15 @@
     <div class="ui-grid">
         <div class="ui-width-expand">
             <div class="ui-inline ui-margin-small-left ui-margin-small-right"
-                 *ngIf="componentService.componentInfo">
+                 *ngIf="componentService.component">
                 <a class="header-text">
                     <span class="text-icon-fix"
                           ui-icon="icon:home"></span>
-                    {{componentService.componentInfo.name}}
+                    {{componentService.component.name}}
                 </a>
                 <div [attr.ui-drop]="headerDropConfig">
                     <div class="ui-card ui-card-body ui-card-default">
-                        分支切换
+                        <app-header-component-panel></app-header-component-panel>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">
                         <div class="ui-card ui-card-body ui-card-default">
-                            分支切换
+                            <app-header-branch-panel></app-header-branch-panel>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">
                         <div class="ui-card ui-card-body ui-card-default">
-                            保存页面
+                            <app-header-async-panel></app-header-async-panel>
                         </div>
                     </div>
                 </div>

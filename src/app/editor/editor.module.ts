@@ -24,6 +24,9 @@ import {FileStateListRenderComponent} from './header/header-submit-panel/file-st
 import {GitLogService} from './services/git-log.service';
 import {GitBranchService} from './services/git-branch.service';
 import {GitActionService} from './services/git-action.service';
+import { HeaderBranchPanelComponent } from './header/header-branch-panel/header-branch-panel.component';
+import { HeaderAsyncPanelComponent } from './header/header-async-panel/header-async-panel.component';
+import { HeaderComponentPanelComponent } from './header/header-component-panel/header-component-panel.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +43,9 @@ import {GitActionService} from './services/git-action.service';
         MainEditorComponent,
         HeaderSubmitPanelComponent,
         FileStateListRenderComponent,
+        HeaderBranchPanelComponent,
+        HeaderAsyncPanelComponent,
+        HeaderComponentPanelComponent,
     ],
     imports: [
         CommonModule,

@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {GitStatus} from '../models/git.model';
+import {GitAsyncStatus, GitStatus} from '../models/git.model';
 import {LoadingService, LoadingState} from './loading.service';
 import * as git from '../../../vendor/git';
 import {GitService} from './git.service';
-import {GitMideaService} from '../../common/services/git-midea.service';
+import {GitMideaService} from 'app/common/services/git-midea.service';
+
+const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
 
 @Injectable()
 export class GitActionService {
@@ -12,6 +14,10 @@ export class GitActionService {
     private _status: BehaviorSubject<GitStatus>;
 
     public status$: Observable<GitStatus>;
+
+    private _gitAsyncStatus: BehaviorSubject<GitAsyncStatus>;
+
+    public gitAsyncStatus$: Observable<GitAsyncStatus>;
 
     constructor(
         private _loadingService: LoadingService,
@@ -31,7 +37,6 @@ export class GitActionService {
             state: LoadingState.loading,
             message: '计算待保存文件',
         });
-        const FILE = 0, WORKDIR = 2, STAGE = 3;
         const status = await this.init();
         const stagedFiles = status.filter(row => row[WORKDIR] !== row[STAGE])
             .map(row => row[FILE]);
@@ -40,7 +45,7 @@ export class GitActionService {
             message: '共需保存' + stagedFiles.length + '个文件',
         });
         for (let i = 0; i < stagedFiles.length; i++) {
-            await git.add({dir: this._gitService.projectDir, filepath: stagedFiles[i]});
+            await git.add({dir: this._gitService.dir, filepath: stagedFiles[i]});
         }
         this._status.next(new GitStatus());
         await this.init();
@@ -54,7 +59,7 @@ export class GitActionService {
         const user: any = await this._gitMideaService.user();
         const {name, email} = user;
         const sha = await git.commit({
-            dir: this._gitService.projectDir,
+            dir: this._gitService.dir,
             author: {
                 name,
                 email,
@@ -67,7 +72,7 @@ export class GitActionService {
 
     public async push() {
         const pushResponse = await git.push({
-            dir: this._gitService.projectDir,
+            dir: this._gitService.dir,
             remote: 'origin',
             ref: 'master',
             ...this._gitService.authInfo,
@@ -104,8 +109,8 @@ export class GitActionService {
     public async reCalcFileStatus(filepath: string): Promise<void> {
         const pathExist = this.status.unStaged.filter(path => path === filepath)[0];
         const state = await git.status({
-            dir: this._gitService.projectDir,
-            filepath: filepath.substr(this._gitService.projectDir.length + 1)
+            dir: this._gitService.dir,
+            filepath: filepath.substr(this._gitService.dir.length + 1)
         });
         if (pathExist && ['unmodified', '*unmodified'].indexOf(state) >= 0) {
             this._deleteUnStaged(filepath);
@@ -133,12 +138,11 @@ export class GitActionService {
     }
 
     public async init() {
-        const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
         const status = await git.statusMatrix({
-            dir: this._gitService.projectDir
+            dir: this._gitService.dir
         });
         status.map(row => {
-            const filePath = this._gitService.projectDir + '/' + row[FILE];
+            const filePath = this._gitService.dir + '/' + row[FILE];
             if (row[WORKDIR] !== row[STAGE]) {
                 this._addUnStaged(filePath);
             } else if (row[HEAD] !== row[WORKDIR]) {

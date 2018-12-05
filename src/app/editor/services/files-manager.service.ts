@@ -103,8 +103,8 @@ export class FilesManagerService {
 
     async init() {
         const component: IComponentInterface = this._componentService.component;
-        const files = await git.listFiles({dir: this._gitService.projectDir});
-        const newFiles = GetFilesTreeMethod(files, this._gitService.projectDir);
+        const files = await git.listFiles({dir: this._gitService.dir});
+        const newFiles = GetFilesTreeMethod(files, this._gitService.dir);
         const activeFiles: IActiveFilesStorage = this._localStorage.getItem('ActiveFiles');
         if (activeFiles && activeFiles['component_' + component.componentName]) {
             const activeState = activeFiles['component_' + component.componentName];

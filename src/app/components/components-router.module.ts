@@ -27,7 +27,10 @@ const routes: Routes = [
             {
                 path: 'my-components',
                 canActivate: [AuthGuard],
-                loadChildren: './my-components/my-components.module#MyComponentsModule'
+                loadChildren: './my-components/my-components.module#MyComponentsModule',
+                data: {
+                    title: '我的组件',
+                }
             },
             {
                 path: 'component-create',

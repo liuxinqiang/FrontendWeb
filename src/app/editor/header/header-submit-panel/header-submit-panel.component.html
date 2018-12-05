@@ -28,7 +28,7 @@
     <li>
         <app-file-state-list-render
                 emptyMsg="暂存区为空"
-                [dir]="gitService.projectDir"
+                [dir]="gitService.dir"
                 [list]="gitActionService.status.unStaged">
         </app-file-state-list-render>
         <a *ngIf="gitActionService.status.unStaged.length"
@@ -40,7 +40,7 @@
     <li>
         <app-file-state-list-render
                 emptyMsg="暂无待提交内容"
-                [dir]="gitService.projectDir"
+                [dir]="gitService.dir"
                 [list]="gitActionService.status.staged">
         </app-file-state-list-render>
         <ng-container *ngIf="gitActionService.status.staged.length">

@@ -12,10 +12,16 @@ const routes: Routes = [
             {
                 path: '',
                 component: MyComponentsComponent,
+                data: {
+                    title: '我的组件',
+                },
             },
             {
                 path: ':componentName',
                 component: ComponentDetailComponent,
+                data: {
+                    title: '组件详情',
+                },
             },
         ],
     }
