@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/topui/src/less/topui.theme.less";
 
+.ui-overlay {
+  z-index: @global-z-index + 60;
+}
+
 .dot-loading {
   display: inline-block;
   height: 1em; line-height: 1;
