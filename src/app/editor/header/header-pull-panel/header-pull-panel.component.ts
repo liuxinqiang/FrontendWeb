@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {GitActionService} from '../../services/git-action.service';
 import {GitLogService} from '../../services/git-log.service';
 import {LoadingService, LoadingState} from '../../services/loading.service';
@@ -8,7 +8,7 @@ import {LoadingService, LoadingState} from '../../services/loading.service';
     templateUrl: './header-pull-panel.component.html',
     styleUrls: ['./header-pull-panel.component.less']
 })
-export class HeaderPullPanelComponent implements OnInit {
+export class HeaderPullPanelComponent {
 
     constructor(
         private _loadingService: LoadingService,
@@ -27,14 +27,10 @@ export class HeaderPullPanelComponent implements OnInit {
                 return this._gitLogService.calcAsyncStatus();
             })
             .then(() => {
-                console.log('过程结束。。。');
                 this._loadingService.setState({
                     state: LoadingState.success
                 });
             });
-    }
-
-    ngOnInit() {
     }
 
 }

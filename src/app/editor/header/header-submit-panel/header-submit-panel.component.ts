@@ -3,6 +3,7 @@ import {GitStatus} from '../../models/git.model';
 import {GitActionService} from '../../services/git-action.service';
 import {GitService} from '../../services/git.service';
 import {GitLogService} from '../../services/git-log.service';
+import {LoadingService, LoadingState} from '../../services/loading.service';
 
 @Component({
     selector: 'app-header-submit-panel',
@@ -24,6 +25,7 @@ export class HeaderSubmitPanelComponent {
         public gitActionService: GitActionService,
         public gitService: GitService,
         private _gitLogSevice: GitLogService,
+        private _loadingService: LoadingService,
     ) {
     }
 
@@ -73,6 +75,10 @@ export class HeaderSubmitPanelComponent {
     }
 
     push() {
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '代码提交中，请勿刷新页面'
+        });
         this.loading.push = true;
         this.gitActionService.push()
             .then(() => {
@@ -80,8 +86,15 @@ export class HeaderSubmitPanelComponent {
             })
             .then(() => {
                 this.loading.push = false;
+                this._loadingService.setState({
+                    state: LoadingState.success
+                });
             })
             .catch(e => {
+                this._loadingService.setState({
+                    state: LoadingState.fail,
+                    message: '代码提交失败',
+                });
                 this.switchTab(0);
                 this.loading.push = false;
             });
