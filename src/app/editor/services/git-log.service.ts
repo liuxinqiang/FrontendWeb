@@ -17,15 +17,11 @@ export class GitLogService {
     ) {
     }
 
-    public get repo() {
-        return this._componentService.component.repo.gitMidea;
-    }
-
     async calcAsyncStatus() {
         const asyncStatus: GitAsyncStatus = new GitAsyncStatus();
         const localCommits: CommitDescription[] = await log({
             dir: this._gitService.dir,
-            ref: this.repo.branch,
+            ref: this._gitService.branch,
         });
         if (!localCommits.length) {
             return;
@@ -33,8 +29,8 @@ export class GitLogService {
 
         const firstLocalCommit = localCommits[localCommits.length - 1];
         const remoteCommits: any = await this._gitMideaService.getCommits(
-            this.repo.id,
-            this.repo.branch,
+            this._componentService.component.repo.gitMidea.id,
+            this._gitService.branch,
             new Date(firstLocalCommit.author.timestamp * 1000).toISOString()
         );
         localCommits.reverse();

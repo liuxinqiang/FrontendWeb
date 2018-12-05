@@ -80,9 +80,6 @@ export class EditorsManagerService {
                     });
                 }
             }
-            this._loadingService.setState({
-                state: LoadingState.success
-            });
             this.setModelBaseOnActiveFile();
         });
     }
@@ -146,10 +143,6 @@ export class EditorsManagerService {
     }
 
     init(editorContainer: HTMLDivElement) {
-        this._loadingService.setState({
-            state: LoadingState.success,
-            message: '设置完成',
-        });
         this._container = editorContainer;
         this.setModelBaseOnActiveFile();
         // this.setModelsBaseOnFiles();

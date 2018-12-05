@@ -6,10 +6,6 @@ import {LoadingService, LoadingState} from './loading.service';
 @Injectable()
 export class FileService {
 
-    constructor(
-        private _loadingService: LoadingService,
-    ) {}
-
     public fs;
 
     private options = {
@@ -18,10 +14,6 @@ export class FileService {
     };
 
     init(): Promise<any> {
-        this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '设置文件系统',
-        });
         return new Promise((resolve, reject) => {
             FS.configure(this.options, (err) => {
                 if (err) {

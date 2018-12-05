@@ -3,7 +3,6 @@ import {ComponentsService} from '../../components/services/components.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {IComponentInterface} from '../../components/interfaces/component.interface';
 import {IEditorQuery} from '../interfaces/files.interface';
-import {LoadingService, LoadingState} from './loading.service';
 
 @Injectable()
 export class ComponentService {
@@ -17,17 +16,12 @@ export class ComponentService {
 
     constructor(
         private _componentsService: ComponentsService,
-        private _loadingService: LoadingService,
     ) {
         this._componentSubject = new BehaviorSubject(null);
         this.component$ = this._componentSubject.asObservable();
     }
 
     async init(query: IEditorQuery): Promise<void> {
-        this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '获取组件信息',
-        });
         return new Promise<void>((resolve, reject) => {
             if (query.type === 'component' && query.name) {
                 this._componentsService.getComponent(query.name)

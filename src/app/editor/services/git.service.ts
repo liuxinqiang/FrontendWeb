@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {clone, plugins} from 'vendor/git.js';
 import {FileService} from './file.service';
-import {LoadingService, LoadingState} from './loading.service';
 import {AuthService} from 'app/user/services/auth.service';
 import {environment} from 'environments/environment';
 import {ComponentDetailStorage, IComponentInterface} from '../../components/interfaces/component.interface';
@@ -17,7 +16,6 @@ export class GitService {
     constructor(
         private _fileService: FileService,
         private _authService: AuthService,
-        private _loadingService: LoadingService,
         private _gitMideaService: GitMideaService,
         private _localStorage: LocalStorageService,
         private _componentService: ComponentService,
@@ -26,6 +24,8 @@ export class GitService {
     public dir: string;
 
     public url: string;
+
+    public branch: string;
 
     public get authInfo(): object {
         return {
@@ -38,14 +38,12 @@ export class GitService {
         const component: IComponentInterface = this._componentService.component;
         this.dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
         this.url = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
+
+        this.branch = component.repo.gitMidea.branch;
         const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.dir)
             || new ComponentDetailStorage();
 
         const fs = this._fileService.fs;
-        this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '设置代码仓库',
-        });
         plugins.set('fs', fs);
         let exist = await DirExistsMethod(this.dir, fs);
         if (exist && !componentStorage.initComplete) {
@@ -58,7 +56,7 @@ export class GitService {
                 ...this.authInfo,
                 dir: this.dir,
                 url: this.url,
-                ref: component.repo.gitMidea.branch,
+                ref: this.branch,
                 singleBranch: true,
                 depth: 5
             });

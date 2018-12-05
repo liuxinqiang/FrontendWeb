@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {GitAsyncStatus, GitStatus} from '../models/git.model';
-import {LoadingService} from './loading.service';
 import {add, commit, push, status, statusMatrix, pull} from 'vendor/git';
 import {GitService} from './git.service';
 import {GitMideaService} from 'app/common/services/git-midea.service';
@@ -21,7 +20,6 @@ export class GitActionService {
     public asyncStatus$: Observable<GitAsyncStatus>;
 
     constructor(
-        private _loadingService: LoadingService,
         private _gitService: GitService,
         private _componentService: ComponentService,
         private _gitMideaService: GitMideaService,
@@ -98,7 +96,7 @@ export class GitActionService {
         const pushResponse = await push({
             dir: this._gitService.dir,
             remote: 'origin',
-            ref: this._componentService.component.repo.gitMidea.branch,
+            ref: this._gitService.branch,
             ...this._gitService.authInfo,
         });
         return pushResponse;
@@ -107,7 +105,7 @@ export class GitActionService {
     public async pull() {
         const pushResponse = await pull({
             dir: this._gitService.dir,
-            ref: this._componentService.component.repo.gitMidea.branch,
+            ref: this._gitService.branch,
             ...this._gitService.authInfo,
         });
         return pushResponse;

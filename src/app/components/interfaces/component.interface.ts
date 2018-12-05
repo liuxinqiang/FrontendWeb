@@ -1,11 +1,13 @@
 import {IUserInterface} from 'app/common/interfaces/user.interface';
 
+export interface IRepoInfo {
+    branch: string;
+    path: string;
+    id: number;
+}
+
 export interface IComponentRepoInterface {
-    gitMidea?: {
-        branch: string;
-        path: string;
-        id: number;
-    };
+    gitMidea?: IRepoInfo;
 }
 
 export interface IComponentInterface {

@@ -98,14 +98,30 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.loading = data;
             this._ref.detectChanges();
         });
+        this._loadingService.setState({
+            state: LoadingState.loading,
+            message: '获取项目信息',
+        });
         this._componentService.init(this.query)
             .then(() => {
+                this._loadingService.setState({
+                    state: LoadingState.loading,
+                    message: '初始化文件系统',
+                });
                 return this._fileService.init();
             })
             .then(() => {
+                this._loadingService.setState({
+                    state: LoadingState.loading,
+                    message: '设置代码仓库',
+                });
                 return this._gitService.init();
             })
             .then(() => {
+                this._loadingService.setState({
+                    state: LoadingState.loading,
+                    message: '获取代码仓库状态信息',
+                });
                 return Promise.all([
                     this._gitLogService.calcAsyncStatus(),
                     this._gitActionService.init(),
@@ -113,6 +129,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                 ]);
             })
             .then(() => {
+                this._loadingService.setState({
+                    state: LoadingState.success
+                });
                 this.loadedCount++;
                 this.loadCompleteHook();
             })
