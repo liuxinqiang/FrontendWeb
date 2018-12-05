@@ -7,24 +7,26 @@ export class GitStatus {
     staged: string[];
 }
 
-export interface ICommitDescription {
-    id: string;
-    message: string;
-    author_name: string;
-    author_email: string;
-    authored_date: string;
-    parent_ids: string[];
-    metaData: {
-        location: string;
-        tree?: string;
-    };
-}
-
 export class GitAsyncStatus {
     constructor(toPull = [], toPush = []) {
         this.toPull = toPull;
         this.toPush = toPush;
     }
-    toPull: ICommitDescription[];
-    toPush: ICommitDescription[];
+    toPull: GitCommit[];
+    toPush: GitCommit[];
+}
+
+export class GitCommit {
+    constructor(id, name, email, message, time) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.message = message;
+        this.time = time;
+    }
+    id: string;
+    name: string;
+    email: string;
+    message: string;
+    time: string;
 }

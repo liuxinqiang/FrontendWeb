@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {log, resolveRef, readObject, TREE, WORKDIR, STAGE} from 'vendor/git.js';
+import {log, resolveRef, readObject, TREE, WORKDIR, STAGE, CommitDescription} from 'vendor/git.js';
 import {GitService} from './git.service';
-import {ILocalCommitDescription} from '../interfaces/git.interface';
 import {ComponentService} from './component.service';
 import {GitMideaService} from 'app/common/services/git-midea.service';
-import {GitAsyncStatus} from '../models/git.model';
+import {GitAsyncStatus, GitCommit} from '../models/git.model';
 import {GitActionService} from './git-action.service';
 
 @Injectable()
@@ -23,17 +22,8 @@ export class GitLogService {
     }
 
     async calcAsyncStatus() {
-
-        const currentCommit = await resolveRef({ dir: this._gitService.dir, ref: this.repo.branch });
-
-        let { object: blob } = await readObject({
-            dir: this._gitService.dir,
-            oid: currentCommit,
-            encoding: 'utf8'
-        });
-
         const asyncStatus: GitAsyncStatus = new GitAsyncStatus();
-        const localCommits: ILocalCommitDescription[] = await log({
+        const localCommits: CommitDescription[] = await log({
             dir: this._gitService.dir,
             ref: this.repo.branch,
         });
@@ -51,14 +41,32 @@ export class GitLogService {
         remoteCommits.reverse();
         const minLength = Math.max(localCommits.length, remoteCommits.length);
         for (let i = 0; i < minLength; i++) {
-            if (!localCommits[i] ||
-                !remoteCommits[i] ||
-                localCommits[i].oid !== remoteCommits[i].id) {
+            const lc = localCommits[i],
+                rc = remoteCommits[i];
+            if (!lc ||
+                !rc ||
+                lc.oid !== rc.id) {
                 if (localCommits[i]) {
-                    // asyncStatus.toPush.push(localCommits[i]);
+                    asyncStatus.toPush.push(
+                        new GitCommit(
+                            lc.oid,
+                            lc.author.name,
+                            lc.author.email,
+                            lc.message,
+                            lc.author.timestamp
+                        )
+                    );
                 }
                 if (remoteCommits[i]) {
-                    // asyncStatus.toPull.push(remoteCommits[i]);
+                    asyncStatus.toPull.push(
+                        new GitCommit(
+                            rc.id,
+                            rc.author_name,
+                            rc.author_email,
+                            rc.message,
+                            Math.ceil(new Date(rc.authored_date).valueOf() / 1000)
+                        )
+                    );
                 }
             }
         }

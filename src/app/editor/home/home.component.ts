@@ -11,6 +11,7 @@ import {ComponentService} from '../services/component.service';
 import {Subscription} from 'rxjs';
 import {GitActionService} from '../services/git-action.service';
 import {FileService} from '../services/file.service';
+import {GitLogService} from '../services/git-log.service';
 
 @Component({
     selector: 'app-home',
@@ -53,6 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private _fileService: FileService,
         private _gitService: GitService,
         private _gitActionService: GitActionService,
+        private _gitLogService: GitLogService,
         private _editorsManagerService: EditorsManagerService,
         private _filesManagerService: FilesManagerService,
         private _componentService: ComponentService,
@@ -104,10 +106,11 @@ export class HomeComponent implements OnInit, OnDestroy {
                 return this._gitService.init();
             })
             .then(() => {
-                return this._gitActionService.init();
-            })
-            .then(() => {
-                return this._filesManagerService.init();
+                return Promise.all([
+                    this._gitLogService.calcAsyncStatus(),
+                    this._gitActionService.init(),
+                    this._filesManagerService.init(),
+                ]);
             })
             .then(() => {
                 this.loadedCount++;

@@ -25,8 +25,8 @@ import {GitLogService} from './services/git-log.service';
 import {GitBranchService} from './services/git-branch.service';
 import {GitActionService} from './services/git-action.service';
 import { HeaderBranchPanelComponent } from './header/header-branch-panel/header-branch-panel.component';
-import { HeaderAsyncPanelComponent } from './header/header-async-panel/header-async-panel.component';
 import { HeaderComponentPanelComponent } from './header/header-component-panel/header-component-panel.component';
+import { HeaderPullPanelComponent } from './header/header-pull-panel/header-pull-panel.component';
 
 @NgModule({
     declarations: [
@@ -44,8 +44,8 @@ import { HeaderComponentPanelComponent } from './header/header-component-panel/h
         HeaderSubmitPanelComponent,
         FileStateListRenderComponent,
         HeaderBranchPanelComponent,
-        HeaderAsyncPanelComponent,
         HeaderComponentPanelComponent,
+        HeaderPullPanelComponent,
     ],
     imports: [
         CommonModule,

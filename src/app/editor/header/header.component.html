@@ -54,10 +54,15 @@
                               ui-icon="icon:cloud-download">
                         </span>
                         更新
+                        <span *ngIf="gitActionService.pullStatusTotal"
+                              @counter
+                              class="ui-badge ui-position-top-right">
+                            {{gitActionService.pullStatusTotal}}
+                        </span>
                     </a>
                     <div [attr.ui-drop]="headerDropConfig">
                         <div class="ui-card ui-card-body ui-card-default">
-                            <app-header-async-panel></app-header-async-panel>
+                            <app-header-pull-panel></app-header-pull-panel>
                         </div>
                     </div>
                 </div>

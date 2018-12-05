@@ -1,50 +1,89 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {GitStatus} from '../../models/git.model';
-import {Subscription} from 'rxjs';
 import {GitActionService} from '../../services/git-action.service';
 import {GitService} from '../../services/git.service';
+import {GitLogService} from '../../services/git-log.service';
 
 @Component({
     selector: 'app-header-submit-panel',
     templateUrl: './header-submit-panel.component.html',
     styleUrls: ['./header-submit-panel.component.less']
 })
-export class HeaderSubmitPanelComponent implements OnInit, OnDestroy {
-
+export class HeaderSubmitPanelComponent {
     message: string;
 
-    private _switcherSubscription: Subscription;
+    loading = {
+        add: false,
+        commit: false,
+        push: false,
+    };
 
     @ViewChild('switcher') switcherRef: ElementRef;
 
     constructor(
         public gitActionService: GitActionService,
         public gitService: GitService,
+        private _gitLogSevice: GitLogService,
     ) {
     }
 
-    autoSetSwitcher(states: GitStatus) {
+    switchTab(index: number) {
         const ele = this.switcherRef.nativeElement;
         if (!ele) {
             return;
         }
+        TopUI.tab(ele).show(index);
+    }
+
+    autoSetSwitcher() {
+        const states: GitStatus = this.gitActionService.status;
         if (states.unStaged.length === 0
             && states.staged.length) {
-            TopUI.tab(ele).show(1);
+            this.switchTab(1);
         } else {
-            TopUI.tab(ele).show(0);
+            this.switchTab(0);
         }
     }
 
-    ngOnInit(): void {
-        this._switcherSubscription = this.gitActionService.status$.subscribe(newState => {
-            this.autoSetSwitcher(newState);
-        });
+    add() {
+        this.loading.add = true;
+        this.gitActionService.add()
+            .then(() => {
+                this.switchTab(1);
+                this.loading.add = false;
+            })
+            .catch(e => {
+                this.loading.add = false;
+            });
     }
 
-    ngOnDestroy(): void {
-        if (this._switcherSubscription) {
-            this._switcherSubscription.unsubscribe();
-        }
+    commit() {
+        this.loading.commit = true;
+        this.gitActionService.commit(this.message)
+            .then(() => {
+                return this._gitLogSevice.calcAsyncStatus();
+            })
+            .then(() => {
+                this.switchTab(2);
+                this.loading.commit = false;
+            })
+            .catch(e => {
+                this.loading.commit = false;
+            });
+    }
+
+    push() {
+        this.loading.push = true;
+        this.gitActionService.push()
+            .then(() => {
+                return this._gitLogSevice.calcAsyncStatus();
+            })
+            .then(() => {
+                this.loading.push = false;
+            })
+            .catch(e => {
+                this.switchTab(0);
+                this.loading.push = false;
+            });
     }
 }

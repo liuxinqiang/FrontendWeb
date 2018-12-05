@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {GitAsyncStatus, GitStatus} from '../models/git.model';
-import {LoadingService, LoadingState} from './loading.service';
-import {add, commit, push, status, statusMatrix} from 'vendor/git';
+import {LoadingService} from './loading.service';
+import {add, commit, push, status, statusMatrix, pull} from 'vendor/git';
 import {GitService} from './git.service';
 import {GitMideaService} from 'app/common/services/git-midea.service';
+import {ComponentService} from './component.service';
 
 const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3;
 
@@ -22,6 +23,7 @@ export class GitActionService {
     constructor(
         private _loadingService: LoadingService,
         private _gitService: GitService,
+        private _componentService: ComponentService,
         private _gitMideaService: GitMideaService,
     ) {
         this._status = new BehaviorSubject(new GitStatus());
@@ -67,26 +69,14 @@ export class GitActionService {
     }
 
     public async add() {
-        this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '计算待保存文件',
-        });
         const allStatus = await this.init();
         const stagedFiles = allStatus.filter(row => row[WORKDIR] !== row[STAGE])
             .map(row => row[FILE]);
-        this._loadingService.setState({
-            state: LoadingState.loading,
-            message: '共需保存' + stagedFiles.length + '个文件',
-        });
         for (let i = 0; i < stagedFiles.length; i++) {
             await add({dir: this._gitService.dir, filepath: stagedFiles[i]});
         }
         this._status.next(new GitStatus());
         await this.init();
-        this._loadingService.setState({
-            state: LoadingState.success,
-            message: '保存成功',
-        });
     }
 
     public async commit(message: string) {
@@ -108,7 +98,16 @@ export class GitActionService {
         const pushResponse = await push({
             dir: this._gitService.dir,
             remote: 'origin',
-            ref: 'master',
+            ref: this._componentService.component.repo.gitMidea.branch,
+            ...this._gitService.authInfo,
+        });
+        return pushResponse;
+    }
+
+    public async pull() {
+        const pushResponse = await pull({
+            dir: this._gitService.dir,
+            ref: this._componentService.component.repo.gitMidea.branch,
             ...this._gitService.authInfo,
         });
         return pushResponse;
@@ -159,10 +158,12 @@ export class GitActionService {
     }
 
     public async init() {
+        console.log(1);
         const allStatus = await statusMatrix({
             dir: this._gitService.dir,
             pattern: null,
         });
+        console.log(2);
         allStatus.map(row => {
             const filePath = this._gitService.dir + '/' + row[FILE];
             if (row[WORKDIR] !== row[STAGE]) {
