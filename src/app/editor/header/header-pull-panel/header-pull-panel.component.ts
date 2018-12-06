@@ -10,6 +10,10 @@ import {LoadingService, LoadingState} from '../../services/loading.service';
 })
 export class HeaderPullPanelComponent {
 
+    loading = {
+        pull: false,
+    };
+
     constructor(
         private _loadingService: LoadingService,
         public gitActionService: GitActionService,
@@ -23,13 +27,21 @@ export class HeaderPullPanelComponent {
             message: '正在更新代码，请不要刷新页面'
         });
         this.gitActionService.pull()
-            .then((data) => {
+            .then(() => {
                 return this._gitLogService.calcAsyncStatus();
             })
             .then(() => {
                 this._loadingService.setState({
                     state: LoadingState.success
                 });
+            })
+            .catch(e => {
+                this._loadingService.setState({
+                    state: LoadingState.fail,
+                    message: '代码更新失败',
+                });
+                console.log('出错了...');
+                console.error(e);
             });
     }
 

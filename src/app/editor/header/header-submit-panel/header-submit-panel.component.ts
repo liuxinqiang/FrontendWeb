@@ -63,7 +63,10 @@ export class HeaderSubmitPanelComponent {
         this.loading.commit = true;
         this.gitActionService.commit(this.message)
             .then(() => {
-                return this._gitLogSevice.calcAsyncStatus();
+                return Promise.all([
+                    this._gitLogSevice.calcAsyncStatus(),
+                    this.gitActionService.init(true),
+                ]);
             })
             .then(() => {
                 this.switchTab(2);
@@ -97,6 +100,7 @@ export class HeaderSubmitPanelComponent {
                 });
                 this.switchTab(0);
                 this.loading.push = false;
+                console.error(e);
             });
     }
 }

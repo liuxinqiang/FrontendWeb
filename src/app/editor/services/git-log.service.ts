@@ -43,7 +43,7 @@ export class GitLogService {
                 !rc ||
                 lc.oid !== rc.id) {
                 if (localCommits[i]) {
-                    asyncStatus.toPush.push(
+                    asyncStatus.toPush.unshift(
                         new GitCommit(
                             lc.oid,
                             lc.author.name,
@@ -54,7 +54,7 @@ export class GitLogService {
                     );
                 }
                 if (remoteCommits[i]) {
-                    asyncStatus.toPull.push(
+                    asyncStatus.toPull.unshift(
                         new GitCommit(
                             rc.id,
                             rc.author_name,

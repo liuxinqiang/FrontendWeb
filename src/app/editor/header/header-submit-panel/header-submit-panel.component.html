@@ -61,7 +61,11 @@
         </ng-container>
     </li>
     <li>
-        推送数据
+        <app-commit-list-render class="ui-display-block ui-margin-bottom"
+                                [list]="gitActionService.asyncStatus.toPush"
+                                [isRemote]="false"
+                                emptyMsg="暂无任何待提交记录">
+        </app-commit-list-render>
         <a *ngIf="gitActionService.asyncStatusCount.push"
            class="ui-button ui-button-editor ui-button-small ui-display-block"
            [ngClass]="{

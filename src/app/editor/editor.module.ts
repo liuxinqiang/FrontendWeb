@@ -27,6 +27,7 @@ import {GitActionService} from './services/git-action.service';
 import { HeaderBranchPanelComponent } from './header/header-branch-panel/header-branch-panel.component';
 import { HeaderComponentPanelComponent } from './header/header-component-panel/header-component-panel.component';
 import { HeaderPullPanelComponent } from './header/header-pull-panel/header-pull-panel.component';
+import { CommitListRenderComponent } from './header/commit-list-render/commit-list-render.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { HeaderPullPanelComponent } from './header/header-pull-panel/header-pull
         HeaderBranchPanelComponent,
         HeaderComponentPanelComponent,
         HeaderPullPanelComponent,
+        CommitListRenderComponent,
     ],
     imports: [
         CommonModule,

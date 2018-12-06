@@ -73,8 +73,7 @@ export class GitActionService {
         for (let i = 0; i < stagedFiles.length; i++) {
             await add({dir: this._gitService.dir, filepath: stagedFiles[i]});
         }
-        this._status.next(new GitStatus());
-        await this.init();
+        await this.init(true);
     }
 
     public async commit(message: string) {
@@ -88,8 +87,6 @@ export class GitActionService {
             },
             message,
         });
-        this._status.next(new GitStatus());
-        await this.init();
     }
 
     public async push() {
@@ -106,6 +103,7 @@ export class GitActionService {
         const pushResponse = await pull({
             dir: this._gitService.dir,
             ref: this._gitService.branch,
+            singleBranch: true,
             ...this._gitService.authInfo,
         });
         return pushResponse;
@@ -155,11 +153,14 @@ export class GitActionService {
         this._status.next(new GitStatus());
     }
 
-    public async init() {
+    public async init(resetStatus = false) {
         const allStatus = await statusMatrix({
             dir: this._gitService.dir,
             pattern: null,
         });
+        if (resetStatus) {
+            this._status.next(new GitStatus());
+        }
         allStatus.map(row => {
             const filePath = this._gitService.dir + '/' + row[FILE];
             if (row[WORKDIR] !== row[STAGE]) {

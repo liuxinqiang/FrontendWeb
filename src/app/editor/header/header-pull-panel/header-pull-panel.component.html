@@ -1,1 +1,13 @@
-<a (click)="pull()">Pull</a>
+<app-commit-list-render class="ui-display-block ui-margin-bottom"
+                        [list]="gitActionService.asyncStatus.toPull"
+                        [isRemote]="true"
+                        emptyMsg="暂无任何待提交记录">
+</app-commit-list-render>
+<a *ngIf="gitActionService.asyncStatusCount.pull"
+   class="ui-button ui-button-editor ui-button-small ui-display-block"
+   [ngClass]="{
+        'ui-disabled': loading.pull
+   }"
+   (click)="pull()">
+    更新 <span class="dot-loading" *ngIf="loading.pull"></span>
+</a>
