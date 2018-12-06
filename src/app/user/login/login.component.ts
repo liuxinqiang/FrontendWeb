@@ -1,7 +1,10 @@
 import {Component} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../services/auth.service';
+import {of, timer} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {IUserInterface} from '../interfaces/user.interface';
 
 @Component({
     selector: 'app-login',
@@ -11,8 +14,13 @@ import {AuthService} from '../services/auth.service';
 export class LoginComponent {
     readonly _returnUrl: string;
 
+    userInfo: null | IUserInterface = null;
+
     loginInfo = this._fb.group({
-        loginName: ['', Validators.required],
+        loginName: ['', [
+            Validators.required,
+            Validators.minLength(4)
+        ], this.validateLoginName.bind(this)],
         password: ['', Validators.required],
         rememberMe: [false],
     });
@@ -33,10 +41,30 @@ export class LoginComponent {
         return this.loginInfo.controls;
     }
 
+    validateLoginName(control: AbstractControl) {
+        this.userInfo = null;
+        return timer(500).pipe(
+            switchMap(() => {
+                if (!control.value) {
+                    return of(null);
+                }
+                return this._authService.userInfo(control.value).pipe(
+                    map((result: IUserInterface) => {
+                        this.userInfo = result;
+                        return null;
+                    }),
+                    catchError(() => of({
+                        'notExist': control.value,
+                    }))
+                );
+            })
+        );
+    }
+
     login() {
         this._authService.login(this.loginInfo.value)
             .subscribe(() => {
-                this._router.navigateByUrl(this._returnUrl || '/projects');
+                this._router.navigateByUrl(this._returnUrl || '/components');
             }, error => {
                 this.loginInfo.controls.password.reset();
             });

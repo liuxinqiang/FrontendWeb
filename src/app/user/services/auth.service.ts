@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'environments/environment';
 import {Md5} from 'ts-md5';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -44,6 +44,18 @@ export class AuthService {
         md5.appendStr(data.password);
         data.password = md5.end().toString();
         return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/register`, data);
+    }
+
+    public userInfo(loginName: string) {
+        const headers = new HttpHeaders({
+            'Skip-Intercept': 'yes',
+        });
+        return this._http.get(`${environment.mainAPI.url}${this._userApiPrefix}/userInfo`, {
+            headers,
+            params: {
+                loginName,
+            },
+        });
     }
 
     public login({loginName, password, rememberMe}): Observable<IUserInterface> {

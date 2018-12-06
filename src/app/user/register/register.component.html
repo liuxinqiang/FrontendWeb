@@ -15,9 +15,13 @@
                                       *ngIf="f.token.errors.required">
                                     必填项
                                 </span>
-                            <span class="ui-text-danger"
-                                  *ngIf="f.token.errors && !f.token.errors.required">
+                                <span class="ui-text-danger"
+                                  *ngIf="f.token.errors.tokenError">
                                     Token 错误
+                                </span>
+                                <span class="ui-text-danger"
+                                  *ngIf="f.token.errors.tokenTypeError">
+                                    该用户没有使用ldap登录
                                 </span>
                         </li>
                         <li>

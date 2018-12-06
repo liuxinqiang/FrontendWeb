@@ -12,6 +12,10 @@
                     <div *ngIf="f.loginName.errors && f.loginName.touched"
                          class="ui-text-danger">
                         <span *ngIf="f.loginName.errors.required">请填写用户名</span>
+                        <span *ngIf="f.loginName.errors.minlength">
+                            最少{{f.loginName.errors.minlength.requiredLength}}个字符
+                        </span>
+                        <span *ngIf="f.loginName.errors.notExist">该用户不存在</span>
                     </div>
                 </div>
             </div>

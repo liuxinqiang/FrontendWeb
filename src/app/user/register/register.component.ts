@@ -91,13 +91,17 @@ export class RegisterComponent {
                 return this._gitMideaService.getUserByPrivateToken(control.value).pipe(
                     map((result: IUserInfoInterface) => {
                         if (!result.loginName) {
-                            return 'tokenError';
+                            return {
+                                tokenTypeError: true,
+                            };
                         } else {
                             this.userInfo = result;
                             return null;
                         }
                     }),
-                    catchError(() => 'tokenError')
+                    catchError(() => of({
+                        tokenError: true,
+                    }))
                 );
             })
         );
