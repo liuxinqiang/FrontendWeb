@@ -1,6 +1,6 @@
 <ng-container *ngIf="list.length; else empty">
     <div *ngFor="let commit of list"
-         class="ui-grid-small ui-margin-top-remove"
+         class="ui-grid-small ui-margin-remove-top"
          ui-grid>
         <div class="ui-width-expand" ui-leader>{{commit.message}}</div>
         <div>{{commit.name}}</div>

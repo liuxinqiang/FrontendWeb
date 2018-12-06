@@ -40,7 +40,7 @@ export class HeaderPullPanelComponent {
                     state: LoadingState.fail,
                     message: '代码更新失败',
                 });
-                console.log('出错了...');
+                console.log('代码更新失败...');
                 console.error(e);
             });
     }
