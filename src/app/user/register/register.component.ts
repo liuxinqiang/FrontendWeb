@@ -42,7 +42,7 @@ export class RegisterComponent {
     userInfo: IUserInfoInterface | null = null;
 
     registerInfo = this._fb.group({
-        token: ['hW2ox9S6w2Swspyunwy2', Validators.required, this.validateToken.bind(this)],
+        token: ['', Validators.required, this.validateToken.bind(this)],
         passwords: this._fb.group({
                 password: ['', [Validators.required]],
                 confirmPassword: ['', [Validators.required]],

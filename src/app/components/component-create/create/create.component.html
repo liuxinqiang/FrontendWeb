@@ -1,0 +1,47 @@
+<div class="ui-width-large ui-margin-auto">
+    <h2 class="ui-h2 ui-margin-medium-bottom">新建组件</h2>
+    <form class="ui-form-stacked"
+          (keydown.enter)="$event.preventDefault()"
+          [formGroup]="mainForm"
+          (ngSubmit)="create()">
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="title">
+                        选择仓库
+                    </label>
+                    <div *ngIf="f.title.errors && f.title.touched"
+                         class="ui-text-danger"
+                         [ngSwitch]="f.title.errors | objectFirstKey">
+                        <span *ngSwitchCase="'required'">
+                            请填写组件标题
+                        </span>
+                        <span *ngSwitchCase="'pattern'">
+                            只能输入中文、英文、数字、下划线
+                        </span>
+                        <span *ngSwitchCase="'minlength'">
+                            最少 {{f.title.errors.minlength.requiredLength}} 个字符
+                        </span>
+                        <span *ngSwitchCase="'maxlength'">
+                            最大 {{f.title.errors.maxlength.requiredLength}} 个字符
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <input class="ui-input"
+                   formControlName="title"
+                   id="title"
+                   type="text"
+                   [class.ui-form-danger]="f.title.errors && f.title.touched"
+                   [class.ui-form-success]="!f.title.errors && f.title.touched"
+                   placeholder="请输入组件标题">
+        </div>
+        <div class="ui-margin ui-text-center">
+            <button type="submit"
+                    [disabled]="!mainForm.valid"
+                    class="ui-button ui-button-primary ui-button-large ui-width-1-2">
+                创建
+            </button>
+        </div>
+    </form>
+</div>

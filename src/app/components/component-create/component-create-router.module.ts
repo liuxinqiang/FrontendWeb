@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {EntryComponent} from './entry/entry.component';
+import {CreateComponent} from './create/create.component';
 import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
@@ -10,7 +11,7 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                component: HomeComponent,
+                component: CreateComponent,
             }
         ],
     }
@@ -29,5 +30,6 @@ export class ComponentCreateRouterModule {
 
 export const ComponentCreateRoutes = [
     EntryComponent,
+    CreateComponent,
     HomeComponent,
 ];
