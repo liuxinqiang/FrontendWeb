@@ -1,7 +1,24 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from 'environments/environment';
 import {AuthService} from 'app/user/services/auth.service';
+import {Observable} from 'rxjs';
+import {IUserInfoInterface} from '../../user/interfaces/user.interface';
+import {map} from 'rxjs/operators';
+
+function calcUserLoginName(user: IUserInfoInterface) {
+    const keyStr = 'uid=';
+    if (!user || !user.identities) {
+        return user;
+    }
+    const ldap = user.identities.filter(identity => identity.provider === 'ldapmain')[0];
+    if (ldap && ldap.extern_uid.indexOf('uid=') >= 0) {
+        const strings = ldap.extern_uid.split(',');
+        const uid = strings.filter(string => string.indexOf(keyStr) >= 0)[0];
+        user.loginName = uid.substr(keyStr.length);
+    }
+    return user;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +50,24 @@ export class GitMideaService {
     }
 
     user(): Promise<any> {
-        return this._http.get(this.urlPrefix + '/user').toPromise();
+        return this._http.get(this.urlPrefix + '/user')
+            .pipe(
+                map((result: IUserInfoInterface) => calcUserLoginName(result))
+            )
+            .toPromise();
+    }
+
+    getUserByPrivateToken(token: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Private-Token': token,
+            'Skip-Intercept': 'yes',
+        });
+        return this._http.get(this.urlPrefix + '/user', {
+            headers,
+        })
+            .pipe(
+                map((result: IUserInfoInterface) => calcUserLoginName(result))
+            );
     }
 
     groups() {

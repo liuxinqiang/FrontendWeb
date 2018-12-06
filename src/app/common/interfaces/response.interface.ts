@@ -1,4 +1,4 @@
-import {IUserInterface} from 'app/common/interfaces/user.interface';
+import {IUserInterface} from 'app/user/interfaces/user.interface';
 
 export interface IResponseInterface {
     statusCode: number;

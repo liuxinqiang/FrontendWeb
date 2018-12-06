@@ -4,7 +4,7 @@ import {environment} from 'environments/environment';
 import {Md5} from 'ts-md5';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
-import {IUserInterface} from 'app/common/interfaces/user.interface';
+import {IUserInterface} from 'app/user/interfaces/user.interface';
 import {
     ILoginResponseInterface, ILoginUserInterface,
 } from 'app/common/interfaces/response.interface';
@@ -39,10 +39,17 @@ export class AuthService {
         this.currentUserSubject.next(userInfo);
     }
 
+    public register(data: IUserInterface) {
+        const md5 = new Md5();
+        md5.appendStr(data.password);
+        data.password = md5.end().toString();
+        return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/register`, data);
+    }
+
     public login({loginName, password, rememberMe}): Observable<IUserInterface> {
         const md5 = new Md5();
         md5.appendStr(password);
-        password = md5.end();
+        password = md5.end().toString();
         return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/login`, {
             loginName,
             password,

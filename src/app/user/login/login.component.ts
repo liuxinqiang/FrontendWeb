@@ -12,8 +12,8 @@ export class LoginComponent {
     readonly _returnUrl: string;
 
     loginInfo = this._fb.group({
-        loginName: ['liuxinqiang', Validators.required],
-        password: ['liu566114', Validators.required],
+        loginName: ['', Validators.required],
+        password: ['', Validators.required],
         rememberMe: [false],
     });
 
@@ -24,6 +24,9 @@ export class LoginComponent {
         private _activeRoute: ActivatedRoute,
     ) {
         this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
+        if (this._activeRoute.snapshot.queryParams.loginName) {
+            this.f.loginName.setValue(this._activeRoute.snapshot.queryParams.loginName);
+        }
     }
 
     get f() {

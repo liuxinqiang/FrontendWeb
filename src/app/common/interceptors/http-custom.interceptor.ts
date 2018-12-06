@@ -16,13 +16,14 @@ export class HttpCustomInterceptor implements HttpInterceptor {
 
     constructor(
         private _authService: AuthService,
-        ) {}
+    ) {
+    }
 
     private _handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             TopUI.notification('无网络链接...', {status: 'danger'});
         } else {
-            switch(error.error.statusCode) {
+            switch (error.error.statusCode) {
                 case 401:
                     this._authService.goToLogin();
                     break;
@@ -33,6 +34,13 @@ export class HttpCustomInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+        if (request.headers.has('Skip-Intercept')) {
+            const headers = request.headers.delete('Skip-Intercept');
+            const directRequest = request.clone({ headers });
+            return next.handle(directRequest);
+        }
+
         const currentUser = this._authService.currentUserValue;
         if (currentUser && currentUser.token) {
             request = request.clone({
@@ -40,7 +48,10 @@ export class HttpCustomInterceptor implements HttpInterceptor {
                     'X-Auth-Token': currentUser.token,
                 }
             });
-            if (currentUser.user.authTokens.gitMidea &&
+            if (currentUser
+                && currentUser.user
+                && currentUser.user.authTokens
+                && currentUser.user.authTokens.gitMidea &&
                 currentUser.user.authTokens.gitMidea.token) {
                 request = request.clone({
                     setHeaders: {

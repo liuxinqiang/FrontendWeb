@@ -1,32 +1,117 @@
 <div class="ui-width-large ui-margin-auto">
-    <form class="ui-form-stacked">
+    <form class="ui-form-stacked"
+          [formGroup]="registerInfo"
+          (ngSubmit)="register()">
         <h2 class="ui-h2 ui-margin-medium-bottom">用户注册</h2>
         <div class="ui-margin">
-            <label class="ui-form-label" for="loginName">用户名</label>
-            <input class="ui-input" id="loginName" type="text" placeholder="请输入用户名">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="token">
+                        Git Midea Access Token
+                    </label>
+                    <ul class="ui-subnav ui-margin-remove" ui-margin>
+                        <li *ngIf="f.token.errors && f.token.touched">
+                                <span class="ui-text-danger"
+                                      *ngIf="f.token.errors.required">
+                                    必填项
+                                </span>
+                            <span class="ui-text-danger"
+                                  *ngIf="f.token.errors && !f.token.errors.required">
+                                    Token 错误
+                                </span>
+                        </li>
+                        <li>
+                            <a tabindex="-1"
+                               target="_blank"
+                               href="http://git.midea.com/profile/personal_access_tokens">
+                                去获取【请勾选所有权限】
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input class="ui-input"
+                   id="token"
+                   formControlName="token"
+                   [class.ui-form-danger]="f.token.errors && f.token.touched"
+                   [class.ui-form-success]="!f.token.errors && f.token.touched"
+                   type="text"
+                   placeholder="Git Midea Access Token...">
         </div>
-        <div class="ui-margin">
-            <label class="ui-form-label" for="name">姓名</label>
-            <input class="ui-input" id="name" type="text" placeholder="请输入姓名">
+        <div *ngIf="userInfo !== null"
+             @userPanel
+             class="ui-margin">
+            <label class="ui-form-label">用户信息</label>
+            <div class="ui-card ui-card-small ui-card-body ui-card-secondary">
+                <div class="ui-grid ui-grid-small">
+                    <div class="ui-width-auto">
+                        <img [attr.src]="userInfo.avatar_url"
+                             width="50"
+                             height="50">
+                    </div>
+                    <div class="ui-width-expand">
+                        <div class="ui-grid ui-grid-small">
+                            <div class="ui-width-auto">
+                                <span>姓名：{{userInfo.name}}</span>
+                            </div>
+                            <div class="ui-width-expand">
+                                <span>登录名：{{userInfo.loginName}}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span>邮箱：</span>{{userInfo.email}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="ui-margin">
-            <label class="ui-form-label" for="phone">手机号</label>
-            <input class="ui-input" id="phone" type="text" placeholder="请输入手机号">
-        </div>
-        <div class="ui-margin">
-            <label class="ui-form-label" for="email">邮箱</label>
-            <input class="ui-input" id="email" type="text" placeholder="请输入邮箱">
-        </div>
-        <div class="ui-margin">
-            <label class="ui-form-label" for="password">密码</label>
-            <input class="ui-input" id="password" type="password" placeholder="密码">
-        </div>
-        <div class="ui-margin">
-            <label class="ui-form-label" for="confirmPassword">确认密码</label>
-            <input class="ui-input" id="confirmPassword" type="password" placeholder="确认密码">
+        <div formGroupName="passwords">
+            <div class="ui-margin">
+                <div class="ui-form-label ui-flex ui-flex-between">
+                    <div class="ui-flex ui-flex-between">
+                        <label for="password">
+                            密码
+                        </label>
+                        <div *ngIf="p.password.errors && p.password.touched"
+                             class="ui-text-danger">
+                            <span *ngIf="p.password.errors.required">请填写密码</span>
+                        </div>
+                    </div>
+                </div>
+                <input class="ui-input"
+                       formControlName="password"
+                       id="password"
+                       type="password"
+                       [class.ui-form-danger]="p.password.errors && p.password.touched"
+                       [class.ui-form-success]="!p.password.errors && p.password.touched"
+                       placeholder="登录密码">
+            </div>
+            <div class="ui-margin">
+                <div class="ui-flex ui-flex-between">
+                    <label for="confirmPassword">
+                        确认密码
+                    </label>
+                    <div *ngIf="p.confirmPassword.errors && p.confirmPassword.touched"
+                         class="ui-text-danger">
+                        <span *ngIf="p.confirmPassword.errors.required">请填写确认密码</span>
+                    </div>
+                    <div *ngIf="getConfirmPasswordError()"
+                         class="ui-text-danger">
+                        <span>密码和确认密码不一致</span>
+                    </div>
+                </div>
+                <input class="ui-input"
+                       id="confirmPassword"
+                       formControlName="confirmPassword"
+                       type="password"
+                       [class.ui-form-danger]="p.confirmPassword.touched && (p.confirmPassword.errors || getConfirmPasswordError())"
+                       [class.ui-form-success]="!p.confirmPassword.errors && p.confirmPassword.touched && !getConfirmPasswordError()"
+                       placeholder="确认密码">
+            </div>
         </div>
         <div class="ui-margin-medium-top ui-text-center">
             <button type="submit"
+                    [disabled]="!registerInfo.valid"
                     class="ui-button ui-button-danger ui-button-large ui-width-1-2">
                 注册
             </button>
