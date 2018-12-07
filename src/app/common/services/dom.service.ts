@@ -1,5 +1,5 @@
-import {Inject, Injectable} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -7,32 +7,37 @@ import {DOCUMENT} from '@angular/common';
 export class DomService {
 
     constructor(
+        @Inject(PLATFORM_ID) private _platformId: Object,
         @Inject(DOCUMENT) private _document: any,
     ) {
     }
 
-    enableFullScreen() {
+    public get isBrowser(): boolean {
+        return isPlatformBrowser(this._platformId);
+    }
+
+    async enableFullScreen() {
         const elem = this._document.documentElement;
         if (elem.requestFullscreen) {
-            elem.requestFullscreen();
+            await elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) { /* Firefox */
-            elem.mozRequestFullScreen();
+            await elem.mozRequestFullScreen();
         } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-            elem.webkitRequestFullscreen();
+            await elem.webkitRequestFullscreen();
         } else if (elem.msRequestFullscreen) { /* IE/Edge */
-            elem.msRequestFullscreen();
+            await elem.msRequestFullscreen();
         }
     }
 
-    disableFullScreen() {
+    async disableFullScreen() {
         if (this._document.exitFullscreen) {
-            this._document.exitFullscreen();
+            await this._document.exitFullscreen();
         } else if (this._document.mozCancelFullScreen) { /* Firefox */
-            this._document.mozCancelFullScreen();
+            await this._document.mozCancelFullScreen();
         } else if (this._document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-            this._document.webkitExitFullscreen();
+            await this._document.webkitExitFullscreen();
         } else if (this._document.msExitFullscreen) { /* IE/Edge */
-            this._document.msExitFullscreen();
+            await this._document.msExitFullscreen();
         }
     }
 

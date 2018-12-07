@@ -32,16 +32,17 @@ export class GitMideaService {
     ) {
     }
 
-    createProject() {
-        return this._http.post(this.urlPrefix + '/projects', {
-            name: '测试项目1',
-            path: 'test1',
-            description: '从浏览器创建的本地项目1',
-        });
+    createProject(data) {
+        return this._http.post(this.urlPrefix + '/projects', data)
+            .toPromise();
     }
 
-    getProjectsList() {
+    getRootProjectsList() {
         return this._http.get(this.urlPrefix + '/users/' + this._authService.currentUserValue.user.authTokens.gitMidea.id + '/projects');
+    }
+
+    getProjectsByGroup(groupId: string) {
+        return this._http.get(this.urlPrefix + '/groups/' + groupId + '/projects');
     }
 
     // user
@@ -70,7 +71,7 @@ export class GitMideaService {
             );
     }
 
-    groups() {
+    projectGroups() {
         return this._http.get(this.urlPrefix + '/groups');
     }
 

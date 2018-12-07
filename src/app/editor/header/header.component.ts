@@ -48,19 +48,19 @@ export class EditorHeaderComponent implements OnInit, OnDestroy {
     @Input() backUrl = '/';
 
     fullScreen() {
-        this._domService.enableFullScreen();
-        this.fullScreenMode = true;
-        setTimeout(() => {
-            this.editorManagerService.layout();
-        }, 100);
+        this._domService.enableFullScreen()
+            .then(() => {
+                this.fullScreenMode = true;
+                this.editorManagerService.layout();
+            });
     }
 
     exitFullScreen() {
-        this._domService.disableFullScreen();
-        this.fullScreenMode = false;
-        setTimeout(() => {
-            this.editorManagerService.layout();
-        }, 100);
+        this._domService.disableFullScreen()
+            .then(() => {
+                this.fullScreenMode = false;
+                this.editorManagerService.layout();
+            });
     }
 
     ngOnInit(): void {

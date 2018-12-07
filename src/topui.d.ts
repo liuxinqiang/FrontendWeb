@@ -369,4 +369,5 @@ declare namespace TopUI {
     const uploadSelect: Upload;
     const uploadDrop: Upload;
     const toggle: Toggle;
+    const util: any;
 }

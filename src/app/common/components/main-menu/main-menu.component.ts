@@ -1,11 +1,11 @@
 import {Component, ElementRef, ViewChild, AfterViewInit, Inject, OnDestroy} from '@angular/core';
-import {PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {ILoginUserInterface} from 'app/common/interfaces/response.interface';
 import {Subscription} from 'rxjs';
 import {IMainMenuInterface} from '../../interfaces/menu.interface';
 import {GetMainMenuService} from '../services/get-main-menu.service';
 import {AuthService} from 'app/user/services/auth.service';
+import {DomService} from '../../services/dom.service';
 
 @Component({
     selector: 'app-common-main-menu',
@@ -22,7 +22,7 @@ export class MainMenuComponent implements AfterViewInit, OnDestroy {
     private _mainMenuSubscription$: Subscription;
 
     constructor(
-        @Inject(PLATFORM_ID) private _platformId: Object,
+        private _domService: DomService,
         private _mainMenuService: GetMainMenuService,
         private _authService: AuthService,
     ) {
@@ -36,7 +36,7 @@ export class MainMenuComponent implements AfterViewInit, OnDestroy {
     @ViewChild('searchButton') searchButton: ElementRef;
 
     ngAfterViewInit() {
-        if (isPlatformBrowser(this._platformId) && this.enableSearch) {
+        if (this._domService.isBrowser && this.enableSearch) {
             setTimeout(() => {
                 TopUI.toggle(this.searchButton.nativeElement).toggle();
             }, 0);

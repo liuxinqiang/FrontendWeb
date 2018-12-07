@@ -67,19 +67,9 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.f.type.valueChanges
             .subscribe(this.injectValidateRulesBaseOnType.bind(this));
-        this._gitMideaService.getProjectsList()
-            .subscribe(data => {
-                console.log('data');
-                console.log(data);
-            });
         this._gitMideaService.user()
             .then(data => {
                 console.log('users');
-                console.log(data);
-            });
-        this._gitMideaService.groups()
-            .subscribe(data => {
-                console.log('groups');
                 console.log(data);
             });
     }
