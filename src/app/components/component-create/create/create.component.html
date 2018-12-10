@@ -43,7 +43,6 @@
                                 </span>
                             </div>
                             <a href="#create-project-modal"
-                               #createButton
                                ui-toggle>
                                 新建
                             </a>
@@ -69,13 +68,13 @@
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">
                     <label for="title">
-                        标题
+                        名称
                     </label>
                     <div *ngIf="f.title.errors && f.title.touched"
                          class="ui-text-danger"
                          [ngSwitch]="f.title.errors | objectFirstKey">
                         <span *ngSwitchCase="'required'">
-                            请填写组件标题
+                            请填写组件名称
                         </span>
                         <span *ngSwitchCase="'pattern'">
                             只能输入中文、英文、数字、下划线
@@ -101,7 +100,7 @@
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">
                     <label for="componentName">
-                        名称
+                        组件名
                     </label>
                     <div *ngIf="f.componentName.errors && f.componentName.touched"
                          class="ui-text-danger"
@@ -131,6 +130,24 @@
                    [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
                    [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
                    placeholder="请输入组件名称">
+        </div>
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label>
+                        所属分类
+                    </label>
+                </div>
+            </div>
+            <div>
+                <a ui-icon="icon:plus"
+                   href="#tags-modal"
+                   ui-toggle></a>
+                <span *ngFor="let tag of f.tags.value"
+                      class="ui-label ui-label-success ui-margin-small-left">
+                    {{tag.name}}
+                </span>
+            </div>
         </div>
         <div class="ui-grid ui-grid-small">
             <div class="ui-width-2-3">
@@ -214,7 +231,7 @@
         </div>
     </form>
 </div>
-<div id="create-project-modal" ui-modal>
+<div id="create-project-modal" #createProjectModal ui-modal>
     <div class="ui-modal-dialog ui-width-large">
         <button class="ui-modal-close-default" type="button" ui-close></button>
         <div class="ui-modal-header">
@@ -293,6 +310,28 @@
                     (click)="createRepo()"
                     type="button">
                 创建
+            </button>
+        </div>
+    </div>
+</div>
+<div id="tags-modal" #tagsModal ui-modal>
+    <div class="ui-modal-dialog ui-width-large">
+        <button class="ui-modal-close-default" type="button" ui-close></button>
+        <div class="ui-modal-header">
+            <h2 class="ui-modal-title">选择分类</h2>
+        </div>
+        <div class="ui-modal-body">
+            <app-components-tags-render
+                    selectMode="multiple"
+                    [selectedTags]="f.tags.value"
+                    (selectedChange)="f.tags.setValue($event)"
+                    [tags]="tagsService.tags">
+            </app-components-tags-render>
+        </div>
+        <div class="ui-text-right ui-modal-footer">
+            <button class="ui-button ui-button-primary ui-modal-close"
+                    type="button">
+                确定
             </button>
         </div>
     </div>

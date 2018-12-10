@@ -1,0 +1,36 @@
+<div class="ui-card ui-card-default"
+     *ngIf="component">
+    <div class="ui-card-header">
+        <h3 class="ui-card-title ui-margin-remove-bottom">
+            <a class="ui-link-reset"
+               [routerLink]="[component.componentName]">
+                {{component.title}}
+                <span *ngIf="component.users && component.users.length">
+                     [{{component.users[0].role === 99 ? '管理员' : '参与者'}}]
+                </span>
+            </a>
+        </h3>
+        <p class="ui-text-meta ui-margin-remove-top">
+            {{component.componentName}}
+        </p>
+    </div>
+    <div class="ui-card-body">
+        <div [innerHtml]="component.description"></div>
+        <ul class="ui-list">
+            <li>
+                <span>创建时间：</span>
+                {{component.createTime | date: 'medium'}}
+            </li>
+            <li>
+                <span>更新时间：</span>
+                {{component.createTime | date: 'medium'}}
+            </li>
+        </ul>
+    </div>
+    <div class="ui-card-footer">
+        <a [routerLink]="[component.componentName]"
+           class="ui-button ui-button-text">
+            详细了解
+        </a>
+    </div>
+</div>

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ComponentsService} from '../services/components.service';
 import {DataFilter, IResponseInterface} from '../../common/interfaces/response.interface';
 import {IComponentInterface} from '../interfaces/component.interface';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-public-components',
-  templateUrl: './public-components.component.html',
-  styleUrls: ['./public-components.component.less']
+    selector: 'app-public-components',
+    templateUrl: './public-components.component.html',
+    styleUrls: ['./public-components.component.less']
 })
 export class PublicComponentsComponent implements OnInit {
 

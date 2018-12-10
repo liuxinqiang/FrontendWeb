@@ -1,17 +1,7 @@
 import {IUserInterface} from 'app/user/interfaces/user.interface';
 
-export interface IRepoInfo {
-    branch: string;
-    path: string;
-    id: number;
-}
-
-export interface IComponentRepoInterface {
-    gitMidea?: IRepoInfo;
-}
-
 export interface IComponentInterface {
-    name: string;
+    title: string;
     componentName: string;
     createTime: string;
     isActive: boolean;
@@ -21,7 +11,10 @@ export interface IComponentInterface {
     updateTime: string;
     users: IUserInterface[];
     versions: any[];
-    repo: IComponentRepoInterface;
+    repoId: number;
+    repoPath: string;
+    repoBranch: string;
+    description: string;
 }
 
 export class ComponentDetailStorage {

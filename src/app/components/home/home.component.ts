@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ITag} from '../interfaces/tag.interface';
 import {TagsService} from '../services/tags.service';
 
@@ -7,18 +7,21 @@ import {TagsService} from '../services/tags.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
     tags: ITag[];
 
     constructor(
-        private _tagsService: TagsService,
-    ) {}
-
-    ngOnInit() {
-        this._tagsService.getTags()
-            .subscribe(data => {
-                this.tags = data;
-            });
+        public tagsService: TagsService,
+    ) {
     }
 
+    nodeClick (node) {
+        console.log('test...');
+        console.log(node);
+    }
+
+    selectedChange(e) {
+        console.log('选择变化');
+        console.log(e);
+    }
 }

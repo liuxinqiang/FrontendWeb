@@ -37,9 +37,9 @@ export class GitService {
     async init(): Promise<void> {
         const component: IComponentInterface = this._componentService.component;
         this.dir = `${this._authService.currentUserValue.user.loginName}_component_${component.componentName}`;
-        this.url = `${environment.gitMidea.url}/${component.repo.gitMidea.path}.git`;
+        this.url = `${environment.gitMidea.url}/${component.repoPath}.git`;
 
-        this.branch = component.repo.gitMidea.branch;
+        this.branch = component.repoBranch;
         const componentStorage: ComponentDetailStorage = this._localStorage.getItem(this.dir)
             || new ComponentDetailStorage();
 

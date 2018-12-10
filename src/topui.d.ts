@@ -1,5 +1,9 @@
 declare namespace TopUI {
-    interface DropdownElement {
+    interface ComponentElement {
+        $destroy(removeFromDom?: boolean): void;
+    }
+
+    interface DropdownElement extends ComponentElement {
         show(): void;
 
         hide(force?: boolean): void;
@@ -33,12 +37,10 @@ declare namespace TopUI {
 
     type Dropdown = (selector: string, options?: DropdownOptions) => DropdownElement;
 
-    interface ModalElement {
+    interface ModalElement extends ComponentElement {
         show(): void;
 
         hide(): void;
-
-        isActive(): boolean;
     }
 
     interface ModalOptions {

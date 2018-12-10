@@ -29,7 +29,7 @@ export class GitLogService {
 
         const firstLocalCommit = localCommits[localCommits.length - 1];
         const remoteCommits: any = await this._gitMideaService.getCommits(
-            this._componentService.component.repo.gitMidea.id,
+            this._componentService.component.repoId,
             this._gitService.branch,
             new Date(firstLocalCommit.author.timestamp * 1000).toISOString()
         );

@@ -3,22 +3,35 @@ import {environment} from 'environments/environment';
 import {IResponseInterface} from 'app/common/interfaces/response.interface';
 import {map} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ITag} from '../interfaces/tag.interface';
 
 @Injectable()
 export class TagsService {
-    private _urlPrefix = '/asyncComponent/tag';
+    private _tagsSubject: BehaviorSubject<ITag[]>;
+    public tags$: Observable<ITag[]>;
+    private _urlPrefix = environment.mainAPI.url + '/asyncComponent/tag';
+
+    public get tags(): ITag[] {
+        return this._tagsSubject.getValue();
+    }
 
     constructor(
         private _http: HttpClient,
-    ) {}
+    ) {
+        this._tagsSubject = new BehaviorSubject<ITag[]>([]);
+        this.tags$ = this._tagsSubject.asObservable();
+        this.getTags().subscribe(data => {
+            this._tagsSubject.next(data);
+        });
+    }
 
     getTags(): Observable<ITag[]> {
-        return this._http.get(
-            `${environment.mainAPI.url}${this._urlPrefix}/all`)
+        return this._http.get(`${this._urlPrefix}/all`)
             .pipe(
-                map((data: IResponseInterface) => data.data)
+                map((data: IResponseInterface) => {
+                    return data.data;
+                })
             );
     }
 }

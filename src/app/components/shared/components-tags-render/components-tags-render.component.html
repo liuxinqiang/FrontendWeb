@@ -1,0 +1,25 @@
+<ul [ngClass]="styClass">
+    <li *ngFor="let tag of tags"
+        [ngClass]="{
+                'ui-parent': tag.children.length
+            }">
+        <a (click)="nodeClick.emit(tag)">
+            <label>
+                <input class="ui-checkbox"
+                       type="checkbox"
+                       *ngIf="selectMode !== 'none'"
+                       [(ngModel)]="tag.selected"
+                       (ngModelChange)="selectTagChange(tag)">
+                {{tag.name}}
+            </label>
+        </a>
+        <app-components-tags-render
+                *ngIf="tag.children.length"
+                [tags]="tag.children"
+                [selectMode]="selectMode"
+                (nodeClick)="nodeClick.emit($event)"
+                (selectedChange)="selectedChange.emit($event)"
+                styClass="ui-nav-sub">
+        </app-components-tags-render>
+    </li>
+</ul>
