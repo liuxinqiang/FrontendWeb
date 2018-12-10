@@ -97,68 +97,40 @@
                    [class.ui-form-success]="!f.title.errors && f.title.touched"
                    placeholder="请输入组件标题">
         </div>
-        <div class="ui-grid ui-grid-small">
-            <div class="ui-width-2-3">
-                <div class="ui-form-label ui-flex ui-flex-between">
-                    <div class="ui-flex ui-flex-between">
-                        <label for="componentName">
-                            名称
-                        </label>
-                        <div *ngIf="f.componentName.errors && f.componentName.touched"
-                             class="ui-text-danger"
-                             [ngSwitch]="f.componentName.errors | objectFirstKey">
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="componentName">
+                        名称
+                    </label>
+                    <div *ngIf="f.componentName.errors && f.componentName.touched"
+                         class="ui-text-danger"
+                         [ngSwitch]="f.componentName.errors | objectFirstKey">
                             <span *ngSwitchCase="'required'">
                                 请填写组件名称
                             </span>
-                            <span *ngSwitchCase="'pattern'">
+                        <span *ngSwitchCase="'pattern'">
                                 允许字母、数字及下划线，以字母开头
                             </span>
-                            <span *ngSwitchCase="'minlength'">
+                        <span *ngSwitchCase="'minlength'">
                                 最少 {{f.componentName.errors.minlength.requiredLength}} 个字符
                             </span>
-                            <span *ngSwitchCase="'maxlength'">
+                        <span *ngSwitchCase="'maxlength'">
                                 最大 {{f.componentName.errors.maxlength.requiredLength}} 个字符
                             </span>
-                            <span *ngSwitchCase="'exist'">
+                        <span *ngSwitchCase="'exist'">
                                 该名称已被占用
                             </span>
-                        </div>
                     </div>
                 </div>
-                <input class="ui-input"
-                       formControlName="componentName"
-                       id="componentName"
-                       type="text"
-                       [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
-                       [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
-                       placeholder="请输入组件名称">
             </div>
-            <div class="ui-width-1-3">
-                <div class="ui-form-label ui-flex ui-flex-between">
-                    <div class="ui-flex ui-flex-between">
-                        <label for="version">
-                            初始版本
-                        </label>
-                        <div *ngIf="f.version.errors && f.version.touched"
-                             class="ui-text-danger"
-                             [ngSwitch]="f.version.errors | objectFirstKey">
-                            <span *ngSwitchCase="'required'">
-                                请提供版本号
-                            </span>
-                            <span *ngSwitchCase="'pattern'">
-                                版本格式不正确
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <input class="ui-input"
-                       formControlName="version"
-                       id="version"
-                       type="text"
-                       [class.ui-form-danger]="f.version.errors && f.version.touched"
-                       [class.ui-form-success]="!f.version.errors && f.version.touched"
-                       placeholder="版本号">
-            </div>
+            <input class="ui-input"
+                   formControlName="componentName"
+                   id="componentName"
+                   type="text"
+                   [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
+                   [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
+                   placeholder="请输入组件名称">
         </div>
         <div class="ui-grid ui-grid-small">
             <div class="ui-width-2-3">
@@ -298,7 +270,7 @@
                 </div>
                 <div class="ui-margin">
                     <label class="ui-form-label"
-                            for="repoDescription">
+                           for="repoDescription">
                         描述说明
                     </label>
                     <textarea class="ui-textarea"

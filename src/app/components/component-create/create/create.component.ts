@@ -7,6 +7,7 @@ import {Observable, of, timer} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {ComponentsService} from '../../services/components.service';
 import {IResponseInterface} from 'app/common/interfaces/response.interface';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-create',
@@ -41,10 +42,6 @@ export class CreateComponent implements OnInit {
             Validators.pattern(/^[a-zA-Z0-9_\u4e00-\u9eff]+$/),
             Validators.minLength(2),
             Validators.maxLength(32),
-        ]),
-        version: new FormControl('1.0.0', [
-            Validators.required,
-            Validators.pattern(/^\d{1,3}\.\d{1,3}\.\d{1,3}$/),
         ]),
         isPublic: new FormControl(true),
         deployType: new FormControl(2),
@@ -99,6 +96,7 @@ export class CreateComponent implements OnInit {
         private _gitMideaService: GitMideaService,
         private _componentsService: ComponentsService,
         private _domService: DomService,
+        private _router: Router,
     ) {
     }
 
@@ -172,12 +170,15 @@ export class CreateComponent implements OnInit {
     create() {
         const value = Object.assign({}, this.mainForm.value);
         delete value.group;
-        const {
-            repoId,
-        } = value;
-        const repo = this.projects.filter(project => project.id === Number(repoId))[0];
+        value.repoId = Number(value.repoId);
+        const repo = this.projects.filter(project => project.id === value.repoId)[0];
         value['repoPath'] = repo.path_with_namespace;
         value['repoBranch'] = repo.default_branch;
-        console.log(value);
+        value['tags'] = [];
+        this._componentsService.createComponent(value)
+            .subscribe(() => {
+                TopUI.notification('组件创建成功！', 'success');
+                this._router.navigate(['/components/my-components']);
+            });
     }
 }
