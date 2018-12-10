@@ -30,7 +30,7 @@ export class GitService {
     public get authInfo(): object {
         return {
             oauth2format: 'gitlab',
-            token: this._authService.currentUserValue.user.authTokens.gitMidea.token,
+            token: this._authService.currentUserValue.user.repoPrivateToken,
         };
     }
 

@@ -1,9 +1,12 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {GitMideaService} from '../../../common/services/git-midea.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {GitMideaService} from 'app/common/services/git-midea.service';
 import {IGroup, IProject} from '../../interfaces/git-midea.interface';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {DomService} from '../../../common/services/dom.service';
-import {Observable} from 'rxjs';
+import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators} from '@angular/forms';
+import {DomService} from 'app/common/services/dom.service';
+import {Observable, of, timer} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {ComponentsService} from '../../services/components.service';
+import {IResponseInterface} from 'app/common/interfaces/response.interface';
 
 @Component({
     selector: 'app-create',
@@ -20,26 +23,32 @@ export class CreateComponent implements OnInit {
 
     mainForm = new FormGroup({
         group: new FormControl(''),
-        project: new FormControl('', [
+        repoId: new FormControl('', [
             Validators.required,
+        ], [
+            this.existCheck('repoId').bind(this),
         ]),
-        title: new FormControl('', [
-            Validators.required,
-            Validators.pattern(/^[a-z0-9_\u4e00-\u9eff]+$/),
-            Validators.minLength(2),
-            Validators.maxLength(32),
-        ]),
-        name: new FormControl('', [
+        componentName: new FormControl('', [
             Validators.required,
             Validators.pattern(/^(?![0-9_])[a-zA-Z0-9_]+$/),
             Validators.minLength(2),
             Validators.maxLength(30),
+        ], [
+            this.existCheck('componentName').bind(this),
+        ]),
+        title: new FormControl('', [
+            Validators.required,
+            Validators.pattern(/^[a-zA-Z0-9_\u4e00-\u9eff]+$/),
+            Validators.minLength(2),
+            Validators.maxLength(32),
         ]),
         version: new FormControl('1.0.0', [
             Validators.required,
             Validators.pattern(/^\d{1,3}\.\d{1,3}\.\d{1,3}$/),
         ]),
-        description: new FormControl('功能1\n功能2\n功能3', [Validators.required]),
+        isPublic: new FormControl(true),
+        deployType: new FormControl(2),
+        description: new FormControl('', [Validators.required]),
     });
 
     createProject = new FormGroup({
@@ -52,6 +61,32 @@ export class CreateComponent implements OnInit {
         description: new FormControl('')
     });
 
+    existCheck(type): AsyncValidatorFn {
+        return (control: AbstractControl) => {
+            return timer(500).pipe(
+                switchMap(() => {
+                    if (!control.value) {
+                        return of(null);
+                    }
+                    return this._componentsService.existCheck(type, control.value).pipe(
+                        map((res: IResponseInterface) => {
+                            if (res.data === null) {
+                                return null;
+                            } else {
+                                return {
+                                    exist: true,
+                                };
+                            }
+                        }),
+                        catchError(() => of({
+                            exist: true,
+                        }))
+                    );
+                })
+            );
+        };
+    }
+
     get f() {
         return this.mainForm.controls;
     }
@@ -62,6 +97,7 @@ export class CreateComponent implements OnInit {
 
     constructor(
         private _gitMideaService: GitMideaService,
+        private _componentsService: ComponentsService,
         private _domService: DomService,
     ) {
     }
@@ -81,14 +117,14 @@ export class CreateComponent implements OnInit {
     }
 
     private _getProjectsList$(groupId = ''): Observable<any> {
-        this.f.project.setValue('');
+        this.f.repoId.setValue('');
         return groupId ?
             this._gitMideaService.getProjectsByGroup(groupId)
             : this._gitMideaService.getRootProjectsList();
     }
 
     getProjectsList(groupId?: string) {
-        this.f.project.setValue('');
+        this.f.repoId.setValue('');
         this.projects = [];
         this._getProjectsList$(groupId)
             .subscribe((data: IProject[]) => {
@@ -120,7 +156,7 @@ export class CreateComponent implements OnInit {
         }
     }
 
-    create() {
+    createRepo() {
         const value = this.createProject.value;
         value['path'] = value.name;
         this._gitMideaService.createProject(value)
@@ -131,5 +167,17 @@ export class CreateComponent implements OnInit {
             .catch(() => {
                 TopUI.notification('仓库创建失败，该名称已经被占用或你无权限创建', 'danger');
             });
+    }
+
+    create() {
+        const value = Object.assign({}, this.mainForm.value);
+        delete value.group;
+        const {
+            repoId,
+        } = value;
+        const repo = this.projects.filter(project => project.id === Number(repoId))[0];
+        value['repoPath'] = repo.path_with_namespace;
+        value['repoBranch'] = repo.default_branch;
+        console.log(value);
     }
 }

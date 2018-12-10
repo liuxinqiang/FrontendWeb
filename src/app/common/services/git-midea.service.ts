@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from 'environments/environment';
 import {AuthService} from 'app/user/services/auth.service';
 import {Observable} from 'rxjs';
-import {IUserInfoInterface} from '../../user/interfaces/user.interface';
+import {IUserInfoInterface} from 'app/user/interfaces/user.interface';
 import {map} from 'rxjs/operators';
 
 function calcUserLoginName(user: IUserInfoInterface) {
@@ -38,7 +38,7 @@ export class GitMideaService {
     }
 
     getRootProjectsList() {
-        return this._http.get(this.urlPrefix + '/users/' + this._authService.currentUserValue.user.authTokens.gitMidea.id + '/projects');
+        return this._http.get(this.urlPrefix + '/users/' + this._authService.currentUserValue.user.repoUserId + '/projects');
     }
 
     getProjectsByGroup(groupId: string) {

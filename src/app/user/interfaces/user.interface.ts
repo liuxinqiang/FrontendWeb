@@ -1,16 +1,10 @@
-export interface IUserAuthToken {
-    gitMidea?: {
-        token: string;
-        id: number;
-    };
-}
-
 export interface IUserInterface {
     loginName: string;
     name: string;
     avatar: string;
     email: string;
-    authTokens: IUserAuthToken;
+    repoUserId:  number;
+    repoPrivateToken?: string;
     createTime?: string;
     updateTime?: string;
     timezone?: string;

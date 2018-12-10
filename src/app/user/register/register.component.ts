@@ -115,12 +115,8 @@ export class RegisterComponent {
             email: this.userInfo.email,
             loginName: this.userInfo.loginName,
             password: value.passwords.password,
-            authTokens: {
-                gitMidea: {
-                    token: value.token,
-                    id: this.userInfo.id,
-                }
-            }
+            repoPrivateToken: value.token,
+            repoUserId: this.userInfo.id,
         };
         this._authService.register(user)
             .subscribe(() => {

@@ -27,16 +27,19 @@
                 <div class="ui-margin">
                     <div class="ui-form-label ui-flex ui-flex-between">
                         <div class="ui-flex ui-flex-between">
-                            <label for="form-project">
+                            <label for="repoId">
                                 选择仓库
                             </label>
-                            <div *ngIf="f.project.errors !== null
-                                && f.project.errors
-                                && f.project.touched"
+                            <div *ngIf="f.repoId.errors !== null
+                                && f.repoId.errors
+                                && f.repoId.touched"
                                  class="ui-text-danger"
-                                 [ngSwitch]="f.project.errors | objectFirstKey">
+                                 [ngSwitch]="f.repoId.errors | objectFirstKey">
                                 <span *ngSwitchCase="'required'">
                                      必填项
+                                </span>
+                                <span *ngSwitchCase="'exist'">
+                                     该仓库已绑定
                                 </span>
                             </div>
                             <a href="#create-project-modal"
@@ -48,10 +51,10 @@
                     </div>
                     <div class="ui-form-controls">
                         <select class="ui-select"
-                                [class.ui-form-danger]="f.project.errors && f.project.touched"
-                                [class.ui-form-success]="!f.project.errors && f.project.touched"
-                                formControlName="project"
-                                id="form-project">
+                                [class.ui-form-danger]="f.repoId.errors && f.repoId.touched"
+                                [class.ui-form-success]="!f.repoId.errors && f.repoId.touched"
+                                formControlName="repoId"
+                                id="repoId">
                             <option value="">请选择</option>
                             <option *ngFor="let option of projects"
                                     [value]="option.id">
@@ -98,12 +101,12 @@
             <div class="ui-width-2-3">
                 <div class="ui-form-label ui-flex ui-flex-between">
                     <div class="ui-flex ui-flex-between">
-                        <label for="name">
+                        <label for="componentName">
                             名称
                         </label>
-                        <div *ngIf="f.name.errors && f.name.touched"
+                        <div *ngIf="f.componentName.errors && f.componentName.touched"
                              class="ui-text-danger"
-                             [ngSwitch]="f.name.errors | objectFirstKey">
+                             [ngSwitch]="f.componentName.errors | objectFirstKey">
                             <span *ngSwitchCase="'required'">
                                 请填写组件名称
                             </span>
@@ -111,20 +114,23 @@
                                 允许字母、数字及下划线，以字母开头
                             </span>
                             <span *ngSwitchCase="'minlength'">
-                                最少 {{f.name.errors.minlength.requiredLength}} 个字符
+                                最少 {{f.componentName.errors.minlength.requiredLength}} 个字符
                             </span>
                             <span *ngSwitchCase="'maxlength'">
-                                最大 {{f.name.errors.maxlength.requiredLength}} 个字符
+                                最大 {{f.componentName.errors.maxlength.requiredLength}} 个字符
+                            </span>
+                            <span *ngSwitchCase="'exist'">
+                                该名称已被占用
                             </span>
                         </div>
                     </div>
                 </div>
                 <input class="ui-input"
-                       formControlName="name"
-                       id="name"
+                       formControlName="componentName"
+                       id="componentName"
                        type="text"
-                       [class.ui-form-danger]="f.name.errors && f.name.touched"
-                       [class.ui-form-success]="!f.name.errors && f.name.touched"
+                       [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
+                       [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
                        placeholder="请输入组件名称">
             </div>
             <div class="ui-width-1-3">
@@ -152,6 +158,57 @@
                        [class.ui-form-danger]="f.version.errors && f.version.touched"
                        [class.ui-form-success]="!f.version.errors && f.version.touched"
                        placeholder="版本号">
+            </div>
+        </div>
+        <div class="ui-grid ui-grid-small">
+            <div class="ui-width-2-3">
+                <div class="ui-margin">
+                    <label class="ui-form-label">发布方式</label>
+                    <div class="ui-grid-small ui-child-width-auto ui-grid">
+                        <label>
+                            <input class="ui-radio"
+                                   type="radio"
+                                   formControlName="deployType"
+                                   [value]="0">
+                            <span class="ui-margin-small-left">无</span>
+                        </label>
+                        <label>
+                            <input class="ui-radio"
+                                   type="radio"
+                                   formControlName="deployType"
+                                   [value]="1">
+                            <span class="ui-margin-small-left">npm 包</span>
+                        </label>
+                        <label>
+                            <input class="ui-radio"
+                                   type="radio"
+                                   formControlName="deployType"
+                                   [value]="2">
+                            <span class="ui-margin-small-left">异步组件</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-width-1-3">
+                <div class="ui-margin">
+                    <label class="ui-form-label">是否公开？</label>
+                    <div class="ui-grid-small ui-child-width-auto ui-grid">
+                        <label>
+                            <input class="ui-radio"
+                                   type="radio"
+                                   formControlName="isPublic"
+                                   [value]="true">
+                            <span class="ui-margin-small-left">是</span>
+                        </label>
+                        <label>
+                            <input class="ui-radio"
+                                   type="radio"
+                                   formControlName="isPublic"
+                                   [value]="false">
+                            <span class="ui-margin-small-left">否</span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="ui-margin">
@@ -261,7 +318,7 @@
             </button>
             <button class="ui-button ui-button-primary ui-modal-close"
                     [disabled]="!createProject.valid"
-                    (click)="create()"
+                    (click)="createRepo()"
                     type="button">
                 创建
             </button>

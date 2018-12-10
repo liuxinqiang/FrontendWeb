@@ -31,6 +31,19 @@ export class ComponentsService {
             );
     }
 
+    existCheck(type, value) {
+        return this._http.get(`${this._urlPrefix}/existCheck`, {
+            params: {
+                type,
+                value,
+            }
+        });
+    }
+
+    createComponent(data) {
+        return this._http.post(`${this._urlPrefix}/add`, data);
+    }
+
     getAllPublicComponentsList(dataFilter: DataFilter): Observable<object> {
         const {
             pageSize,

@@ -48,12 +48,10 @@ export class HttpCustomInterceptor implements HttpInterceptor {
         if (apiType === 'git') {
             if (currentUser
                 && currentUser.user
-                && currentUser.user.authTokens
-                && currentUser.user.authTokens.gitMidea &&
-                currentUser.user.authTokens.gitMidea.token) {
+                && currentUser.user.repoPrivateToken) {
                 request = request.clone({
                     setHeaders: {
-                        'Private-Token': currentUser.user.authTokens.gitMidea.token,
+                        'Private-Token': currentUser.user.repoPrivateToken,
                     }
                 });
             }
