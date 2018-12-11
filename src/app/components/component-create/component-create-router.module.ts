@@ -11,6 +11,9 @@ const routes: Routes = [
             {
                 path: '',
                 component: CreateComponent,
+                data: {
+                    title: '新建组件',
+                },
             }
         ],
     }

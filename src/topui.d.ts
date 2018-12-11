@@ -60,7 +60,7 @@ declare namespace TopUI {
 
         confirm(message: string, onconfirm: () => any, oncancel?: () => any, options?: ModalOptions): void;
 
-        prompt(message: string, value: string, onsubmit?: (newValue: string) => any, options?: ModalOptions): void;
+        prompt(message: string, value: string, onsubmit?: (newValue: string) => any, options?: ModalOptions): Promise<string>;
 
         blockUI(content: string, options?: ModalOptions): ModalElement;
 

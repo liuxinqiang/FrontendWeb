@@ -1,13 +1,16 @@
 export interface ITag {
-    createTime: string;
-    updateTime: string;
+    createTime?: string;
+    updateTime?: string;
     name: string;
-    id: number;
+    id?: number;
+    children?: ITag[];
+    // editing Mode
     selected?: boolean;
-    children: ITag[];
+    editing?: boolean;
+    parentId?: number;
 }
 
 export interface ITagSimple {
     name: string;
-    id: number;
+    id?: number;
 }

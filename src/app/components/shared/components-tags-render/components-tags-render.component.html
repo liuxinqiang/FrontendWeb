@@ -1,20 +1,66 @@
 <ul [ngClass]="styClass">
-    <li *ngFor="let tag of tags"
+    <li *ngFor="let tag of tags; let tagIndex = index"
         [ngClass]="{
-                'ui-parent': tag.children.length
+                'ui-parent': tag.children && tag.children.length
             }">
-        <a (click)="nodeClick.emit(tag)">
-            <label>
-                <input class="ui-checkbox"
-                       type="checkbox"
-                       *ngIf="selectMode !== 'none'"
-                       [(ngModel)]="tag.selected"
-                       (ngModelChange)="selectTagChange(tag)">
-                {{tag.name}}
-            </label>
+        <a (click)="nodeClick.emit(tag)"
+           class="ui-visible-toggle">
+            <div class="ui-grid">
+                <div class="ui-width-expand">
+                    <ng-container *ngIf="tag.editing; else showName">
+                        <input class="ui-form-small ui-input"
+                               [(ngModel)]="tag.name"
+                               type="text">
+                    </ng-container>
+                    <ng-template #showName>
+                        <label>
+                            <input class="ui-checkbox"
+                                   type="checkbox"
+                                   *ngIf="selectMode !== 'none'"
+                                   [(ngModel)]="tag.selected"
+                                   (ngModelChange)="selectTagChange(tag)">
+                            {{tag.name}}
+                        </label>
+                    </ng-template>
+                </div>
+                <div class="ui-width-auto"
+                     *ngIf="editorMode">
+                    <ul class="ui-invisible-hover ui-iconnav">
+                        <ng-container *ngIf="tag.editing; else showNameAction">
+                            <li>
+                                <a ui-tooltip="确定"
+                                   ui-icon="icon: check"
+                                   (click)="add(tag)">
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-tooltip="删除"
+                                   (click)="tags.splice(tagIndex, 1)"
+                                   ui-icon="icon: trash">
+                                </a>
+                            </li>
+                        </ng-container>
+                        <ng-template #showNameAction>
+                            <li *ngIf="!tag.editing">
+                                <a ui-tooltip="添加子元素"
+                                   ui-icon="icon: arrow-down"
+                                   (click)="addAction(tag)">
+                                </a>
+                            </li>
+                        </ng-template>
+                        <li>
+                            <a ui-tooltip="添加兄弟元素"
+                               ui-icon="icon: menu"
+                               (click)="addAction()">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </a>
         <app-components-tags-render
-                *ngIf="tag.children.length"
+                *ngIf="tag.children && tag.children.length"
+                [parentId]="tag.id"
                 [tags]="tag.children"
                 [selectMode]="selectMode"
                 (nodeClick)="nodeClick.emit($event)"

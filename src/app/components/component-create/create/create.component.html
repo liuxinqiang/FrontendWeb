@@ -143,10 +143,10 @@
                 <a ui-icon="icon:plus"
                    href="#tags-modal"
                    ui-toggle></a>
-                <span *ngFor="let tag of f.tags.value"
+                <div *ngFor="let tag of f.tags.value"
                       class="ui-label ui-label-success ui-margin-small-left">
                     {{tag.name}}
-                </span>
+                </div>
             </div>
         </div>
         <div class="ui-grid ui-grid-small">
@@ -323,6 +323,7 @@
         <div class="ui-modal-body">
             <app-components-tags-render
                     selectMode="multiple"
+                    [editorMode]="true"
                     [selectedTags]="f.tags.value"
                     (selectedChange)="f.tags.setValue($event)"
                     [tags]="tagsService.tags">
