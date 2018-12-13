@@ -1,9 +1,8 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {GitMideaService} from 'app/common/services/git-midea.service';
 import {IGroup, IProject} from '../../interfaces/git-midea.interface';
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DomService} from 'app/common/services/dom.service';
-import {Observable, of, timer} from 'rxjs';
+import { of, timer} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {ComponentsService} from '../../services/components.service';
 import {IResponseInterface} from 'app/common/interfaces/response.interface';
@@ -97,7 +96,6 @@ export class CreateComponent implements OnInit, OnDestroy {
 
     constructor(
         public tagsService: TagsService,
-        private _gitMideaService: GitMideaService,
         private _componentsService: ComponentsService,
         private _domService: DomService,
         private _tagsService: TagsService,
@@ -110,48 +108,7 @@ export class CreateComponent implements OnInit, OnDestroy {
         return exist ? {'exist': {value: control.value}} : null;
     }
 
-    getGroups() {
-        this.f.group.setValue('');
-        this.groups = [];
-        this._gitMideaService.projectGroups()
-            .subscribe((data: IGroup[]) => {
-                this.groups = data;
-            });
-    }
-
-    private _getProjectsList$(groupId = ''): Observable<any> {
-        this.f.repoId.setValue('');
-        return groupId ?
-            this._gitMideaService.getProjectsByGroup(groupId)
-            : this._gitMideaService.getRootProjectsList();
-    }
-
-    getProjectsList(groupId?: string) {
-        this.f.repoId.setValue('');
-        this.projects = [];
-        this._getProjectsList$(groupId)
-            .subscribe((data: IProject[]) => {
-                this.projects = data;
-                if (groupId === undefined) {
-                    data.map(project => this.existProjectsPath.push(project.path));
-                }
-            });
-    }
-
     ngOnInit() {
-        this.getGroups();
-        this.getProjectsList();
-        this.f.group.valueChanges.subscribe((newValue) => {
-            this.getProjectsList(newValue);
-        });
-        this.cf.namespace_id.valueChanges.subscribe((newId) => {
-            this._getProjectsList$(newId)
-                .subscribe((projects: IProject[]) => {
-                    this.existProjectsPath = [];
-                    projects.map(project => this.existProjectsPath.push(project.path));
-                    this.cf.name.updateValueAndValidity();
-                });
-        });
         if (this._domService.isBrowser) {
             setTimeout(() => {
                 TopUI.modal(this.createProjectModal.nativeElement).show();
@@ -174,14 +131,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     createRepo() {
         const value = this.createProject.value;
         value['path'] = value.name;
-        this._gitMideaService.createProject(value)
-            .then((res: IProject) => {
-                TopUI.notification('仓库创建成功！', 'success');
-                this.f.group.setValue(value.namespace_id);
-            })
-            .catch(() => {
-                TopUI.notification('仓库创建失败，该名称已经被占用或你无权限创建', 'danger');
-            });
     }
 
     create() {

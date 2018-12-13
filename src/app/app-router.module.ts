@@ -51,15 +51,6 @@ const mainRoutes: Routes = [
         }
     },
     {
-        path: 'editor',
-        loadChildren: './editor/editor.module#EditorModule',
-        canActivate: [AuthGuard],
-        data: {
-            noHeader: true,
-            title: '编辑器',
-        }
-    },
-    {
         path: 'user',
         loadChildren: './user/user.module#UserModule',
         data: {

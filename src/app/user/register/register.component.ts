@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {GitMideaService} from 'app/common/services/git-midea.service';
 import {IUserInterface} from '../interfaces/user.interface';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
@@ -33,7 +32,6 @@ export class RegisterComponent {
 
     constructor(
         private _fb: FormBuilder,
-        private _gitMideaService: GitMideaService,
         private _authService: AuthService,
         private _router: Router,
     ) {

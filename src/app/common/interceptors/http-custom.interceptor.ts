@@ -37,38 +37,22 @@ export class HttpCustomInterceptor implements HttpInterceptor {
 
         const currentUser = this._authService.currentUserValue;
 
-        const apiType = request.url.indexOf('git-midea') >= 0 ? 'git' : 'normal';
-
         if (request.headers.has('Skip-Intercept')) {
             const headers = request.headers.delete('Skip-Intercept');
             const directRequest = request.clone({headers});
             return next.handle(directRequest);
         }
-
-        if (apiType === 'git') {
-            if (currentUser
-                && currentUser.user
-                && currentUser.user.repoPrivateToken) {
-                request = request.clone({
-                    setHeaders: {
-                        'Private-Token': currentUser.user.repoPrivateToken,
-                    }
-                });
-            }
-            return next.handle(request);
-        } else {
-            if (currentUser && currentUser.token) {
-                request = request.clone({
-                    setHeaders: {
-                        'X-Auth-Token': currentUser.token,
-                    }
-                });
-            }
-            return next.handle(request)
-                .pipe(
-                    retry(2),
-                    catchError(this._handleError.bind(this))
-                );
+        if (currentUser && currentUser.token) {
+            request = request.clone({
+                setHeaders: {
+                    'X-Auth-Token': currentUser.token,
+                }
+            });
         }
+        return next.handle(request)
+            .pipe(
+                retry(2),
+                catchError(this._handleError.bind(this))
+            );
     }
 }

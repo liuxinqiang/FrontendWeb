@@ -9,18 +9,18 @@
                     <label for="name">
                         姓名
                     </label>
-                    <div *ngIf="p.name.errors && p.name.touched"
+                    <div *ngIf="f.name.errors && f.name.touched"
                          class="ui-text-danger">
-                        <span *ngIf="p.name.errors.required">请填写姓名</span>
+                        <span *ngIf="f.name.errors.required">请填写姓名</span>
                     </div>
                 </div>
             </div>
             <input class="ui-input"
-                   formControlName="password"
+                   formControlName="name"
                    id="name"
                    type="text"
-                   [class.ui-form-danger]="p.name.errors && p.name.touched"
-                   [class.ui-form-success]="!p.name.errors && p.name.touched"
+                   [class.ui-form-danger]="f.name.errors && f.name.touched"
+                   [class.ui-form-success]="!f.name.errors && f.name.touched"
                    placeholder="请输入姓名">
         </div>
         <div class="ui-margin">
@@ -29,9 +29,9 @@
                     <label for="loginName">
                         登录名
                     </label>
-                    <div *ngIf="p.loginName.errors && p.loginName.touched"
+                    <div *ngIf="f.loginName.errors && f.loginName.touched"
                          class="ui-text-danger">
-                        <span *ngIf="p.loginName.errors.required">请填写姓名</span>
+                        <span *ngIf="f.loginName.errors.required">请填写姓名</span>
                     </div>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                    formControlName="loginName"
                    id="loginName"
                    type="text"
-                   [class.ui-form-danger]="p.loginName.errors && p.loginName.touched"
-                   [class.ui-form-success]="!p.loginName.errors && p.loginName.touched"
+                   [class.ui-form-danger]="f.loginName.errors && f.loginName.touched"
+                   [class.ui-form-success]="!f.loginName.errors && f.loginName.touched"
                    placeholder="请输入登录名">
         </div>
         <div formGroupName="passwords">
@@ -93,9 +93,9 @@
                     <label for="phone">
                         手机号
                     </label>
-                    <div *ngIf="p.phone.errors && p.phone.touched"
+                    <div *ngIf="f.phone.errors && f.phone.touched"
                          class="ui-text-danger">
-                        <span *ngIf="p.phone.errors.required">请填写手机号</span>
+                        <span *ngIf="f.phone.errors.required">请填写手机号</span>
                     </div>
                 </div>
             </div>
@@ -103,8 +103,8 @@
                    formControlName="phone"
                    id="phone"
                    type="text"
-                   [class.ui-form-danger]="p.phone.errors && p.phone.touched"
-                   [class.ui-form-success]="!p.phone.errors && p.phone.touched"
+                   [class.ui-form-danger]="f.phone.errors && f.phone.touched"
+                   [class.ui-form-success]="!f.phone.errors && f.phone.touched"
                    placeholder="请输入手机号">
         </div>
         <div class="ui-margin">
@@ -113,9 +113,9 @@
                     <label for="avatar">
                         图像
                     </label>
-                    <div *ngIf="p.avatar.errors && p.avatar.touched"
+                    <div *ngIf="f.avatar.errors && f.avatar.touched"
                          class="ui-text-danger">
-                        <span *ngIf="p.avatar.errors.required">请选择图像</span>
+                        <span *ngIf="f.avatar.errors.required">请选择图像</span>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,8 @@
                    formControlName="avatar"
                    id="avatar"
                    type="text"
-                   [class.ui-form-danger]="p.avatar.errors && p.avatar.touched"
-                   [class.ui-form-success]="!p.avatar.errors && p.avatar.touched"
+                   [class.ui-form-danger]="f.avatar.errors && f.avatar.touched"
+                   [class.ui-form-success]="!f.avatar.errors && f.avatar.touched"
                    placeholder="请提供图像">
         </div>
         <div class="ui-margin-medium-top ui-text-center">
