@@ -6,7 +6,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {IUserInterface} from 'app/user/interfaces/user.interface';
 import {
-    ILoginResponseInterface, ILoginUserInterface,
+    ILoginResponseInterface, ILoginUserInterface, IResponseInterface,
 } from 'app/common/interfaces/response.interface';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'app/common/services/local-storage.service';
@@ -46,7 +46,7 @@ export class AuthService {
         return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/register`, data);
     }
 
-    public userInfo(loginName: string) {
+    public userInfo(loginName: string): Observable<IUserInterface | null> {
         const headers = new HttpHeaders({
             'Skip-Intercept': 'yes',
         });
@@ -55,7 +55,10 @@ export class AuthService {
             params: {
                 loginName,
             },
-        });
+        })
+            .pipe(
+                map((res: IResponseInterface) => res.data),
+            );
     }
 
     public login({loginName, password, rememberMe}): Observable<IUserInterface> {

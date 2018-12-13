@@ -12,8 +12,3 @@ export interface IUserInterface {
     rule?: number;
     password?: string;
 }
-
-export interface IIdentityInterface {
-    provider: string;
-    extern_uid: string;
-}

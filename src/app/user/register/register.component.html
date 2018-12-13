@@ -31,7 +31,8 @@
                     </label>
                     <div *ngIf="f.loginName.errors && f.loginName.touched"
                          class="ui-text-danger">
-                        <span *ngIf="f.loginName.errors.required">请填写姓名</span>
+                        <span *ngIf="f.loginName.errors.required">请填写登录名</span>
+                        <span *ngIf="f.loginName.errors.pattern">4-20位英文字母和数字</span>
                     </div>
                 </div>
             </div>
@@ -53,6 +54,7 @@
                         <div *ngIf="p.password.errors && p.password.touched"
                              class="ui-text-danger">
                             <span *ngIf="p.password.errors.required">请填写密码</span>
+                            <span *ngIf="p.password.errors.pattern">6-20位英文字母或数字</span>
                         </div>
                     </div>
                 </div>
@@ -96,6 +98,7 @@
                     <div *ngIf="f.phone.errors && f.phone.touched"
                          class="ui-text-danger">
                         <span *ngIf="f.phone.errors.required">请填写手机号</span>
+                        <span *ngIf="f.phone.errors.pattern">手机号格式不正确</span>
                     </div>
                 </div>
             </div>
@@ -107,26 +110,7 @@
                    [class.ui-form-success]="!f.phone.errors && f.phone.touched"
                    placeholder="请输入手机号">
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
-                    <label for="avatar">
-                        图像
-                    </label>
-                    <div *ngIf="f.avatar.errors && f.avatar.touched"
-                         class="ui-text-danger">
-                        <span *ngIf="f.avatar.errors.required">请选择图像</span>
-                    </div>
-                </div>
-            </div>
-            <input class="ui-input"
-                   formControlName="avatar"
-                   id="avatar"
-                   type="text"
-                   [class.ui-form-danger]="f.avatar.errors && f.avatar.touched"
-                   [class.ui-form-success]="!f.avatar.errors && f.avatar.touched"
-                   placeholder="请提供图像">
-        </div>
+        {{registerInfo.valid | json}}
         <div class="ui-margin-medium-top ui-text-center">
             <button type="submit"
                     [disabled]="!registerInfo.valid"

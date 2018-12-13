@@ -3,6 +3,8 @@ import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {IUserInterface} from '../interfaces/user.interface';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
+import {of, timer} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-register',
@@ -12,10 +14,26 @@ import {Router} from '@angular/router';
 export class RegisterComponent {
     registerInfo = this._fb.group({
         name: ['', Validators.required],
-        loginName: ['', Validators.required],
+        loginName: [
+            '',
+            [
+                Validators.required,
+                Validators.pattern(/^[0-9a-zA-Z]{4,20}$/),
+            ],
+            this.validateLoginNameExist.bind(this),
+        ],
         passwords: this._fb.group({
-                password: ['', [Validators.required]],
-                confirmPassword: ['', [Validators.required]],
+                password: [
+                    '', [
+                        Validators.required,
+                        Validators.pattern(/^[0-9a-zA-Z]{6,20}$/),
+                    ]
+                ],
+                confirmPassword: [
+                    '', [
+                        Validators.required
+                    ]
+                ],
             }, {
                 validator: this.passwordConfirming,
             }
@@ -26,8 +44,16 @@ export class RegisterComponent {
                 Validators.email,
             ]
         ],
-        phone: ['', Validators.required],
-        avatar: ['', Validators.required],
+        phone: [
+            '',
+            [
+                Validators.required,
+                Validators.pattern(/^1[34578]\d{9}$/),
+            ],
+        ],
+        avatar: [
+            '',
+        ],
     });
 
     constructor(
@@ -43,6 +69,30 @@ export class RegisterComponent {
 
     get p() {
         return this.registerInfo['controls'].passwords['controls'];
+    }
+
+    validateLoginNameExist(control: AbstractControl) {
+        return timer(500).pipe(
+            switchMap(() => {
+                if (!control.value) {
+                    return of(null);
+                }
+                return this._authService.userInfo(control.value).pipe(
+                    map((result: IUserInterface | null) => {
+                        if (result === null) {
+                            return null;
+                        } else {
+                            return {
+                                'exist': result.name,
+                            };
+                        }
+                    }),
+                    catchError(() => of({
+                        'exist': control.value,
+                    }))
+                );
+            })
+        );
     }
 
     getConfirmPasswordError() {

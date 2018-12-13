@@ -49,9 +49,15 @@ export class LoginComponent {
                     return of(null);
                 }
                 return this._authService.userInfo(control.value).pipe(
-                    map((result: IUserInterface) => {
-                        this.userInfo = result;
-                        return null;
+                    map((result: IUserInterface | null) => {
+                        if (result === null) {
+                            return {
+                                'notExist': control.value,
+                            };
+                        } else {
+                            this.userInfo = result;
+                            return null;
+                        }
                     }),
                     catchError(() => of({
                         'notExist': control.value,
@@ -64,8 +70,8 @@ export class LoginComponent {
     login() {
         this._authService.login(this.loginInfo.value)
             .subscribe(() => {
-                this._router.navigateByUrl(this._returnUrl || '/components');
-            }, error => {
+                this._router.navigateByUrl(this._returnUrl || '/components').then();
+            }, () => {
                 this.loginInfo.controls.password.reset();
             });
     }

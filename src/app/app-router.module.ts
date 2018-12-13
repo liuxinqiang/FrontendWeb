@@ -23,6 +23,7 @@ const mainRoutes: Routes = [
     },
     {
         path: 'components',
+        canActivate: [AuthGuard],
         loadChildren: './components/components.module#ComponentsModule',
         data: {
             title: '组件库',
