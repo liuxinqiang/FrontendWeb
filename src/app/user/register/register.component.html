@@ -110,7 +110,27 @@
                    [class.ui-form-success]="!f.phone.errors && f.phone.touched"
                    placeholder="请输入手机号">
         </div>
-        {{registerInfo.valid | json}}
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="email">
+                        邮箱
+                    </label>
+                    <div *ngIf="f.email.errors && f.email.touched"
+                         class="ui-text-danger">
+                        <span *ngIf="f.email.errors.required">请填写邮箱</span>
+                        <span *ngIf="f.email.errors.pattern">邮箱格式不正确</span>
+                    </div>
+                </div>
+            </div>
+            <input class="ui-input"
+                   formControlName="email"
+                   id="email"
+                   type="text"
+                   [class.ui-form-danger]="f.email.errors && f.email.touched"
+                   [class.ui-form-success]="!f.email.errors && f.email.touched"
+                   placeholder="请输入邮箱">
+        </div>
         <div class="ui-margin-medium-top ui-text-center">
             <button type="submit"
                     [disabled]="!registerInfo.valid"
