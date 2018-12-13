@@ -28,3 +28,4 @@ webpack.records.json
 *.metadata.json
 *.shim.ngstyle.ts
 stats.json
+*.sh
