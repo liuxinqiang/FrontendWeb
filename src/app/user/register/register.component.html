@@ -33,6 +33,7 @@
                          class="ui-text-danger">
                         <span *ngIf="f.loginName.errors.required">请填写登录名</span>
                         <span *ngIf="f.loginName.errors.pattern">4-20位英文字母和数字</span>
+                        <span *ngIf="f.loginName.errors.exist">该登录名已经被占用</span>
                     </div>
                 </div>
             </div>

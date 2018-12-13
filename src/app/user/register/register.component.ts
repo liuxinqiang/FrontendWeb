@@ -109,8 +109,9 @@ export class RegisterComponent {
     }
 
     register() {
-        const value: IUserInterface = this.registerInfo.value;
-        this._authService.register(value)
+        const formValue = this.registerInfo.value;
+        formValue.password = formValue.password.password;
+        this._authService.register(formValue)
             .subscribe(() => {
                 TopUI.notification({
                     message: '注册成功，请登录',
@@ -118,7 +119,7 @@ export class RegisterComponent {
                 });
                 this._router.navigate(['/user/login'], {
                     queryParams: {
-                        loginName: value.loginName,
+                        loginName: formValue.loginName,
                     }
                 }).then();
             });
