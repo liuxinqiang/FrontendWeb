@@ -1,14 +1,15 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {NotFoundComponent} from './not-found.component';
-import {ErrorComponent} from './error.component';
 import {AuthGuard} from './common/guards/auth.guard';
+import {ErrorComponent} from './error/error.component';
+import {NotFoundComponent} from './not-found/not-found.component';
+import {HomeComponent} from './home/home.component';
 
 const mainRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'components',
+        component: HomeComponent,
         data: {
             title: '首页',
         },
@@ -19,11 +20,15 @@ const mainRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
             title: '项目中心',
+            mainMenu: {
+                name: '项目中心',
+                path: '/projects',
+                rule: 0,
+            },
         },
     },
     {
         path: 'components',
-        canActivate: [AuthGuard],
         loadChildren: './components/components.module#ComponentsModule',
         data: {
             title: '组件库',
@@ -88,4 +93,5 @@ export class AppRouterModule {
 export const AppRouteComponents = [
     ErrorComponent,
     NotFoundComponent,
+    HomeComponent,
 ];

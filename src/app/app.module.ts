@@ -10,6 +10,7 @@ import {HttpCustomInterceptor} from './common/interceptors/http-custom.intercept
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import {registerLocaleData} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CommonComponentsModule} from './common/components/common-components.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -20,6 +21,7 @@ registerLocaleData(localeZhHans, 'zh-Hans');
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'my-app'}),
+        CommonComponentsModule,
         BrowserAnimationsModule,
         AppRouterModule,
         TransferHttpCacheModule,
