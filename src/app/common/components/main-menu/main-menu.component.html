@@ -31,10 +31,7 @@
     <div *ngIf="currentUser"
          class="ui-navbar-item ui-flex-stretch ui-visible@m">
         <a class="ui-flex ui-flex-middle">
-            <img [attr.src]="currentUser.user.avatar"
-                 width="30"
-                 height="30"
-                 class="ui-border-circle">
+            {{currentUser.user.name}}
         </a>
         <div class="ui-navbar-dropdown"
              ui-drop="cls-drop: ui-navbar-dropdown; mode: click; pos: bottom-right; flip: x">

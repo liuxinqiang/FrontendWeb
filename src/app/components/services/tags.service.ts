@@ -10,7 +10,7 @@ import {ITag, ITagSimple} from '../interfaces/tag.interface';
 export class TagsService {
     private _tagsSubject: BehaviorSubject<ITag[]>;
     public tags$: Observable<ITag[]>;
-    private _urlPrefix = environment.mainAPI.url + '/asyncComponent/tag';
+    private _urlPrefix = environment.mainAPI.url + '/components/tag';
 
     public get tags(): ITag[] {
         return this._tagsSubject.getValue();

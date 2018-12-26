@@ -11,7 +11,7 @@ import {IComponentInterface} from '../interfaces/component.interface';
 })
 export class ComponentsService {
 
-    private _urlPrefix = environment.mainAPI.url + '/asyncComponent';
+    private _urlPrefix = environment.mainAPI.url + '/components';
 
     constructor(
         private _http: HttpClient,
