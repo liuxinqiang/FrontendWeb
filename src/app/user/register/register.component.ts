@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {GitMideaService} from 'app/common/services/git-midea.service';
 import {map, switchMap, catchError} from 'rxjs/operators';
 import {of, timer} from 'rxjs';
-import {IIdentityInterface, IUserInfoInterface, IUserInterface} from '../interfaces/user.interface';
+import {IUserInfoInterface, IUserInterface} from '../interfaces/user.interface';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
