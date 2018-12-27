@@ -138,59 +138,64 @@
                 </label>
             </div>
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
-                    <label for="gitRepoPath">
-                        仓库地址
-                    </label>
-                    <div *ngIf="f.gitRepoPath.errors && f.gitRepoPath.touched"
-                         class="ui-text-danger"
-                         [ngSwitch]="f.gitRepoPath.errors | objectFirstKey">
+        <ng-container *ngIf="f.dataSourceType.value !== 'upload'; else fileUpload">
+            <div class="ui-margin">
+                <div class="ui-form-label ui-flex ui-flex-between">
+                    <div class="ui-flex ui-flex-between">
+                        <label for="gitRepoPath">
+                            仓库地址
+                        </label>
+                        <div *ngIf="f.gitRepoPath.errors && f.gitRepoPath.touched"
+                             class="ui-text-danger"
+                             [ngSwitch]="f.gitRepoPath.errors | objectFirstKey">
                         <span *ngSwitchCase="'required'">
                             请填写仓库地址
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <input class="ui-input"
-                   formControlName="gitRepoPath"
-                   id="gitRepoPath"
-                   type="text"
-                   [class.ui-form-danger]="f.gitRepoPath.errors && f.gitRepoPath.touched"
-                   [class.ui-form-success]="!f.gitRepoPath.errors && f.gitRepoPath.touched"
-                   placeholder="请输入仓库地址">
-        </div>
-        <div class="ui-margin">
-            <label class="ui-form-label">绑定Git仓库并进行同步</label>
-            <div class="ui-grid-small ui-child-width-auto ui-grid">
-                <label>
-                    <input class="ui-radio"
-                           type="radio"
-                           formControlName="enableSync"
-                           [value]="true">
-                    <span class="ui-margin-small-left">是</span>
-                </label>
-                <label>
-                    <input class="ui-radio"
-                           type="radio"
-                           formControlName="enableSync"
-                           [value]="false">
-                    <span class="ui-margin-small-left">否</span>
-                </label>
-            </div>
-        </div>
-        <div class="ui-margin">
-            <label class="ui-form-label">选择文件（.zip）</label>
-            <div ui-form-custom="target: true">
-                <input type="file"
-                       (change)="onUploadChange($event)">
-                <input class="ui-input ui-form-width-large"
+                <input class="ui-input"
+                       formControlName="gitRepoPath"
+                       id="gitRepoPath"
                        type="text"
-                       placeholder="选择文件"
-                       disabled>
+                       [class.ui-form-danger]="f.gitRepoPath.errors && f.gitRepoPath.touched"
+                       [class.ui-form-success]="!f.gitRepoPath.errors && f.gitRepoPath.touched"
+                       placeholder="请输入仓库地址">
             </div>
-        </div>
+            <div class="ui-margin">
+                <label class="ui-form-label">绑定Git仓库并进行同步</label>
+                <div class="ui-grid-small ui-child-width-auto ui-grid">
+                    <label>
+                        <input class="ui-radio"
+                               type="radio"
+                               formControlName="enableSync"
+                               [value]="true">
+                        <span class="ui-margin-small-left">是</span>
+                    </label>
+                    <label>
+                        <input class="ui-radio"
+                               type="radio"
+                               formControlName="enableSync"
+                               [value]="false">
+                        <span class="ui-margin-small-left">否</span>
+                    </label>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #fileUpload>
+            <div class="ui-margin">
+                <label class="ui-form-label">选择文件（.zip）</label>
+                <div ui-form-custom="target: true">
+                    <input type="file"
+                           accept="application/zip"
+                           (change)="onUploadChange($event)">
+                    <input class="ui-input ui-form-width-large"
+                           type="text"
+                           placeholder="选择文件"
+                           disabled>
+                </div>
+            </div>
+        </ng-template>
         <div class="ui-margin">
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">

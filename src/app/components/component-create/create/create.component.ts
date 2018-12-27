@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {DomService} from 'app/common/services/dom.service';
 import {Observable, of, timer} from 'rxjs';
@@ -13,7 +13,7 @@ import {TagsService} from '../../services/tags.service';
     templateUrl: './create.component.html',
     styleUrls: ['./create.component.less']
 })
-export class CreateComponent {
+export class CreateComponent implements OnInit {
 
     mainForm = new FormGroup({
         componentId: new FormControl('', [
@@ -34,9 +34,9 @@ export class CreateComponent {
         isPublic: new FormControl(true),
         description: new FormControl('', [Validators.required]),
         dataSourceType: new FormControl('github'), // mideaGit | github | upload
-        gitRepoPath: new FormControl('', [Validators.required]),
+        gitRepoPath: new FormControl(''),
         enableSync: new FormControl(false),
-        uploadFile: new FormControl(null, [Validators.required]),
+        uploadFile: new FormControl(null),
     });
 
     componentIdExistCheck(control: AbstractControl): Observable<ValidationErrors | null> {
@@ -64,6 +64,25 @@ export class CreateComponent {
             );
     }
 
+    injectValidateRulesBaseOnType(type) {
+        if (type === 'upload') {
+            this.f.uploadFile.setValidators(Validators.required);
+            this.f.gitRepoPath.clearValidators();
+        } else {
+            this.f.gitRepoPath.setValidators([
+                Validators.required,
+            ]);
+            this.f.uploadFile.clearValidators();
+            this.f.uploadFile.reset(null);
+        }
+        this.f.gitRepoPath.updateValueAndValidity({
+            onlySelf: true,
+        });
+        this.f.uploadFile.updateValueAndValidity({
+            onlySelf: true,
+        });
+    }
+
     get f() {
         return this.mainForm.controls;
     }
@@ -73,10 +92,27 @@ export class CreateComponent {
         private _domService: DomService,
         private _tagsService: TagsService,
         private _router: Router,
+        private cd: ChangeDetectorRef,
     ) {
     }
 
-    onUploadChange(event) {}
+    onUploadChange(event) {
+        const reader = new FileReader();
+
+        if (event.target.files && event.target.files.length) {
+            const [file] = event.target.files;
+            reader.readAsDataURL(file);
+
+            reader.onload = () => {
+                this.mainForm.patchValue({
+                    uploadFile: reader.result
+                });
+
+                // need to run CD since file load runs outside of zone
+                this.cd.markForCheck();
+            };
+        }
+    }
 
     create() {
         const value = Object.assign({}, this.mainForm.value);
@@ -85,5 +121,11 @@ export class CreateComponent {
                 TopUI.notification('组件创建成功！', 'success');
                 this._router.navigate(['/components/my-components']).then();
             });
+    }
+
+    ngOnInit(): void {
+        this.injectValidateRulesBaseOnType(this.f.dataSourceType.value);
+        this.f.dataSourceType.valueChanges
+            .subscribe(this.injectValidateRulesBaseOnType.bind(this));
     }
 }
