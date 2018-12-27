@@ -4,181 +4,93 @@
           [formGroup]="mainForm"
           (keydown.enter)="$event.preventDefault()"
           (ngSubmit)="create()">
-        <div class="ui-grid ui-grid-small">
-            <div class="ui-width-1-2">
-                <div class="ui-margin">
-                    <label class="ui-form-label" for="form-group">
-                        仓库所属群组
-                    </label>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
-                                formControlName="group"
-                                id="form-group">
-                            <option value="">无</option>
-                            <option *ngFor="let option of groups"
-                                    [value]="option.id">
-                                {{option.full_name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="ui-width-1-2">
-                <div class="ui-margin">
-                    <div class="ui-form-label ui-flex ui-flex-between">
-                        <div class="ui-flex ui-flex-between">
-                            <label for="repoId">
-                                选择仓库
-                            </label>
-                            <div *ngIf="f.repoId.errors !== null
-                                && f.repoId.errors
-                                && f.repoId.touched"
-                                 class="ui-text-danger"
-                                 [ngSwitch]="f.repoId.errors | objectFirstKey">
-                                <span *ngSwitchCase="'required'">
-                                     必填项
-                                </span>
-                                <span *ngSwitchCase="'exist'">
-                                     该仓库已绑定
-                                </span>
-                            </div>
-                            <a href="#create-project-modal"
-                               ui-toggle>
-                                新建
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
-                                [class.ui-form-danger]="f.repoId.errors && f.repoId.touched"
-                                [class.ui-form-success]="!f.repoId.errors && f.repoId.touched"
-                                formControlName="repoId"
-                                id="repoId">
-                            <option value="">请选择</option>
-                            <option *ngFor="let option of projects"
-                                    [value]="option.id">
-                                {{option.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="ui-margin">
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">
-                    <label for="title">
-                        名称
+                    <label for="name">
+                        组件名
                     </label>
-                    <div *ngIf="f.title.errors && f.title.touched"
+                    <div *ngIf="f.name.errors && f.name.touched"
                          class="ui-text-danger"
-                         [ngSwitch]="f.title.errors | objectFirstKey">
+                         [ngSwitch]="f.name.errors | objectFirstKey">
                         <span *ngSwitchCase="'required'">
-                            请填写组件名称
+                            请填写组件名
                         </span>
                         <span *ngSwitchCase="'pattern'">
                             只能输入中文、英文、数字、下划线
                         </span>
                         <span *ngSwitchCase="'minlength'">
-                            最少 {{f.title.errors.minlength.requiredLength}} 个字符
+                            最少 {{f.name.errors.minlength.requiredLength}} 个字符
                         </span>
                         <span *ngSwitchCase="'maxlength'">
-                            最大 {{f.title.errors.maxlength.requiredLength}} 个字符
+                            最大 {{f.name.errors.maxlength.requiredLength}} 个字符
                         </span>
                     </div>
                 </div>
             </div>
             <input class="ui-input"
-                   formControlName="title"
-                   id="title"
+                   formControlName="name"
+                   id="name"
                    type="text"
-                   [class.ui-form-danger]="f.title.errors && f.title.touched"
-                   [class.ui-form-success]="!f.title.errors && f.title.touched"
-                   placeholder="请输入组件标题">
+                   [class.ui-form-danger]="f.name.errors && f.name.touched"
+                   [class.ui-form-success]="!f.name.errors && f.name.touched"
+                   placeholder="请输入组件名">
         </div>
         <div class="ui-margin">
             <div class="ui-form-label ui-flex ui-flex-between">
                 <div class="ui-flex ui-flex-between">
-                    <label for="componentName">
-                        组件名
+                    <label for="componentId">
+                        组件ID
                     </label>
-                    <div *ngIf="f.componentName.errors && f.componentName.touched"
+                    <div *ngIf="f.componentId.errors && f.componentId.touched"
                          class="ui-text-danger"
-                         [ngSwitch]="f.componentName.errors | objectFirstKey">
+                         [ngSwitch]="f.componentId.errors | objectFirstKey">
                             <span *ngSwitchCase="'required'">
-                                请填写组件名称
+                                请填写组件ID
                             </span>
                         <span *ngSwitchCase="'pattern'">
-                                允许字母、数字及下划线，以字母开头
+                                只允许小写字母、数字及下划线，以字母开头
                             </span>
                         <span *ngSwitchCase="'minlength'">
-                                最少 {{f.componentName.errors.minlength.requiredLength}} 个字符
+                                最少 {{f.componentId.errors.minlength.requiredLength}} 个字符
                             </span>
                         <span *ngSwitchCase="'maxlength'">
-                                最大 {{f.componentName.errors.maxlength.requiredLength}} 个字符
+                                最大 {{f.componentId.errors.maxlength.requiredLength}} 个字符
                             </span>
                         <span *ngSwitchCase="'exist'">
-                                该名称已被占用
-                            </span>
+                                该组件ID已经被占用
+                        </span>
                     </div>
                 </div>
             </div>
             <input class="ui-input"
-                   formControlName="componentName"
-                   id="componentName"
+                   formControlName="componentId"
+                   id="componentId"
                    type="text"
-                   [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
-                   [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
+                   [class.ui-form-danger]="f.componentId.errors && f.componentId.touched"
+                   [class.ui-form-success]="!f.componentId.errors && f.componentId.touched"
                    placeholder="请输入组件名称">
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
-                    <label>
-                        所属分类
-                    </label>
+        <div class="ui-grid ui-grid-small ui-child-width-1-2">
+            <div>
+                <div class="ui-margin">
+                    <div class="ui-form-label ui-flex ui-flex-between">
+                        <div class="ui-flex ui-flex-between">
+                            <label>
+                                所属分类
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <a ui-icon="icon:plus"></a>
+                        <div *ngFor="let tag of f.tags.value"
+                             class="ui-label ui-label-success ui-margin-small-left">
+                            {{tag.name}}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div>
-                <a ui-icon="icon:plus"
-                   href="#tags-modal"
-                   ui-toggle></a>
-                <div *ngFor="let tag of f.tags.value"
-                      class="ui-label ui-label-success ui-margin-small-left">
-                    {{tag.name}}
-                </div>
-            </div>
-        </div>
-        <div class="ui-grid ui-grid-small">
-            <div class="ui-width-2-3">
-                <div class="ui-margin">
-                    <label class="ui-form-label">发布方式</label>
-                    <div class="ui-grid-small ui-child-width-auto ui-grid">
-                        <label>
-                            <input class="ui-radio"
-                                   type="radio"
-                                   formControlName="deployType"
-                                   [value]="0">
-                            <span class="ui-margin-small-left">无</span>
-                        </label>
-                        <label>
-                            <input class="ui-radio"
-                                   type="radio"
-                                   formControlName="deployType"
-                                   [value]="1">
-                            <span class="ui-margin-small-left">npm 包</span>
-                        </label>
-                        <label>
-                            <input class="ui-radio"
-                                   type="radio"
-                                   formControlName="deployType"
-                                   [value]="2">
-                            <span class="ui-margin-small-left">异步组件</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="ui-width-1-3">
                 <div class="ui-margin">
                     <label class="ui-form-label">是否公开？</label>
                     <div class="ui-grid-small ui-child-width-auto ui-grid">
@@ -198,6 +110,85 @@
                         </label>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label">初始化代码来源</label>
+            <div class="ui-grid-small ui-child-width-auto ui-grid">
+                <label>
+                    <input class="ui-radio"
+                           type="radio"
+                           formControlName="dataSourceType"
+                           value="github">
+                    <span class="ui-margin-small-left">Github</span>
+                </label>
+                <label>
+                    <input class="ui-radio"
+                           type="radio"
+                           formControlName="dataSourceType"
+                           value="mideaGit">
+                    <span class="ui-margin-small-left">Midea Git</span>
+                </label>
+                <label>
+                    <input class="ui-radio"
+                           type="radio"
+                           formControlName="dataSourceType"
+                           value="upload">
+                    <span class="ui-margin-small-left">从本地上传</span>
+                </label>
+            </div>
+        </div>
+        <div class="ui-margin">
+            <div class="ui-form-label ui-flex ui-flex-between">
+                <div class="ui-flex ui-flex-between">
+                    <label for="gitRepoPath">
+                        仓库地址
+                    </label>
+                    <div *ngIf="f.gitRepoPath.errors && f.gitRepoPath.touched"
+                         class="ui-text-danger"
+                         [ngSwitch]="f.gitRepoPath.errors | objectFirstKey">
+                        <span *ngSwitchCase="'required'">
+                            请填写仓库地址
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <input class="ui-input"
+                   formControlName="gitRepoPath"
+                   id="gitRepoPath"
+                   type="text"
+                   [class.ui-form-danger]="f.gitRepoPath.errors && f.gitRepoPath.touched"
+                   [class.ui-form-success]="!f.gitRepoPath.errors && f.gitRepoPath.touched"
+                   placeholder="请输入仓库地址">
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label">绑定Git仓库并进行同步</label>
+            <div class="ui-grid-small ui-child-width-auto ui-grid">
+                <label>
+                    <input class="ui-radio"
+                           type="radio"
+                           formControlName="enableSync"
+                           [value]="true">
+                    <span class="ui-margin-small-left">是</span>
+                </label>
+                <label>
+                    <input class="ui-radio"
+                           type="radio"
+                           formControlName="enableSync"
+                           [value]="false">
+                    <span class="ui-margin-small-left">否</span>
+                </label>
+            </div>
+        </div>
+        <div class="ui-margin">
+            <label class="ui-form-label">选择文件（.zip）</label>
+            <div ui-form-custom="target: true">
+                <input type="file"
+                       (change)="onUploadChange($event)">
+                <input class="ui-input ui-form-width-large"
+                       type="text"
+                       placeholder="选择文件"
+                       disabled>
             </div>
         </div>
         <div class="ui-margin">
@@ -230,110 +221,4 @@
             </button>
         </div>
     </form>
-</div>
-<div id="create-project-modal" #createProjectModal ui-modal>
-    <div class="ui-modal-dialog ui-width-large">
-        <button class="ui-modal-close-default" type="button" ui-close></button>
-        <div class="ui-modal-header">
-            <h2 class="ui-modal-title">新建仓库</h2>
-        </div>
-        <div class="ui-modal-body">
-            <form class="ui-form-stacked"
-                  [formGroup]="createProject"
-                  (keydown.enter)="$event.preventDefault()">
-                <div class="ui-margin">
-                    <label class="ui-form-label">所属群组</label>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
-                                formControlName="namespace_id">
-                            <option value="">无</option>
-                            <option *ngFor="let option of groups"
-                                    [value]="option.id">
-                                {{option.full_name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui-margin">
-                    <div class="ui-form-label ui-flex ui-flex-between">
-                        <div class="ui-flex ui-flex-between">
-                            <label for="projectName">
-                                仓库名称
-                            </label>
-                            <div *ngIf="cf.name.errors !== null
-                                && cf.name.errors
-                                && cf.name.touched"
-                                 class="ui-text-danger"
-                                 [ngSwitch]="cf.name.errors | objectFirstKey">
-                                <span *ngSwitchCase="'required'">
-                                     请输入仓库名称
-                                </span>
-                                <span *ngSwitchCase="'exist'">
-                                     仓库名称已经被占用
-                                </span>
-                                <span *ngSwitchCase="'pattern'">
-                                    仓库名称格式不正确
-                               </span>
-                            </div>
-                        </div>
-                    </div>
-                    <input class="ui-input"
-                           formControlName="name"
-                           id="projectName"
-                           type="text"
-                           [class.ui-form-danger]="cf.name.errors && cf.name.touched"
-                           [class.ui-form-success]="!cf.name.errors && cf.name.touched"
-                           placeholder="仓库名称......">
-                </div>
-                <div class="ui-margin">
-                    <label class="ui-form-label"
-                           for="repoDescription">
-                        描述说明
-                    </label>
-                    <textarea class="ui-textarea"
-                              formControlName="description"
-                              rows="3"
-                              id="repoDescription"
-                              type="text"
-                              placeholder="仓库描述信息......">
-                    </textarea>
-                </div>
-            </form>
-        </div>
-        <div class="ui-text-right ui-modal-footer">
-            <button class="ui-button ui-button-default ui-modal-close ui-margin-small-right"
-                    type="button">
-                取消
-            </button>
-            <button class="ui-button ui-button-primary ui-modal-close"
-                    [disabled]="!createProject.valid"
-                    (click)="createRepo()"
-                    type="button">
-                创建
-            </button>
-        </div>
-    </div>
-</div>
-<div id="tags-modal" #tagsModal ui-modal>
-    <div class="ui-modal-dialog ui-width-large">
-        <button class="ui-modal-close-default" type="button" ui-close></button>
-        <div class="ui-modal-header">
-            <h2 class="ui-modal-title">选择分类</h2>
-        </div>
-        <div class="ui-modal-body">
-            <app-components-tags-render
-                    selectMode="multiple"
-                    [editorMode]="true"
-                    [selectedTags]="f.tags.value"
-                    (selectedChange)="f.tags.setValue($event)"
-                    [tags]="tagsService.tags">
-            </app-components-tags-render>
-        </div>
-        <div class="ui-text-right ui-modal-footer">
-            <button class="ui-button ui-button-primary ui-modal-close"
-                    type="button">
-                确定
-            </button>
-        </div>
-    </div>
 </div>

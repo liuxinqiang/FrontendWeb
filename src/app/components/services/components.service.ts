@@ -31,11 +31,10 @@ export class ComponentsService {
             );
     }
 
-    existCheck(type, value) {
-        return this._http.get(`${this._urlPrefix}/existCheck`, {
+    componentIdExist(componentId) {
+        return this._http.get(`${this._urlPrefix}/componentIdExist`, {
             params: {
-                type,
-                value,
+                componentId,
             }
         });
     }
