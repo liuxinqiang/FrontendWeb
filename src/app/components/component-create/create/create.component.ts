@@ -15,6 +15,8 @@ import {TagsService} from '../../services/tags.service';
 })
 export class CreateComponent implements OnInit {
 
+    public tokenExist = false;
+
     mainForm = new FormGroup({
         componentId: new FormControl('', [
             Validators.required,
@@ -71,10 +73,12 @@ export class CreateComponent implements OnInit {
         } else {
             this.f.gitRepoPath.setValidators([
                 Validators.required,
+                Validators.pattern(/(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\.git)(\/?|\#[-\d\w._]+?)$/),
             ]);
             this.f.uploadFile.clearValidators();
-            this.f.uploadFile.reset(null);
         }
+        this.f.uploadFile.reset();
+        this.f.gitRepoPath.reset();
         this.f.gitRepoPath.updateValueAndValidity({
             onlySelf: true,
         });
