@@ -8,6 +8,7 @@ import { NumberToArrayPipe } from './number-to-array.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
 import { MathCeilPipe } from './math-ceil.pipe';
 import {ObjectFirstKeyPipe} from './object-first-key.pipe';
+import { ReadableFileSizePipe } from './readable-file-size.pipe';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import {ObjectFirstKeyPipe} from './object-first-key.pipe';
         PaginationComponent,
         MathCeilPipe,
         ObjectFirstKeyPipe,
+        ReadableFileSizePipe,
     ],
     imports: [
         CommonModule,
@@ -28,6 +30,7 @@ import {ObjectFirstKeyPipe} from './object-first-key.pipe';
         PaginationComponent,
         NumberToArrayPipe,
         ObjectFirstKeyPipe,
+        ReadableFileSizePipe,
     ]
 })
 export class CommonComponentsModule {

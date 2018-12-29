@@ -1,0 +1,96 @@
+<label class="ui-form-label">选择文件（.zip）</label>
+<div ui-form-custom="target: true">
+    <input type="file"
+           #inputFile
+           accept="application/zip"
+           (change)="onUploadChange($event).then()">
+    <input class="ui-input ui-form-width-large"
+           type="text"
+           placeholder="选择文件"
+           disabled>
+</div>
+<div #zipModal ui-modal="escClose: false;bgClose: false">
+    <div class="ui-modal-dialog">
+        <div class="ui-modal-header">
+            <div class="ui-grid ui-flex ui-flex-bottom">
+                <div class="ui-width-expand">
+                    <h2 class="ui-modal-title">{{fileInfo.name}}</h2>
+                </div>
+                <div class="ui-width-auto">
+                    <p class="ui-text-muted">
+                        共计文件：{{fileInfo.total}} 个，总计大小：{{fileInfo.size | readableFileSize}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="ui-modal-body" ui-overflow-auto>
+            <ul ui-accordion>
+                <li *ngFor="let exclude of excludeConfig">
+                    <div class="ui-accordion-title ui-link">
+                        <div class="ui-grid ui-grid-small">
+                            <div class="ui-width-auto">
+                                <input type="checkbox"
+                                       (click)="$event.stopPropagation()"
+                                       [disabled]="!exclude.canConfig"
+                                       [(ngModel)]="exclude.skip"
+                                       class="ui-checkbox">
+                            </div>
+                            <div class="ui-width-expand">
+                                {{exclude.name}}
+                                <span class="ui-text-small ui-text-muted">
+                                    {{exclude.desc}}
+                                </span>
+                            </div>
+                            <div class="ui-width-auto">
+                                {{exclude.total}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-accordion-content">
+                        <ul class="ui-list ui-column-1-2">
+                            <li *ngFor="let file of getData(exclude.matchFiles, exclude.pageIndex)"
+                                [attr.ui-tooltip]="file"
+                                class="ui-text-truncate ui-text-small">
+                                {{file}}
+                            </li>
+                        </ul>
+                        <ul class="ui-pagination"
+                            *ngIf="exclude.pageTotal > 1"
+                            ui-margin>
+                            <li *ngIf="exclude.pageIndex > 1">
+                                <a (click)="exclude.pageIndex = exclude.pageIndex - 1">
+                                    <span ui-pagination-previous></span>
+                                </a>
+                            </li>
+                            <li *ngFor="let p of getPagination(exclude.pageTotal, exclude.pageIndex)"
+                                [ngClass]="exclude.pageIndex === p ? 'ui-active' : ''">
+                                <ng-container *ngIf="p !== '...'; else dot">
+                                    <a (click)="exclude.pageIndex = p">{{p}}</a>
+                                </ng-container>
+                                <ng-template #dot>
+                                    <span>...</span>
+                                </ng-template>
+                            </li>
+                            <li *ngIf="exclude.pageIndex !== exclude.pageTotal">
+                                <a (click)="exclude.pageIndex = exclude.pageIndex + 1">
+                                    <span ui-pagination-next></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="ui-modal-footer">
+            <div class="ui-grid">
+                <div class="ui-width-expand">
+                    <p>去掉忽略的文件后，剩余文件 <b>{{getFilesCount()}}</b> 个</p>
+                </div>
+                <div class="ui-width-auto ui-text-right">
+                    <a class="ui-button ui-button-default">取消</a>
+                    <a class="ui-margin-small-left ui-button ui-button-primary">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

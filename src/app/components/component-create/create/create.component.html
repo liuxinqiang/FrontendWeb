@@ -195,18 +195,8 @@
             </ng-template>
         </ng-container>
         <ng-template #fileUpload>
-            <div class="ui-margin">
-                <label class="ui-form-label">选择文件（.zip）</label>
-                <div ui-form-custom="target: true">
-                    <input type="file"
-                           accept="application/zip"
-                           (change)="onUploadChange($event)">
-                    <input class="ui-input ui-form-width-large"
-                           type="text"
-                           placeholder="选择文件"
-                           disabled>
-                </div>
-            </div>
+            <app-upload-zip-files class="ui-display-block ui-marigin">
+            </app-upload-zip-files>
         </ng-template>
         <div class="ui-margin">
             <div class="ui-form-label ui-flex ui-flex-between">

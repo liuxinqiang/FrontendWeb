@@ -11,6 +11,7 @@ import {ComponentsSharedModule} from '../shared/components-shared.module';
     ],
     imports: [
         CommonModule,
+        FormsModule,
         CommonComponentsModule,
         ComponentCreateRouterModule,
         FormsModule,

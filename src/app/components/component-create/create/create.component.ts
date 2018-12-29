@@ -111,24 +111,6 @@ export class CreateComponent implements OnInit {
     ) {
     }
 
-    onUploadChange(event) {
-        const reader = new FileReader();
-
-        if (event.target.files && event.target.files.length) {
-            const [file] = event.target.files;
-            reader.readAsDataURL(file);
-
-            reader.onload = () => {
-                this.mainForm.patchValue({
-                    uploadFile: reader.result
-                });
-
-                // need to run CD since file load runs outside of zone
-                this.cd.markForCheck();
-            };
-        }
-    }
-
     create() {
         const value = Object.assign({}, this.mainForm.value);
         console.log(gitParser(value.gitRepoPath));
