@@ -1,0 +1,83 @@
+<div class="ui-alert-warning"
+     ui-alert>
+    <p>你当前还没有添加 {{typesMap[type].name}} 的私有钥匙，只能以匿名方式克隆公共仓库，如果你希望克隆私有仓库或设置同步仓库，请配置你的私有Token。
+    </p>
+    <p>
+        <a class="ui-button ui-button-small ui-button-danger"
+           href="#add-token-modal"
+           ui-toggle>
+            快速配置
+        </a>
+    </p>
+</div>
+<div id="add-token-modal"
+     #addTokenModal
+     ui-modal>
+    <div class="ui-modal-dialog">
+        <button class="ui-modal-close-default" type="button" ui-close></button>
+        <div class="ui-modal-header">
+            <h2 class="ui-modal-title">配置 {{typesMap[type].name}} Token</h2>
+        </div>
+        <div class="ui-modal-body">
+            <form class="ui-form-stacked"
+                  [formGroup]="addTokenForm"
+                  id="addTokenForm"
+                  (ngSubmit)="save()"
+                  (keydown.enter)="$event.preventDefault()">
+                <div class="ui-margin">
+                    <div class="ui-form-label ui-flex ui-flex-between">
+                        <div class="ui-flex ui-flex-between">
+                            <label for="token">
+                                Private Token
+                            </label>
+                            <ul class="ui-subnav ui-margin-remove" ui-margin>
+                                <li *ngIf="f.token.errors && f.token.touched"
+                                    [ngSwitch]="f.token.errors | objectFirstKey">
+                                    <span *ngSwitchCase="'required'"
+                                          class="ui-text-danger">
+                                        请填写 Private Token
+                                    </span>
+                                    <span *ngSwitchCase="'pattern'"
+                                          class="ui-text-danger">
+                                        只允许大小写字母及数字
+                                    </span>
+                                    <span *ngSwitchCase="'minlength'"
+                                          class="ui-text-danger">
+                                        最少 {{f.token.errors.minlength.requiredLength}} 个字符
+                                    </span>
+                                    <span *ngSwitchCase="'maxlength'"
+                                          class="ui-text-danger">
+                                        最大 {{f.token.errors.maxlength.requiredLength}} 个字符
+                                    </span>
+                                </li>
+                                <li>
+                                    <a tabindex="-1"
+                                       target="_blank"
+                                       [href]="typesMap[type].url">
+                                        新增
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input class="ui-input"
+                           formControlName="token"
+                           id="token"
+                           type="text"
+                           [class.ui-form-danger]="f.token.errors && f.token.touched"
+                           [class.ui-form-success]="!f.token.errors && f.token.touched"
+                           placeholder="Private Token...">
+                </div>
+            </form>
+        </div>
+        <div class="ui-modal-footer ui-text-right">
+            <a class="ui-button ui-button-default ui-modal-close ui-margin-small-right">取消</a>
+            <button type="submit"
+                    form="addTokenForm"
+                    [disabled]="!addTokenForm.valid"
+                    class="ui-button ui-button-primary">
+                保存
+            </button>
+        </div>
+    </div>
+</div>

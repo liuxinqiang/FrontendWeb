@@ -32,7 +32,7 @@ export class ComponentsService {
     }
 
     componentIdExist(componentId) {
-        return this._http.get(`${this._urlPrefix}/componentIdExist`, {
+        return this._http.get(`${this._urlPrefix}/component-id-exist`, {
             params: {
                 componentId,
             }
@@ -51,7 +51,7 @@ export class ComponentsService {
             tags,
         } = dataFilter;
         return this._http.post(
-            `${this._urlPrefix}/allPublicComponents`,
+            `${this._urlPrefix}/all-public-components`,
             {
                 pageIndex,
                 pageSize,

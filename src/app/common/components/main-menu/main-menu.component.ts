@@ -4,7 +4,7 @@ import {ILoginUserInterface} from 'app/common/interfaces/response.interface';
 import {Subscription} from 'rxjs';
 import {IMainMenuInterface} from '../../interfaces/menu.interface';
 import {GetMainMenuService} from '../services/get-main-menu.service';
-import {AuthService} from 'app/user/services/auth.service';
+import {UserService} from 'app/user/services/user.service';
 import {DomService} from '../../services/dom.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class MainMenuComponent implements AfterViewInit, OnDestroy {
     constructor(
         private _domService: DomService,
         private _mainMenuService: GetMainMenuService,
-        private _authService: AuthService,
+        private _userService: UserService,
     ) {
         this._mainMenuSubscription$ = this._mainMenuService.getMainMenu()
             .subscribe((data: {menus: IMainMenuInterface[], user: ILoginUserInterface}) => {
@@ -48,10 +48,10 @@ export class MainMenuComponent implements AfterViewInit, OnDestroy {
     }
 
     goToLogin() {
-        this._authService.goToLogin();
+        this._userService.goToLogin();
     }
 
     logOut() {
-        this._authService.logout();
+        this._userService.logout();
     }
 }

@@ -7,6 +7,8 @@ import {ComponentsService} from '../../services/components.service';
 import {IResponseInterface} from 'app/common/interfaces/response.interface';
 import {Router} from '@angular/router';
 import {TagsService} from '../../services/tags.service';
+import {UserService} from '../../../user/services/user.service';
+import * as gitParser from 'parse-github-url';
 
 @Component({
     selector: 'app-create',
@@ -15,7 +17,7 @@ import {TagsService} from '../../services/tags.service';
 })
 export class CreateComponent implements OnInit {
 
-    public tokenExist = false;
+    public availableTokensList;
 
     mainForm = new FormGroup({
         componentId: new FormControl('', [
@@ -74,6 +76,7 @@ export class CreateComponent implements OnInit {
             this.f.gitRepoPath.setValidators([
                 Validators.required,
                 Validators.pattern(/(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\.git)(\/?|\#[-\d\w._]+?)$/),
+                this.gitRepoValidator,
             ]);
             this.f.uploadFile.clearValidators();
         }
@@ -87,6 +90,13 @@ export class CreateComponent implements OnInit {
         });
     }
 
+    gitRepoValidator(control: AbstractControl) {
+        const paredUrl = gitParser(control.value);
+        return (paredUrl && paredUrl.repo) ? null : {
+            'repoError': true,
+        };
+    }
+
     get f() {
         return this.mainForm.controls;
     }
@@ -95,6 +105,7 @@ export class CreateComponent implements OnInit {
         private _componentsService: ComponentsService,
         private _domService: DomService,
         private _tagsService: TagsService,
+        private _userService: UserService,
         private _router: Router,
         private cd: ChangeDetectorRef,
     ) {
@@ -120,6 +131,10 @@ export class CreateComponent implements OnInit {
 
     create() {
         const value = Object.assign({}, this.mainForm.value);
+        console.log(gitParser(value.gitRepoPath));
+        if (1 > 0) {
+            return;
+        }
         this._componentsService.createComponent(value)
             .subscribe(() => {
                 TopUI.notification('组件创建成功！', 'success');
@@ -127,9 +142,21 @@ export class CreateComponent implements OnInit {
             });
     }
 
+    calcTokenAvailable() {
+        return this.availableTokensList && this.availableTokensList.includes(this.f.dataSourceType.value);
+    }
+
+    getTokensList() {
+        this._userService.getUserAvailableTokens()
+            .subscribe(data => {
+                this.availableTokensList = data;
+            });
+    }
+
     ngOnInit(): void {
         this.injectValidateRulesBaseOnType(this.f.dataSourceType.value);
         this.f.dataSourceType.valueChanges
             .subscribe(this.injectValidateRulesBaseOnType.bind(this));
+        this.getTokensList();
     }
 }

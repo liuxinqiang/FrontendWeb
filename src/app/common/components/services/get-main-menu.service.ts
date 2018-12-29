@@ -4,7 +4,7 @@ import {IMainMenuInterface} from '../../interfaces/menu.interface';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {ILoginUserInterface} from '../../interfaces/response.interface';
-import {AuthService} from 'app/user/services/auth.service';
+import {UserService} from 'app/user/services/user.service';
 
 function filterManiMenu(routes: Route[]): IMainMenuInterface[] {
     const result = [];
@@ -51,13 +51,13 @@ function searchMenu(menus: IMainMenuInterface[], keyPath: String): IMainMenuInte
 })
 export class GetMainMenuService {
     constructor(
-        private _authService: AuthService,
+        private _userService: UserService,
         private _router: Router,
     ) {
     }
 
     getMainMenu(searchPath?: string): Observable<{ menus: IMainMenuInterface[], menu: IMainMenuInterface, user: ILoginUserInterface }> {
-        return this._authService.currentUser.pipe(
+        return this._userService.currentUser.pipe(
             map(user => {
                 const filterMenus: IMainMenuInterface[] = filterManiMenu(this._router.config);
                 let menu: null | IMainMenuInterface = null;

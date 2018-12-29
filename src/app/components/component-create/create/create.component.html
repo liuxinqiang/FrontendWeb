@@ -153,7 +153,10 @@
                             </span>
                             <span *ngSwitchCase="'pattern'">
                                 仓库地址不合法
-                             </span>
+                            </span>
+                            <span *ngSwitchCase="'repoError'">
+                                仓库地址不合法
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -165,13 +168,10 @@
                        [class.ui-form-success]="!f.gitRepoPath.errors && f.gitRepoPath.touched"
                        placeholder="请输入仓库地址">
             </div>
-            <div class="ui-alert-warning"
-                 *ngIf="!tokenExist; else setSync"
-                 ui-alert>
-                <p>你当前还没有添加 {{f.dataSourceType.value}} 的私有钥匙，只能以匿名方式克隆公共仓库，如果你希望克隆私有仓库或设置同步仓库，请配置你的私有Token。
-                </p>
-                <p><a class="ui-button ui-button-small ui-button-danger">快速配置</a></p>
-            </div>
+            <app-add-git-token *ngIf="availableTokensList && !calcTokenAvailable(); else setSync"
+                               [type]="f.dataSourceType.value"
+                                (tokenUpdate)="getTokensList()">
+            </app-add-git-token>
             <ng-template #setSync>
                 <div class="ui-margin">
                     <label class="ui-form-label">与上述仓库保持代码同步</label>

@@ -7,15 +7,16 @@ import {
     HttpErrorResponse,
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {retry} from 'rxjs/operators';
+import {map, retry} from 'rxjs/operators';
 import {catchError} from 'rxjs/internal/operators';
-import {AuthService} from 'app/user/services/auth.service';
+import {UserService} from 'app/user/services/user.service';
+import {IResponseInterface} from '../interfaces/response.interface';
 
 @Injectable()
 export class HttpCustomInterceptor implements HttpInterceptor {
 
     constructor(
-        private _authService: AuthService,
+        private _userService: UserService,
     ) {
     }
 
@@ -25,7 +26,7 @@ export class HttpCustomInterceptor implements HttpInterceptor {
         } else {
             switch (error.error.statusCode) {
                 case 401:
-                    this._authService.goToLogin();
+                    this._userService.goToLogin();
                     break;
             }
             TopUI.notification(error.error.message, {status: 'danger'});
@@ -35,13 +36,8 @@ export class HttpCustomInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const currentUser = this._authService.currentUserValue;
+        const currentUser = this._userService.currentUserValue;
 
-        if (request.headers.has('Skip-Intercept')) {
-            const headers = request.headers.delete('Skip-Intercept');
-            const directRequest = request.clone({headers});
-            return next.handle(directRequest);
-        }
         if (currentUser && currentUser.token) {
             request = request.clone({
                 setHeaders: {

@@ -14,7 +14,7 @@ import {LocalStorageService} from 'app/common/services/local-storage.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService {
+export class UserService {
 
     private _userApiPrefix = '/user';
 
@@ -47,11 +47,7 @@ export class AuthService {
     }
 
     public userInfo(loginName: string): Observable<IUserInterface | null> {
-        const headers = new HttpHeaders({
-            'Skip-Intercept': 'yes',
-        });
-        return this._http.get(`${environment.mainAPI.url}${this._userApiPrefix}/userInfo`, {
-            headers,
+        return this._http.get(`${environment.mainAPI.url}${this._userApiPrefix}/user-info`, {
             params: {
                 loginName,
             },
@@ -87,6 +83,26 @@ export class AuthService {
                 returnUrl: this._router.url,
             },
         }).then();
+    }
+
+    public updateUser(user: IUserInterface) {
+        delete user.loginName;
+        if (user.password) {
+            const md5 = new Md5();
+            md5.appendStr(user.password);
+            user.password = md5.end().toString();
+        }
+        return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/update`, user)
+            .pipe(
+                map((res: IResponseInterface) => res.data),
+            );
+    }
+
+    public getUserAvailableTokens() {
+        return this._http.get(`${environment.mainAPI.url}${this._userApiPrefix}/get-available-tokens`)
+            .pipe(
+                map((res: IResponseInterface) => res.data),
+            );
     }
 
     public logout() {

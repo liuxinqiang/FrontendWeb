@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
 import {of, timer} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {IUserInterface} from '../interfaces/user.interface';
@@ -27,7 +27,7 @@ export class LoginComponent {
 
     constructor(
         private _fb: FormBuilder,
-        private _authService: AuthService,
+        private _userService: UserService,
         private _router: Router,
         private _activeRoute: ActivatedRoute,
     ) {
@@ -48,7 +48,7 @@ export class LoginComponent {
                 if (!control.value) {
                     return of(null);
                 }
-                return this._authService.userInfo(control.value).pipe(
+                return this._userService.userInfo(control.value).pipe(
                     map((result: IUserInterface | null) => {
                         if (result === null) {
                             return {
@@ -68,7 +68,7 @@ export class LoginComponent {
     }
 
     login() {
-        this._authService.login(this.loginInfo.value)
+        this._userService.login(this.loginInfo.value)
             .subscribe(() => {
                 this._router.navigateByUrl(this._returnUrl || '/components').then();
             }, () => {

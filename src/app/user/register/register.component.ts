@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {IUserInterface} from '../interfaces/user.interface';
-import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {of, timer} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
@@ -58,7 +58,7 @@ export class RegisterComponent {
 
     constructor(
         private _fb: FormBuilder,
-        private _authService: AuthService,
+        private _userService: UserService,
         private _router: Router,
     ) {
     }
@@ -77,7 +77,7 @@ export class RegisterComponent {
                 if (!control.value) {
                     return of(null);
                 }
-                return this._authService.userInfo(control.value).pipe(
+                return this._userService.userInfo(control.value).pipe(
                     map((result: IUserInterface | null) => {
                         if (result === null) {
                             return null;
@@ -111,7 +111,7 @@ export class RegisterComponent {
     register() {
         const formValue = this.registerInfo.value;
         formValue.password = formValue.password.password;
-        this._authService.register(formValue)
+        this._userService.register(formValue)
             .subscribe(() => {
                 TopUI.notification({
                     message: '注册成功，请登录',

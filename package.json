@@ -40,6 +40,7 @@
     "core-js": "^2.6.0",
     "intl": "^1.2.5",
     "monaco-editor": "^0.15.6",
+    "parse-github-url": "^1.0.2",
     "rxjs": "^6.3.3",
     "topui": "^2.0.11",
     "ts-md5": "^1.2.4",
