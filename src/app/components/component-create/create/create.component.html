@@ -17,7 +17,7 @@
                             请填写组件名
                         </span>
                         <span *ngSwitchCase="'pattern'">
-                            只能输入中文、英文、数字、下划线
+                            只能输入中文、英文、数字、中划线
                         </span>
                         <span *ngSwitchCase="'minlength'">
                             最少 {{f.name.errors.minlength.requiredLength}} 个字符
@@ -195,7 +195,8 @@
             </ng-template>
         </ng-container>
         <ng-template #fileUpload>
-            <app-upload-zip-files class="ui-display-block ui-marigin">
+            <app-upload-zip-files class="ui-display-block ui-margin"
+                            (complete)="f.uploadFile.setValue($event)">
             </app-upload-zip-files>
         </ng-template>
         <div class="ui-margin">

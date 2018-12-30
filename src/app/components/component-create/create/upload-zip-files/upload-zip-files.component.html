@@ -1,13 +1,16 @@
 <label class="ui-form-label">选择文件（.zip）</label>
 <div ui-form-custom="target: true">
-    <input type="file"
-           #inputFile
-           accept="application/zip"
-           (change)="onUploadChange($event).then()">
-    <input class="ui-input ui-form-width-large"
-           type="text"
-           placeholder="选择文件"
-           disabled>
+    <div ui-form-custom>
+        <input type="file"
+               #inputFile
+               accept="application/zip"
+               (change)="onUploadChange($event).then()">
+        <a class="ui-button"
+           [ngClass]="completedFileName ? 'ui-button-danger' : 'ui-button-primary'"
+           tabindex="-1">
+            {{completedFileName || '选择文件'}}
+        </a>
+    </div>
 </div>
 <div #zipModal ui-modal="escClose: false;bgClose: false">
     <div class="ui-modal-dialog">
@@ -87,8 +90,12 @@
                     <p>去掉忽略的文件后，剩余文件 <b>{{getFilesCount()}}</b> 个</p>
                 </div>
                 <div class="ui-width-auto ui-text-right">
-                    <a class="ui-button ui-button-default">取消</a>
-                    <a class="ui-margin-small-left ui-button ui-button-primary">确定</a>
+                    <a class="ui-button ui-button-default"
+                       (click)="cancel()">取消</a>
+                    <a class="ui-margin-small-left ui-button ui-button-primary"
+                       (click)="confirm()">
+                        确定
+                    </a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import * as jszip from 'jszip';
 import {excludeMap} from './exclude-map';
 import {ExcludeConfig} from './exclude-config';
@@ -19,7 +19,7 @@ function pageNumbers(count, current) {
     templateUrl: './upload-zip-files.component.html',
     styleUrls: ['./upload-zip-files.component.less']
 })
-export class UploadZipFilesComponent implements OnInit {
+export class UploadZipFilesComponent {
 
     @Output() complete: EventEmitter<any> = new EventEmitter();
 
@@ -33,13 +33,11 @@ export class UploadZipFilesComponent implements OnInit {
         total: 0,
     };
 
+    completedFileName: string;
+
     excludeConfig: ExcludeConfig[] = [];
 
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
+    zipFile;
 
     getData(data: String[], pageIndex) {
         return data.slice((pageIndex - 1) * 16, pageIndex * 16);
@@ -91,8 +89,10 @@ export class UploadZipFilesComponent implements OnInit {
     }
 
     clearUploadFile() {
+        this.completedFileName = undefined;
         const fileElement: HTMLInputElement = this.inputFile.nativeElement;
         fileElement.value = null;
+        this.complete.emit(null);
     }
 
     async onUploadChange(event): Promise<void> {
@@ -104,15 +104,66 @@ export class UploadZipFilesComponent implements OnInit {
             }
             this.fileInfo.name = file.name;
             this.fileInfo.size = file.size;
-            const zip = new jszip();
-            const data = await zip.loadAsync(file);
+            this.zipFile = new jszip();
+            const data = await this.zipFile.loadAsync(file);
             TopUI.modal(this.zipModal.nativeElement).show();
             const {files} = data;
+            console.log(data);
             const fileNames = Object.keys(files);
             this.fileInfo.total = fileNames.length;
             this.setExcludeConfig(fileNames);
-            console.log(this.excludeConfig);
         }
+    }
+
+    cancel() {
+        this.clearUploadFile();
+        TopUI.modal(this.zipModal.nativeElement).hide();
+    }
+
+    deletedIgnoredFiles() {
+        const deletedFiles: RegExp[] = [];
+        this.excludeConfig.map((config: ExcludeConfig) => {
+            if (!config.skip) {
+                config.matchFiles.forEach(file => {
+                    let deleted = false;
+                    for (const f of deletedFiles) {
+                        if (f.test(file)) {
+                            deleted = true;
+                            break;
+                        }
+                    }
+                    if (!deleted) {
+                        this.zipFile.remove(file);
+                        deletedFiles.push(new RegExp(`^${file}`));
+                    }
+                });
+            }
+        });
+    }
+
+    flatFolder() {
+        const realName = this.fileInfo.name.substr(0, this.fileInfo.name.length - 4);
+        const fileNames = Object.keys(this.zipFile.files);
+        const canNotFlat = fileNames.filter(fileName => {
+            return !new RegExp(`^${realName}/`).test(fileName);
+        })[0];
+        if (!canNotFlat) {
+            this.zipFile = this.zipFile.folder(realName);
+        }
+    }
+
+    confirm() {
+        this.deletedIgnoredFiles();
+        this.flatFolder();
+        this.zipFile.generateAsync({
+            type: 'blob'
+        }).then((content) => {
+            content.name = this.fileInfo.name;
+            console.log(content);
+            this.complete.emit(content);
+            this.completedFileName = this.fileInfo.name;
+            TopUI.modal(this.zipModal.nativeElement).hide();
+        });
     }
 
 }

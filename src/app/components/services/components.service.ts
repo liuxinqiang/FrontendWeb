@@ -40,7 +40,19 @@ export class ComponentsService {
     }
 
     createComponent(data) {
-        return this._http.post(`${this._urlPrefix}/add`, data);
+        const formData: FormData = new FormData();
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && data[key]) {
+                if (key === 'uploadFile') {
+                    formData.append('file', data[key], data[key].name);
+                } else if (['tags', 'isPublic'].indexOf(key) >= 0) {
+                    formData.append(key, JSON.stringify(data[key]));
+                } else {
+                    formData.append(key, data[key]);
+                }
+            }
+        }
+        return this._http.post(`${this._urlPrefix}/add`, formData);
     }
 
     getAllPublicComponentsList(dataFilter: DataFilter): Observable<object> {
@@ -70,7 +82,7 @@ export class ComponentsService {
             params['loginName'] = loginName;
         }
         return this._http.post(
-            `${this._urlPrefix}/getComponentsByUser`,
+            `${this._urlPrefix}/get-components-by-user`,
             {
                 pageIndex,
                 pageSize,

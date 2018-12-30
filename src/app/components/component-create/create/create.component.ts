@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {DomService} from 'app/common/services/dom.service';
 import {Observable, of, timer} from 'rxjs';
@@ -22,7 +22,7 @@ export class CreateComponent implements OnInit {
     mainForm = new FormGroup({
         componentId: new FormControl('', [
             Validators.required,
-            Validators.pattern(/^(?![0-9_])[a-z0-9_]+$/),
+            Validators.pattern(/^(?![0-9_])[a-z0-9\-]+$/),
             Validators.minLength(2),
             Validators.maxLength(30),
         ], [
@@ -30,7 +30,7 @@ export class CreateComponent implements OnInit {
         ]),
         name: new FormControl('', [
             Validators.required,
-            Validators.pattern(/^[a-zA-Z0-9_\u4e00-\u9eff]+$/),
+            Validators.pattern(/^[a-zA-Z0-9\-\u4e00-\u9eff]+$/),
             Validators.minLength(2),
             Validators.maxLength(32),
         ]),
@@ -107,20 +107,15 @@ export class CreateComponent implements OnInit {
         private _tagsService: TagsService,
         private _userService: UserService,
         private _router: Router,
-        private cd: ChangeDetectorRef,
     ) {
     }
 
     create() {
         const value = Object.assign({}, this.mainForm.value);
-        console.log(gitParser(value.gitRepoPath));
-        if (1 > 0) {
-            return;
-        }
         this._componentsService.createComponent(value)
             .subscribe(() => {
                 TopUI.notification('组件创建成功！', 'success');
-                this._router.navigate(['/components/my-components']).then();
+                // this._router.navigate(['/components/my-components']).then();
             });
     }
 
