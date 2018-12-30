@@ -108,7 +108,6 @@ export class UploadZipFilesComponent {
             const data = await this.zipFile.loadAsync(file);
             TopUI.modal(this.zipModal.nativeElement).show();
             const {files} = data;
-            console.log(data);
             const fileNames = Object.keys(files);
             this.fileInfo.total = fileNames.length;
             this.setExcludeConfig(fileNames);
@@ -159,7 +158,6 @@ export class UploadZipFilesComponent {
             type: 'blob'
         }).then((content) => {
             content.name = this.fileInfo.name;
-            console.log(content);
             this.complete.emit(content);
             this.completedFileName = this.fileInfo.name;
             TopUI.modal(this.zipModal.nativeElement).hide();
