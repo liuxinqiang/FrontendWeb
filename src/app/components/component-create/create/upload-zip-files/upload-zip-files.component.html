@@ -21,13 +21,13 @@
                 </div>
                 <div class="ui-width-auto">
                     <p class="ui-text-muted">
-                        共计文件：{{fileInfo.total}} 个，总计大小：{{fileInfo.size | readableFileSize}}
+                        {{fileInfo.total}} 个文件，{{fileInfo.size | readableFileSize}}
                     </p>
                 </div>
             </div>
         </div>
         <div class="ui-modal-body" ui-overflow-auto>
-            <ul ui-accordion>
+            <ul ui-accordion *ngIf="excludeConfig else loading">
                 <li *ngFor="let exclude of excludeConfig">
                     <div class="ui-accordion-title ui-link">
                         <div class="ui-grid ui-grid-small">
@@ -83,11 +83,19 @@
                     </div>
                 </li>
             </ul>
+            <ng-template #loading>
+                <p class="ui-text-center">
+                    正在解析 zip 文件……
+                </p>
+            </ng-template>
         </div>
         <div class="ui-modal-footer">
+            <div class="ui-alert-danger" ui-alert>
+                <p>上述未勾选项目将会从压缩包中剔除，如果你希望包含这些项目，请勾选对应忽略项前的复选框。(部分系统强制忽略的除外)</p>
+            </div>
             <div class="ui-grid">
                 <div class="ui-width-expand">
-                    <p>去掉忽略的文件后，剩余文件 <b>{{getFilesCount()}}</b> 个</p>
+                    <p>忽略上述文件后，剩余文件 <b>{{getFilesCount()}}</b> 个</p>
                 </div>
                 <div class="ui-width-auto ui-text-right">
                     <a class="ui-button ui-button-default"

@@ -35,7 +35,7 @@ export class UploadZipFilesComponent {
 
     completedFileName: string;
 
-    excludeConfig: ExcludeConfig[] = [];
+    excludeConfig: ExcludeConfig[];
 
     zipFile;
 
@@ -49,6 +49,9 @@ export class UploadZipFilesComponent {
 
     getFilesCount() {
         let total = this.fileInfo.total;
+        if (!this.excludeConfig) {
+            return 0;
+        }
         this.excludeConfig.map(config => {
             if (!config.skip) {
                 total = total - config.total;
@@ -104,9 +107,10 @@ export class UploadZipFilesComponent {
             }
             this.fileInfo.name = file.name;
             this.fileInfo.size = file.size;
+            TopUI.modal(this.zipModal.nativeElement).show();
+            this.excludeConfig = undefined;
             this.zipFile = new jszip();
             const data = await this.zipFile.loadAsync(file);
-            TopUI.modal(this.zipModal.nativeElement).show();
             const {files} = data;
             const fileNames = Object.keys(files);
             this.fileInfo.total = fileNames.length;
@@ -121,6 +125,9 @@ export class UploadZipFilesComponent {
 
     deletedIgnoredFiles() {
         const deletedFiles: RegExp[] = [];
+        if (!this.excludeConfig) {
+            return;
+        }
         this.excludeConfig.map((config: ExcludeConfig) => {
             if (!config.skip) {
                 config.matchFiles.forEach(file => {
