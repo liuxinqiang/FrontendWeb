@@ -9,7 +9,7 @@
   "contributors": [],
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port=4400",
     "build:prod": "rm -rf dist && ng build --prod --stats-json && mv dist/browser/stats.json ./",
     "report": "webpack-bundle-analyzer stats.json",
     "lint": "ng lint dev-cloud",
