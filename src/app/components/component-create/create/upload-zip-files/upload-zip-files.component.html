@@ -28,6 +28,10 @@
         </div>
         <div class="ui-modal-body" ui-overflow-auto>
             <ul ui-accordion *ngIf="excludeConfig else loading">
+                <li *ngIf="!excludeConfig.length"
+                    class="ui-text-center ui-margin-top">
+                    没有需要清理的文件～
+                </li>
                 <li *ngFor="let exclude of excludeConfig">
                     <div class="ui-accordion-title ui-link">
                         <div class="ui-grid ui-grid-small">
@@ -90,7 +94,9 @@
             </ng-template>
         </div>
         <div class="ui-modal-footer">
-            <div class="ui-alert-danger" ui-alert>
+            <div *ngIf="excludeConfig && excludeConfig.length"
+                 class="ui-alert-danger"
+                 ui-alert>
                 <p>上述未勾选项目将会从压缩包中剔除，如果你希望包含这些项目，请勾选对应忽略项前的复选框。(部分系统强制忽略的除外)</p>
             </div>
             <div class="ui-grid">

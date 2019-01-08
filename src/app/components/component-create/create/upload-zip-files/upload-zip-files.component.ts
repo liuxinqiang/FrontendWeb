@@ -148,8 +148,11 @@ export class UploadZipFilesComponent {
     }
 
     flatFolder() {
-        const realName = this.fileInfo.name.substr(0, this.fileInfo.name.length - 4);
         const fileNames = Object.keys(this.zipFile.files);
+        const realName = fileNames[0] && fileNames[0].split('/')[0];
+        if (!realName) {
+            return;
+        }
         const canNotFlat = fileNames.filter(fileName => {
             return !new RegExp(`^${realName}/`).test(fileName);
         })[0];

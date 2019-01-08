@@ -64,6 +64,14 @@ const mainRoutes: Routes = [
         },
     },
     {
+        path: 'ide',
+        loadChildren: './ide/ide.module#IdeModule',
+        canActivate: [AuthGuard],
+        data: {
+            title: '在线编辑器',
+        },
+    },
+    {
         path: 'error',
         component: ErrorComponent,
         data: {

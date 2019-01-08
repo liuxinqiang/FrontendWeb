@@ -9,10 +9,10 @@
     </div>
     <p>
         <a class="ui-button ui-button-primary"
-           routerLink="/editor"
+           routerLink="/ide"
            [queryParams]="{
                type: 'component',
-               name: component.componentId,
+               id: component.componentId,
                url: router.url
            }">
             编辑器
