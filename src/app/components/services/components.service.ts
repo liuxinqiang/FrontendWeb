@@ -18,12 +18,12 @@ export class ComponentsService {
     ) {
     }
 
-    getComponent(componentName: string): Observable<IComponentInterface> {
+    getComponent(componentId: string): Observable<IComponentInterface> {
         return this._http.get(
             `${this._urlPrefix}/detail`,
             {
                 params: {
-                    componentName,
+                    componentId,
                 }
             })
             .pipe(

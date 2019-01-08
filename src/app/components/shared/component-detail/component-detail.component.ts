@@ -23,7 +23,7 @@ export class ComponentDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.componentSubscription$ = this._route.paramMap.pipe(
             switchMap(
-                (params: ParamMap) => this._componentService.getComponent(params.get('componentName'))
+                (params: ParamMap) => this._componentService.getComponent(params.get('componentId'))
             )
         )
             .subscribe(data => {

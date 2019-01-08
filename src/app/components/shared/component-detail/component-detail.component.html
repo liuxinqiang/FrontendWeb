@@ -1,6 +1,6 @@
 <ng-container *ngIf="component">
-    <h2 class="ui-h2">{{component.title}}</h2>
-    <p>{{component.componentName}}</p>
+    <h2 class="ui-h2">{{component.name}}</h2>
+    <p>{{component.name}}</p>
     <div class="tags"
          *ngIf="component.tags.length">
         <span *ngFor="let tag of component.tags"
@@ -12,7 +12,7 @@
            routerLink="/editor"
            [queryParams]="{
                type: 'component',
-               name: component.componentName,
+               name: component.componentId,
                url: router.url
            }">
             编辑器

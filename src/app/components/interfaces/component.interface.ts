@@ -1,8 +1,8 @@
 import {IUserInterface} from 'app/user/interfaces/user.interface';
 
 export interface IComponentInterface {
-    title: string;
-    componentName: string;
+    componentId: string;
+    name: string;
     createTime: string;
     isActive: boolean;
     metaData: object;

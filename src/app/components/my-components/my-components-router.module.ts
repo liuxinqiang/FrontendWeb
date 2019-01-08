@@ -17,7 +17,7 @@ const routes: Routes = [
                 },
             },
             {
-                path: ':componentName',
+                path: ':componentId',
                 component: ComponentDetailComponent,
                 data: {
                     title: '组件详情',

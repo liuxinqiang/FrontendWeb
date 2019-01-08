@@ -21,7 +21,7 @@ const routes: Routes = [
                 component: PublicComponentsComponent,
             },
             {
-                path: 'public/:componentName',
+                path: 'public/:componentId',
                 component: ComponentDetailComponent, // 共享组件，不需要在下面导出
             },
             {

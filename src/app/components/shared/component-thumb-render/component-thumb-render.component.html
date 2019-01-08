@@ -3,15 +3,15 @@
     <div class="ui-card-header">
         <h3 class="ui-card-title ui-margin-remove-bottom">
             <a class="ui-link-reset"
-               [routerLink]="[component.componentName]">
-                {{component.title}}
+               [routerLink]="[component.componentId]">
+                {{component.name}}
                 <span *ngIf="component.users && component.users.length">
                      [{{component.users[0].role === 99 ? '管理员' : '参与者'}}]
                 </span>
             </a>
         </h3>
         <p class="ui-text-meta ui-margin-remove-top">
-            {{component.componentName}}
+            {{component.componentId}}
         </p>
     </div>
     <div class="ui-card-body">
@@ -28,7 +28,7 @@
         </ul>
     </div>
     <div class="ui-card-footer">
-        <a [routerLink]="[component.componentName]"
+        <a [routerLink]="[component.componentId]"
            class="ui-button ui-button-text">
             详细了解
         </a>
