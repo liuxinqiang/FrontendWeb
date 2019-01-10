@@ -1,0 +1,31 @@
+<header class="ui-container-expand">
+    <div class="ui-grid">
+        <div class="ui-width-expand">
+            <div class="ui-inline ui-margin-small-left ui-margin-small-right">
+                <a class="header-text">
+                    <span class="text-icon-fix"
+                          ui-icon="icon:home"></span>
+                    测试组件
+                </a>
+                <div [attr.ui-drop]="headerDropConfig">
+                    <div class="ui-card ui-card-body ui-card-default">
+                        测试内容
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-width-auto">
+            <a ui-tooltip="全屏"
+               class="header-text ui-margin-small-right">
+                <span ui-icon="icon:expand"
+                      class="text-icon-fix"></span>
+            </a>
+            <a ui-tooltip="返回"
+               class="header-text ui-margin-small-right">
+                <span ui-icon="icon:sign-out"
+                      class="text-icon-fix">
+                </span>
+            </a>
+        </div>
+    </div>
+</header>
