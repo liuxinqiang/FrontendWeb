@@ -16,11 +16,23 @@
         </div>
         <div class="ui-width-auto">
             <a ui-tooltip="全屏"
+               *ngIf="!fullScreenMode;else disableFullScreen"
+               (click)="fullScreen()"
                class="header-text ui-margin-small-right">
                 <span ui-icon="icon:expand"
                       class="text-icon-fix"></span>
             </a>
-            <a ui-tooltip="返回"
+            <ng-template #disableFullScreen>
+                <a ui-tooltip="退出全屏"
+                   (click)="exitFullScreen()"
+                   class="header-text ui-margin-small-right">
+                <span ui-icon="icon:shrink"
+                      class="text-icon-fix">
+                </span>
+                </a>
+            </ng-template>
+            <a [routerLink]="backUrl"
+               ui-tooltip="返回"
                class="header-text ui-margin-small-right">
                 <span ui-icon="icon:sign-out"
                       class="text-icon-fix">
