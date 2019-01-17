@@ -1,0 +1,22 @@
+<ul class="file-list ui-margin-remove">
+    <li *ngFor="let file of filesList"
+        [ngClass]="{
+            folder: file.type === 'directory',
+            open: file.opened,
+            'ui-active': file.active
+        }">
+        <a (click)="nodeClick(file)"
+            class="ui-text-nowrap">
+            <span *ngIf="file.type === 'directory'"
+                  class="directory-icon"
+                  ui-icon="icon:triangle-right">
+            </span>
+            {{file.name}}
+        </a>
+        <ul *ngIf="file.type === 'directory' && file.opened && file.children.length"
+            class="file-list ui-margin-remove">
+            <app-files-list-render [filesList]="file.children">
+            </app-files-list-render>
+        </ul>
+    </li>
+</ul>

@@ -7,7 +7,8 @@ import {HeaderComponent} from './header/header.component';
 import {EditorTopComponent} from './editor-top/editor-top.component';
 import {IconNavComponent} from './icon-nav/icon-nav.component';
 import {TextEditorComponent} from './text-editor/text-editor.component';
-import {NavPanelComponent} from './nav-panel/nav-panel.component';
+import {PanelService} from './services/panel.service';
+import {NavPanelModule} from './nav-panel/nav-panel.module';
 
 @NgModule({
     declarations: [
@@ -15,16 +16,17 @@ import {NavPanelComponent} from './nav-panel/nav-panel.component';
         HeaderComponent,
         EditorTopComponent,
         IconNavComponent,
-        NavPanelComponent,
         TextEditorComponent,
     ],
     imports: [
         FormsModule,
         CommonModule,
         IdeRouterModule,
+        NavPanelModule,
     ],
     providers: [
         AsyncDbService,
+        PanelService,
     ],
 })
 export class IdeModule {

@@ -1,3 +1,12 @@
-<p>
-  nav-panel works!
-</p>
+<app-files-panel *ngIf="panelService.activePanelValue === 'files'"
+                 class="ui-display-block ui-height-1-1">
+</app-files-panel>
+<app-search-panel *ngIf="panelService.activePanelValue === 'search'"
+                  class="ui-display-block ui-height-1-1">
+</app-search-panel>
+<app-config-panel *ngIf="panelService.activePanelValue === 'config'"
+                  class="ui-display-block">
+</app-config-panel>
+<app-deploy-panel *ngIf="panelService.activePanelValue === 'deploy'"
+                  class="ui-display-block">
+</app-deploy-panel>
