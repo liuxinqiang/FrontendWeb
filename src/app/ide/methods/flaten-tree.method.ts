@@ -1,6 +1,8 @@
-export function getFilesTree(files) {
+import {IFile} from '../interfaces/file.interface';
+
+export function getFilesTree(files: IFile[]) {
     const tree = [];
-    files.forEach(file => {
+    files.forEach((file: IFile) => {
         const array = file.id.split('/');
         if (array.length === 1) {
             Object.assign(file, {
@@ -13,9 +15,10 @@ export function getFilesTree(files) {
             let parentFolder = tree;
             array.forEach((aFile, index) => {
                 if (index < (array.length - 1)) {
-                    let folder = parentFolder.filter(f => (f.type === 'directory' && f.name === aFile))[0];
+                    let folder: IFile = parentFolder.filter(f => (f.type === 'directory' && f.name === aFile))[0];
                     if (!folder) {
                         folder = {
+                            id: aFile,
                             type: 'directory',
                             name: aFile,
                             opened: false,
@@ -26,7 +29,11 @@ export function getFilesTree(files) {
                     }
                     parentFolder = folder.children;
                 } else {
-                    file.name = aFile;
+                    Object.assign(file, {
+                        type: 'file',
+                        name: aFile,
+                        active: false,
+                    });
                     parentFolder.push(file);
                 }
             });

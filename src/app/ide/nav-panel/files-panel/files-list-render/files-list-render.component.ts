@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
+import {IFile} from '../../../interfaces/file.interface';
 
 @Component({
     selector: 'app-files-list-render',
@@ -7,18 +8,10 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} f
 })
 export class FilesListRenderComponent implements OnInit {
 
-    @Input() filesList: any[] = [];
+    @Input() filesList: IFile[] = [];
 
-    @Output() nodeSelect: EventEmitter<any> = new EventEmitter();
+    @Output() nodeSelect: EventEmitter<IFile> = new EventEmitter();
 
     ngOnInit() {
-    }
-
-    nodeClick(node) {
-        if (node.type === 'directory') {
-            node.opened = !node.opened;
-        } else {
-            node.active = !node.active;
-        }
     }
 }

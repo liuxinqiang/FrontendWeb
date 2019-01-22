@@ -9,6 +9,8 @@ import {IconNavComponent} from './icon-nav/icon-nav.component';
 import {TextEditorComponent} from './text-editor/text-editor.component';
 import {PanelService} from './services/panel.service';
 import {NavPanelModule} from './nav-panel/nav-panel.module';
+import {EditorService} from './services/editor.service';
+import {ActivityService} from './services/activity.service';
 
 @NgModule({
     declarations: [
@@ -27,6 +29,8 @@ import {NavPanelModule} from './nav-panel/nav-panel.module';
     providers: [
         AsyncDbService,
         PanelService,
+        EditorService,
+        ActivityService,
     ],
 })
 export class IdeModule {

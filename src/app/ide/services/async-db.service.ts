@@ -49,10 +49,11 @@ export class AsyncDbService {
                         return this.getList(dbName);
                     } else {
                         this.async
-                            .on('complete', () => {
+                            .on('change', () => {
                                 return this.getList(dbName);
                             })
                             .on('error', (error) => {
+                                console.log('remote 获取失败...');
                                 reject(error);
                             });
                     }
@@ -75,12 +76,29 @@ export class AsyncDbService {
         });
 
         this.async
-            .on('change', async (event) => {
+            .on('change',  (event) => {
+                console.log('remote change...');
+                console.log(event);
                 this.remoteChanges$.next(event);
+            })
+            .on('paused',  (err) => {
+                console.log('remote paused');
+                console.log(err);
+            }).on('active',  () => {
+                console.log('remote active');
+            }).on('denied', (err) => {
+                console.log('remote denied');
+                console.log(err);
+            }).on('complete',  (info) => {
+                console.log('remote complete');
+                console.log(info);
+            }).on('error', (err) => {
+                console.log('remote error');
+                console.log(err);
             });
     }
 
     public async syncOff() {
-        await this.async.cancel();
+        // await this.async.cancel();
     }
 }

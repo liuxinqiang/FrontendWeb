@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AsyncDbService} from '../../services/async-db.service';
+import {IFile} from '../../interfaces/file.interface';
 
-function markNode(array: any[], prop, value) {
-    array.forEach((node: any) => {
-        node[prop] = value;
-        if (node.children.length) {
-            markNode(node.children, prop, value);
+function markNode(array: IFile[], prop, value, typeFilter = ['file', 'directory']) {
+    array.forEach((node: IFile) => {
+        if (typeFilter.indexOf(node.type) >= 0) {
+            node[prop] = value;
+        }
+        if (node.type === 'directory' && node.children.length) {
+            markNode(node.children, prop, value, typeFilter);
         }
     });
 }
@@ -40,6 +43,16 @@ export class FilesPanelComponent implements OnInit {
     ) {
     }
 
+    nodeSelect(node: IFile) {
+        console.log(this.asyncDBService.filesList);
+        if (node.type === 'directory') {
+            node.opened = !node.opened;
+        } else {
+            markNode(this.asyncDBService.filesList, 'active', false, ['file']);
+            node.active = true;
+        }
+        console.log(node);
+    }
 
     ngOnInit() {
     }

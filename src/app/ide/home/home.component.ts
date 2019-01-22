@@ -31,4 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this._dbService.syncOff().then();
     }
 
+    textEditorLoaded(element: HTMLDivElement) {
+        console.log('load complete....');
+        console.log(element);
+    }
+
 }

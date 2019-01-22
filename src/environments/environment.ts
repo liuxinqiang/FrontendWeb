@@ -5,6 +5,7 @@
 
 export const environment = {
     production: false,
+    assetsPath: '/assets',
     mainAPI: {
         url: '/api',
     },
@@ -13,5 +14,5 @@ export const environment = {
     },
     gitMidea: {
         url: 'https://git-midea.liuxinqiang.com',
-    }
+    },
 };

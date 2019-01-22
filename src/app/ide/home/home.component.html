@@ -10,7 +10,8 @@
     <div class="ui-width-expand ui-height-1-1">
         <app-ide-editor-top class="ui-display-block main-editor-top">
         </app-ide-editor-top>
-        <app-ide-text-editor class="ui-display-block ui-position-relative main-editor-container">
+        <app-ide-text-editor class="ui-display-block ui-position-relative main-editor-container"
+                             (loadComplete)="textEditorLoaded($event)">
         </app-ide-text-editor>
     </div>
 </div>

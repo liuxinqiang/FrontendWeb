@@ -1,5 +1,7 @@
 <div class="ui-overflow-auto ui-height-1-1">
     <h5 class="ui-h5 ui-margin-small-top ui-margin-remove-bottom">文件列表</h5>
-    <app-files-list-render [filesList]="asyncDBService.filesList">
+    <app-files-list-render
+            [filesList]="asyncDBService.filesList"
+            (nodeSelect)="nodeSelect($event)">
     </app-files-list-render>
 </div>
