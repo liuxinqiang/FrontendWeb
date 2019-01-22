@@ -1,3 +1,20 @@
-<p>
-  editor-top works!
-</p>
+<ul #navContainer class="active-files-list ui-margin-remove ui-overflow-hidden ui-position-relative">
+    <li *ngFor="let file of activityService.openedFiles"
+        [ngClass]="activityService.activeFile !== null
+                   && activityService.activeFile === file
+                   ? 'ui-active' : 'ui-visible-toggle'"
+        class="ui-display-inline-block">
+        <a class="ui-link-reset file-name"
+           (click)="activityService.setActiveFile(file)">
+            {{file}}
+        </a>
+        <a class="ui-link-reset"
+           (click)="activityService.closeOpenedFiles([file])"
+           [ngClass]="{
+                'ui-invisible-hover': activityService.activeFile === null
+                                      || activityService.activeFile !== file
+            }"
+           ui-icon="icon:close;ratio:.8">
+        </a>
+    </li>
+</ul>

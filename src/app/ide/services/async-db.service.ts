@@ -99,6 +99,6 @@ export class AsyncDbService {
     }
 
     public async syncOff() {
-        // await this.async.cancel();
+        await this.async.cancel();
     }
 }

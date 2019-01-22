@@ -1,4 +1,5 @@
-<div class="overlay ui-text-center">
+<div class="overlay ui-text-center"
+    *ngIf="activityService.activeFile === null">
     <p class="ui-margin-large-top">
         当前没有选择任何文件....
     </p>

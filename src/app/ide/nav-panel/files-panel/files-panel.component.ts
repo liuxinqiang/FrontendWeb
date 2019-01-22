@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AsyncDbService} from '../../services/async-db.service';
 import {IFile} from '../../interfaces/file.interface';
+import {ActivityService} from '../../services/activity.service';
+import {filter} from 'rxjs/operators';
 
 function markNode(array: IFile[], prop, value, typeFilter = ['file', 'directory']) {
     array.forEach((node: IFile) => {
@@ -13,11 +15,12 @@ function markNode(array: IFile[], prop, value, typeFilter = ['file', 'directory'
     });
 }
 
-function autoOpenFolder(filesArray: any[], folders: string[]) {
+function autoOpenFolder(filesArray: IFile[], filePath: string) {
     let files = filesArray;
+    const folders = filePath.split('/');
     for (let i = 0; i < folders.length; i++) {
         const nodeName = folders[i];
-        const nodeFound = files.filter(file => (file.isDirectory || (i === folders.length - 1)) && file.file === nodeName)[0];
+        const nodeFound = files.filter(file => (file.type === 'directory' || (i === folders.length - 1)) && file.name === nodeName)[0];
         if (nodeFound) {
             if (i === folders.length - 1) {
                 nodeFound.active = true;
@@ -40,21 +43,26 @@ export class FilesPanelComponent implements OnInit {
 
     constructor(
         public asyncDBService: AsyncDbService,
+        private _activeService: ActivityService,
     ) {
     }
 
     nodeSelect(node: IFile) {
-        console.log(this.asyncDBService.filesList);
         if (node.type === 'directory') {
             node.opened = !node.opened;
         } else {
-            markNode(this.asyncDBService.filesList, 'active', false, ['file']);
-            node.active = true;
+            this._activeService.setActiveFile(node.id);
         }
-        console.log(node);
     }
 
     ngOnInit() {
+        this._activeService.activeFile$.asObservable()
+            .subscribe(file => {
+                markNode(this.asyncDBService.filesList, 'active', false, ['file']);
+                if (file !== null) {
+                    autoOpenFolder(this.asyncDBService.filesList, file);
+                }
+            });
     }
 
 }

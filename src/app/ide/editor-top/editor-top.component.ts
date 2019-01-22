@@ -1,15 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivityService} from '../services/activity.service';
+import PerfectScrollbar from 'perfect-scrollbar';
 
 @Component({
-  selector: 'app-ide-editor-top',
-  templateUrl: './editor-top.component.html',
-  styleUrls: ['./editor-top.component.less']
+    selector: 'app-ide-editor-top',
+    templateUrl: './editor-top.component.html',
+    styleUrls: ['./editor-top.component.less']
 })
-export class EditorTopComponent implements OnInit {
+export class EditorTopComponent implements AfterViewInit, OnDestroy {
 
-  constructor() { }
+    private _scrollBar;
 
-  ngOnInit() {
-  }
+    @ViewChild('navContainer') navContainer: ElementRef;
+
+    constructor(
+        public activityService: ActivityService,
+    ) {
+    }
+
+    ngAfterViewInit(): void {
+        this._scrollBar = new PerfectScrollbar(this.navContainer.nativeElement);
+        this.activityService.openedFiles$.asObservable()
+            .subscribe(() => {
+                this._scrollBar.update();
+            });
+    }
+
+    ngOnDestroy(): void {
+        this._scrollBar.destroy();
+        this._scrollBar = null;
+    }
 
 }

@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {IIdeQuery} from '../interfaces/ide.interface';
 import {AsyncDbService} from '../services/async-db.service';
 import {PanelService} from '../services/panel.service';
+import {EditorService} from '../services/editor.service';
 
 @Component({
     selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     constructor(
         private _activeRoute: ActivatedRoute,
         private _dbService: AsyncDbService,
+        private _editorService: EditorService,
         public panelService: PanelService,
     ) {
     }
@@ -32,8 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     textEditorLoaded(element: HTMLDivElement) {
-        console.log('load complete....');
-        console.log(element);
+        this._editorService.init(element);
     }
 
 }

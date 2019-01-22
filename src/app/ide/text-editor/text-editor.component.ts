@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {environment} from 'environments/environment';
+import {ActivityService} from '../services/activity.service';
 
 @Component({
     selector: 'app-ide-text-editor',
@@ -12,7 +13,9 @@ export class TextEditorComponent implements AfterViewInit {
 
     @Output() loadComplete = new EventEmitter<any>();
 
-    constructor() {
+    constructor(
+        public activityService: ActivityService,
+    ) {
     }
 
     ngAfterViewInit(): void {
