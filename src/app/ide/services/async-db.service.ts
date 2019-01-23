@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as PouchDB from 'vendor/pouchdb';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {getFilesTree} from '../methods/flaten-tree.method';
 
 @Injectable()
@@ -10,16 +10,19 @@ export class AsyncDbService {
     public remoteDB: any;
     public async: any;
 
+    private _remoteChanges: BehaviorSubject<any>;
+
     public filesList$: BehaviorSubject<any[]>;
 
     public localChanges$: BehaviorSubject<any>;
 
-    public remoteChanges$: BehaviorSubject<any>;
+    public remoteChanges$: Observable<any>;
 
     constructor() {
         this.filesList$ = new BehaviorSubject([]);
         this.localChanges$ = new BehaviorSubject(null);
-        this.remoteChanges$ = new BehaviorSubject(null);
+        this._remoteChanges = new BehaviorSubject(null);
+        this.remoteChanges$ = this._remoteChanges.asObservable();
     }
 
     public get filesList() {
@@ -79,7 +82,7 @@ export class AsyncDbService {
             .on('change',  (event) => {
                 console.log('remote change...');
                 console.log(event);
-                this.remoteChanges$.next(event);
+                this._remoteChanges.next(event);
             })
             .on('paused',  (err) => {
                 console.log('remote paused');

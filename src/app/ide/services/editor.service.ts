@@ -24,14 +24,32 @@ export class EditorService {
     }
 
     contentChange() {
-        this._asyncDBService.remoteChanges$.asObservable()
+        this._asyncDBService.remoteChanges$
             .pipe(
                 filter(data => data !== null && data.direction === 'pull'),
                 map(data => data.change.docs)
             )
             .subscribe(docs => {
-                console.log('docs...');
-                console.log(docs);
+                docs.forEach(doc => {
+                    const {_id} = doc;
+                    const model = monaco.editor.getModel(getFileUriMethod(_id));
+                    if (model !== null) {
+                        model.dispose();
+                        const newModel = monaco.editor.createModel(
+                            doc.content,
+                            doc.mime,
+                            getFileUriMethod(_id)
+                        );
+                        newModel.onDidChangeContent(async () => {
+                            doc.content = model.getValue();
+                            const newFile = await this._asyncDbService.localDB.put(doc);
+                            doc._rev = newFile.rev;
+                        });
+                        if (_id === this._activityService.activeFile) {
+                            this.editor.setModel(newModel);
+                        }
+                    }
+                });
             });
     }
 
