@@ -14,6 +14,8 @@ export class EditorService {
 
     private _activeFileSubscription: Subscription;
 
+    public toSaveQueues = {};
+
     public editor;
 
     constructor(
@@ -21,6 +23,16 @@ export class EditorService {
         private _asyncDbService: AsyncDbService,
         private _asyncDBService: AsyncDbService,
     ) {
+    }
+
+    private async _localSave(fileId) {
+        const model = monaco.editor.getModel(getFileUriMethod(fileId));
+        const newContent = model.getValue();
+        const doc = await this._asyncDBService.localDB.get(fileId);
+        if (doc.content !== newContent) {
+            doc.content = newContent;
+            await this._asyncDbService.localDB.put(doc);
+        }
     }
 
     contentChange() {
@@ -34,20 +46,7 @@ export class EditorService {
                     const {_id} = doc;
                     const model = monaco.editor.getModel(getFileUriMethod(_id));
                     if (model !== null) {
-                        model.dispose();
-                        const newModel = monaco.editor.createModel(
-                            doc.content,
-                            doc.mime,
-                            getFileUriMethod(_id)
-                        );
-                        newModel.onDidChangeContent(async () => {
-                            doc.content = model.getValue();
-                            const newFile = await this._asyncDbService.localDB.put(doc);
-                            doc._rev = newFile.rev;
-                        });
-                        if (_id === this._activityService.activeFile) {
-                            this.editor.setModel(newModel);
-                        }
+                        model.setValue(doc.content);
                     }
                 });
             });
@@ -69,17 +68,23 @@ export class EditorService {
             )
             .subscribe(async fileId => {
                 const file: IFile = await this._asyncDbService.localDB.get(fileId);
-                let model = monaco.editor.getModel(getFileUriMethod(fileId));
+                const fileUrl = getFileUriMethod(fileId);
+                let model = monaco.editor.getModel(fileUrl);
                 if (model === null && !attachmentDetectMethod(file.mime)) {
+                    const language = file.mime === null ? 'text' : file.mime.substr(file.mime.indexOf('/') + 1);
                     model = monaco.editor.createModel(
                         file.content,
-                        file.mime,
-                        getFileUriMethod(fileId)
+                        language,
+                        fileUrl
                     );
                     model.onDidChangeContent(async () => {
-                        file.content = model.getValue();
-                        const newFile = await this._asyncDbService.localDB.put(file);
-                        file._rev = newFile.rev;
+                        if (this.toSaveQueues[fileId]) {
+                            clearTimeout(this.toSaveQueues[fileId]);
+                        }
+                        this.toSaveQueues[fileId] = setTimeout(() => {
+                            this.toSaveQueues[fileId] = undefined;
+                            this._localSave(fileId).then();
+                        }, 300);
                     });
                 }
                 if (!this.editor) {
