@@ -1,23 +1,27 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable()
 export class ActivityService {
-    activeFile$: BehaviorSubject<string | null>;
 
-    openedFiles$: BehaviorSubject<string[]>;
+    private _activeFile: BehaviorSubject<string | null>;
+    private _openedFiles: BehaviorSubject<string[]>;
+    public activeFile$: Observable<string | null>;
+    public openedFiles$: Observable<string[]>;
 
     constructor() {
-        this.activeFile$ = new BehaviorSubject(null);
-        this.openedFiles$ = new BehaviorSubject([]);
+        this._activeFile = new BehaviorSubject(null);
+        this._openedFiles = new BehaviorSubject([]);
+        this.activeFile$ = this._activeFile.asObservable();
+        this.openedFiles$ = this._openedFiles.asObservable();
     }
 
     public get activeFile() {
-        return this.activeFile$.getValue();
+        return this._activeFile.getValue();
     }
 
     public get openedFiles() {
-        return this.openedFiles$.getValue();
+        return this._openedFiles.getValue();
     }
 
     public setActiveFile(file: string | null) {
@@ -27,26 +31,32 @@ export class ActivityService {
         if (this.openedFiles.indexOf(file) === -1) {
             this.openedFiles.push(file);
         }
-        this.activeFile$.next(file);
-        this.openedFiles$.next(this.openedFiles);
+        this._activeFile.next(file);
+        this._openedFiles.next(this.openedFiles);
     }
 
     public closeOpenedFiles(files: string[]) {
+        const openedFiles = Array.from(this.openedFiles);
         let activeFileIndex = -1;
         for (let i = 0; i < files.length; i++) {
            const file = files[i];
-           const findIndex = this.openedFiles.indexOf(file);
+           const findIndex = openedFiles.indexOf(file);
            if (findIndex === -1) {
                continue;
            }
            if (file === this.activeFile) {
                activeFileIndex = findIndex;
            }
-           this.openedFiles.splice(findIndex, 1);
+            openedFiles.splice(findIndex, 1);
         }
-        this.openedFiles$.next(this.openedFiles);
+        this._openedFiles.next(openedFiles);
         if (activeFileIndex !== -1) {
-            this.activeFile$.next(this.openedFiles[activeFileIndex] || this.openedFiles[0] || null);
+            this._activeFile.next(openedFiles[activeFileIndex] || openedFiles[0] || null);
         }
+    }
+
+    public clear() {
+        this._activeFile.next(null);
+        this._openedFiles.next([]);
     }
 }

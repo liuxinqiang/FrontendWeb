@@ -55,7 +55,6 @@ export class EditorService {
 
     setModelBaseOnActiveFile() {
         this._activeFileSubscription = this._activityService.activeFile$
-            .asObservable()
             .pipe(
                 filter(file => {
                     if (file !== null) {
@@ -100,5 +99,13 @@ export class EditorService {
         this._container = editorContainer;
         this.setModelBaseOnActiveFile();
         this.contentChange();
+    }
+
+    clear() {
+        this.editor = undefined;
+        if (this._activeFileSubscription) {
+            this._activeFileSubscription.unsubscribe();
+        }
+        monaco.editor.getModels().map(model => model.dispose());
     }
 }

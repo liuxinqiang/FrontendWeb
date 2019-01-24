@@ -61,15 +61,17 @@ export class FilesPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._activeService.activeFile$.asObservable()
+        this._activeService.activeFile$
             .subscribe(file => {
                 markNode(this.asyncDBService.filesList, 'active', false, ['file']);
                 if (file !== null) {
                     autoOpenFolder(this.asyncDBService.filesList, file);
-                    this._scrollBar.update();
+                    if (this._scrollBar) {
+                     this._scrollBar.update();
+                    }
                 }
             });
-        this.asyncDBService.filesList$.asObservable()
+        this.asyncDBService.filesList$
             .subscribe(() => {
                 if (this._scrollBar) {
                     this._scrollBar.update();

@@ -4,6 +4,7 @@ import {IIdeQuery} from '../interfaces/ide.interface';
 import {AsyncDbService} from '../services/async-db.service';
 import {PanelService} from '../services/panel.service';
 import {EditorService} from '../services/editor.service';
+import {ActivityService} from '../services/activity.service';
 
 @Component({
     selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private _activeRoute: ActivatedRoute,
         private _dbService: AsyncDbService,
         private _editorService: EditorService,
+        private _activityService: ActivityService,
         public panelService: PanelService,
     ) {
     }
@@ -30,7 +32,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this._dbService.syncOff().then();
+        this._dbService.clear().then();
+        this._activityService.clear();
+        this._editorService.clear();
     }
 
     textEditorLoaded(element: HTMLDivElement) {

@@ -20,9 +20,11 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this._scrollBar = new PerfectScrollbar(this.navContainer.nativeElement);
-        this.activityService.openedFiles$.asObservable()
+        this.activityService.openedFiles$
             .subscribe(() => {
-                this._scrollBar.update();
+                if (this._scrollBar) {
+                    this._scrollBar.update();  
+                }
             });
     }
 
