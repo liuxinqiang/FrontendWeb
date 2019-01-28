@@ -112,10 +112,13 @@ export class CreateComponent implements OnInit {
 
     create() {
         const value = Object.assign({}, this.mainForm.value);
+        if (value.gitRepoPath) {
+            value.gitRepoPath = gitParser(value.gitRepoPath).repo;
+        }
         this._componentsService.createComponent(value)
             .subscribe(() => {
                 TopUI.notification('组件创建成功！', 'success');
-                // this._router.navigate(['/components/my-components']).then();
+                this._router.navigate(['/components/my-components']).then();
             });
     }
 

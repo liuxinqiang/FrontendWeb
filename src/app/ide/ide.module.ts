@@ -11,6 +11,8 @@ import {PanelService} from './services/panel.service';
 import {NavPanelModule} from './nav-panel/nav-panel.module';
 import {EditorService} from './services/editor.service';
 import {ActivityService} from './services/activity.service';
+import {ContextMenuComponent} from './common/context-menu/context-menu.component';
+import {ContextMenuService} from './services/context-menu.service';
 
 @NgModule({
     declarations: [
@@ -19,6 +21,7 @@ import {ActivityService} from './services/activity.service';
         EditorTopComponent,
         IconNavComponent,
         TextEditorComponent,
+        ContextMenuComponent,
     ],
     imports: [
         FormsModule,
@@ -31,6 +34,7 @@ import {ActivityService} from './services/activity.service';
         PanelService,
         EditorService,
         ActivityService,
+        ContextMenuService,
     ],
 })
 export class IdeModule {

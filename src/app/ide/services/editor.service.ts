@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivityService} from './activity.service';
 import {filter, map} from 'rxjs/operators';
-import {attachmentDetectMethod} from '../methods/attachment-detect.method';
 import {IFile} from '../interfaces/file.interface';
 import {AsyncDbService} from './async-db.service';
 import {getFileUriMethod} from '../methods/file-uri.method';
+const attachmentReg = /^attachment/;
 
 @Injectable()
 export class EditorService {
@@ -70,11 +70,10 @@ export class EditorService {
                 const file: IFile = await this._asyncDbService.localDB.get(fileId);
                 const fileUrl = getFileUriMethod(fileId);
                 let model = monaco.editor.getModel(fileUrl);
-                if (model === null && !attachmentDetectMethod(file.mime)) {
-                    const language = file.mime === null ? 'text' : file.mime.substr(file.mime.indexOf('/') + 1);
+                if (model === null && !attachmentReg.test(file.language)) {
                     model = monaco.editor.createModel(
                         file.content,
-                        language,
+                        file.language,
                         fileUrl
                     );
                     model.onDidChangeContent(async () => {
@@ -91,7 +90,7 @@ export class EditorService {
                     this.editor = monaco.editor.create(this._container, {
                         model: model,
                         theme: 'vs-dark',
-                        language: file.mime,
+                        language: file.language,
                         readOnly: false,
                     });
                 } else {

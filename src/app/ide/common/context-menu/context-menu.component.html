@@ -1,0 +1,48 @@
+<div class="ui-position-absolute context-view monaco-menu-container bottom left"
+     *ngIf="contextMenuService.show"
+     [ngStyle]="{
+        top: contextMenuService.metaData.top + 'px',
+        left: contextMenuService.metaData.left + 'px',
+        width: contextMenuService.metaData.width ? contextMenuService.metaData.width + 'px' : 'initial'
+     }"
+     role="presentation">
+    <div class="monaco-menu" role="presentation">
+        <div class="monaco-action-bar animated vertical context-menu-container">
+            <ul class="actions-container" role="menu" tabindex="0">
+                <ng-container *ngFor="let menu of contextMenuService.metaData.menus">
+                    <li *ngIf="menu.type==='line'; else item"
+                        class="action-item disabled" role="presentation">
+                        <a class="action-label icon separator disabled"
+                           role="presentation" aria-disabled="true">
+                        </a>
+                    </li>
+                    <ng-template #item>
+                        <li class="action-item"
+                            role="presentation">
+                            <a class="action-menu-item"
+                               role="menuitem"
+                               tabindex="0"
+                               aria-checked="false">
+                                <span class="menu-item-check"
+                                      role="none">
+                                </span>
+                                <span class="action-label"
+                                      [attr.aria-label]="menu.label">
+                                    <i *ngIf="menu.icon"
+                                       class="menu-icon"
+                                       [attr.ui-icon]="'icon:' + menu.icon + ';ratio:.6'">
+                                    </i>
+                                    {{menu.label}}
+                                </span>
+                                <span *ngIf="menu.key"
+                                      class="keybinding">
+                                    {{menu.key}}
+                                </span>
+                            </a>
+                        </li>
+                    </ng-template>
+                </ng-container>
+            </ul>
+        </div>
+    </div>
+</div>

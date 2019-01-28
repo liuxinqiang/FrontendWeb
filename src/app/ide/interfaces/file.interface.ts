@@ -6,7 +6,7 @@ export interface IFile {
     name?: string;
     content?: string;
     extension?: string;
-    mime?: string | null;
+    language?: string | null;
     path?: string;
     size?: number;
     active?: boolean;

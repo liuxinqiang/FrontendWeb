@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {ActivityService} from '../services/activity.service';
 import PerfectScrollbar from 'perfect-scrollbar';
+import {ContextMenuService} from '../services/context-menu.service';
 
 @Component({
     selector: 'app-ide-editor-top',
@@ -15,6 +16,7 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         public activityService: ActivityService,
+        private _contextMenuService: ContextMenuService,
     ) {
     }
 
@@ -23,7 +25,7 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
         this.activityService.openedFiles$
             .subscribe(() => {
                 if (this._scrollBar) {
-                    this._scrollBar.update();  
+                    this._scrollBar.update();
                 }
             });
     }
@@ -33,4 +35,28 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
         this._scrollBar = null;
     }
 
+    showContextMenu(event: MouseEvent) {
+        this._contextMenuService.create({
+            top: event.clientY,
+            left: event.clientX,
+            menus: [
+                {
+                    type: 'item',
+                    icon: 'camera',
+                    label: '复制',
+                    key: '⌘C',
+                },
+                {
+                    type: 'line',
+                },
+                {
+                    type: 'item',
+                    label: '粘贴',
+                    key: '⌘V',
+                },
+            ]
+        });
+        event.preventDefault();
+        event.stopPropagation();
+    }
 }
