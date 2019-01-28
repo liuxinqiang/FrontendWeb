@@ -1,6 +1,6 @@
 <ul #navContainer class="active-files-list ui-margin-remove ui-overflow-hidden ui-position-relative">
-    <li *ngFor="let file of activityService.openedFiles"
-        (contextmenu)="showContextMenu($event)"
+    <li *ngFor="let file of activityService.openedFiles; let i = index"
+        (contextmenu)="showContextMenu($event, i)"
         [ngClass]="activityService.activeFile !== null
                    && activityService.activeFile === file
                    ? 'ui-active' : 'ui-visible-toggle'"

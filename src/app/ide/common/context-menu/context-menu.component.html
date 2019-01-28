@@ -22,6 +22,7 @@
                             <a class="action-menu-item"
                                role="menuitem"
                                tabindex="0"
+                               (click)="menu.command && menu.command($event)"
                                aria-checked="false">
                                 <span class="menu-item-check"
                                       role="none">

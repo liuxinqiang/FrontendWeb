@@ -35,24 +35,40 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
         this._scrollBar = null;
     }
 
-    showContextMenu(event: MouseEvent) {
+    showContextMenu(event: MouseEvent, menuIndex: number) {
+        console.log(menuIndex);
         this._contextMenuService.create({
             top: event.clientY,
             left: event.clientX,
             menus: [
                 {
                     type: 'item',
-                    icon: 'camera',
-                    label: '复制',
-                    key: '⌘C',
-                },
-                {
-                    type: 'line',
+                    label: '关闭全部文件',
+                    command: () => this.activityService.closeOpenedFiles(this.activityService.openedFiles),
                 },
                 {
                     type: 'item',
-                    label: '粘贴',
-                    key: '⌘V',
+                    label: '关闭全部其他文件',
+                    command: () => this.activityService.closeOpenedFiles(
+                        this.activityService.openedFiles.filter(
+                            (file, fileIndex) => fileIndex !== menuIndex
+                        )),
+                },
+                {
+                    type: 'item',
+                    label: '关闭全部右边文件',
+                    command: () => this.activityService.closeOpenedFiles(
+                        this.activityService.openedFiles.filter(
+                            (file, fileIndex) => fileIndex > menuIndex
+                        )),
+                },
+                {
+                    type: 'item',
+                    label: '关闭全部左边文件',
+                    command: () => this.activityService.closeOpenedFiles(
+                        this.activityService.openedFiles.filter(
+                            (file, fileIndex) => fileIndex < menuIndex
+                        )),
                 },
             ]
         });
