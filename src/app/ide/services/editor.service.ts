@@ -31,6 +31,10 @@ export class EditorService {
         const doc = await this._asyncDBService.localDB.get(fileId);
         if (doc.content !== newContent) {
             doc.content = newContent;
+            const contentBloc = new Blob([newContent], {
+                type: doc.mime,
+            });
+            doc.size = contentBloc.size;
             await this._asyncDbService.localDB.put(doc);
         }
     }

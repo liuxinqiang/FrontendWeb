@@ -51,7 +51,7 @@ export class ActivityService {
         }
         this._openedFiles.next(openedFiles);
         if (activeFileIndex !== -1) {
-            this._activeFile.next(openedFiles[activeFileIndex] || openedFiles[0] || null);
+            this._activeFile.next(openedFiles[activeFileIndex] || openedFiles[openedFiles.length - 1] || null);
         }
     }
 
