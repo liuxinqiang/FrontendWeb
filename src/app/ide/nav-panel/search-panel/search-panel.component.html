@@ -1,1 +1,47 @@
-<div>搜索功能开发中</div>
+<div class="ui-position-relative ui-overflow-hidden ui-padding-small">
+    <div class="find-part">
+        <div class="monaco-findInput">
+            <div class="monaco-inputbox monaco-input idle">
+                <div class="wrapper">
+                    <input class="monaco-input input"
+                           autocorrect="off"
+                           autocapitalize="off"
+                           spellcheck="false"
+                           type="text"
+                           wrap="off"
+                           aria-label="搜索……"
+                           placeholder="搜索……">
+                </div>
+            </div>
+            <div class="controls">
+                <div ui-tooltip="大小写敏感"
+                     class="monaco-custom-checkbox monaco-case-sensitive unchecked"
+                     role="checkbox"
+                     aria-checked="false"
+                     aria-label="大小写敏感"
+                     aria-disabled="false"
+                     tabindex="0">
+                </div>
+                <div ui-tooltip="匹配整个单词"
+                     class="monaco-custom-checkbox monaco-whole-word unchecked"
+                     role="checkbox"
+                     aria-checked="false"
+                     aria-label="匹配整个单词"
+                     aria-disabled="false"
+                     tabindex="0">
+                </div>
+                <div ui-tooltip="使用正则匹配"
+                     class="monaco-custom-checkbox monaco-regex unchecked"
+                     role="checkbox"
+                     aria-checked="false"
+                     aria-label="使用正则匹配"
+                     aria-disabled="false"
+                     tabindex="0">
+                </div>
+            </div>
+        </div>
+        <div class="matchesCount ui-margin-small-top">
+            没有找到任何结果
+        </div>
+    </div>
+</div>

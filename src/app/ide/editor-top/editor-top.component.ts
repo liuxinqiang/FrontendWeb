@@ -36,7 +36,6 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
     }
 
     showContextMenu(event: MouseEvent, menuIndex: number) {
-        console.log(menuIndex);
         this._contextMenuService.create({
             top: event.clientY,
             left: event.clientX,
@@ -71,8 +70,6 @@ export class EditorTopComponent implements AfterViewInit, OnDestroy {
                         )),
                 },
             ]
-        });
-        event.preventDefault();
-        event.stopPropagation();
+        }, event);
     }
 }

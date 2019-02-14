@@ -47,10 +47,12 @@ export class ContextMenuService {
         return metaData;
     }
 
-    public create(metaData: IContextMetaData) {
+    public create(metaData: IContextMetaData, event: MouseEvent) {
         const newMetaData = this._calcRealSize(metaData);
         Object.assign(this.metaData, newMetaData);
         this._show = true;
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     public hide() {
