@@ -3,10 +3,7 @@ export const environment = {
     mainAPI: {
         url: '/api',
     },
-    builder: {
-        url: 'wss://frontend.liuxinqiang.com/api/live',
+    liveAPI: {
+      url: '/api',
     },
-    gitMidea: {
-        url: 'https://git-midea.liuxinqiang.com',
-    }
 };

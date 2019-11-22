@@ -1,31 +1,29 @@
 import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
+import {environment} from 'src/environments/environment';
 import {webSocket} from 'rxjs/webSocket';
-import {AuthService} from 'app/user/services/auth.service';
+import {AuthService} from 'src/app/user/services/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WsConnectionService {
 
-    private _ws$;
+    private ws$;
 
-    constructor(private _authService: AuthService) {}
+    constructor(private authService: AuthService) {}
 
     getConnection() {
-        if (!this._ws$) {
-            this._ws$ = webSocket({
-                // tslint:disable:max-line-length
-                url: `${environment.builder.url}?token=${this._authService.currentUserValue ? this._authService.currentUserValue.token : ''}`,
-                // tslint:enable:max-line-length
+        if (!this.ws$) {
+            this.ws$ = webSocket({
+                url: `${environment.liveAPI.url}?token=${this.authService.currentUserValue ? this.authService.currentUserValue.token : ''}`,
             });
         }
-        return this._ws$;
+        return this.ws$;
     }
 
     disConnection() {
-        this._ws$.unsubscribe();
-        this._ws$ = null;
+        this.ws$.unsubscribe();
+        this.ws$ = null;
     }
 
     public get connection() {

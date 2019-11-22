@@ -1,14 +1,14 @@
 <ng-container *ngIf="component">
-    <h2 class="ui-h2">{{component.title}}</h2>
+    <h2 class="uk-h2">{{component.title}}</h2>
     <p>{{component.componentName}}</p>
     <div class="tags"
          *ngIf="component.tags.length">
         <span *ngFor="let tag of component.tags"
-              class="ui-label">{{tag.name}}
+              class="uk-label">{{tag.name}}
         </span>
     </div>
     <p>
-        <a class="ui-button ui-button-primary"
+        <a class="uk-button uk-button-primary"
            routerLink="/editor"
            [queryParams]="{
                type: 'component',

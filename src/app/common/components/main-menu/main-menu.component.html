@@ -1,14 +1,14 @@
-<div class="ui-navbar-left">
-    <ul class="ui-navbar-nav">
+<div class="uk-navbar-left">
+    <ul class="uk-navbar-nav">
         <ng-container *ngFor="let route of mainMenus">
-            <li routerLinkActive="ui-active">
+            <li routerLinkActive="uk-active">
                 <a [routerLink]="route.path">{{route.name}}</a>
-                <div class="ui-navbar-dropdown"
+                <div class="uk-navbar-dropdown"
                      *ngIf="route.children && route.children.length">
-                    <ul class="ui-nav ui-navbar-dropdown-nav">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
                         <ng-container *ngFor="let subMenu of route.children">
                             <li *ngIf="subMenu"
-                                routerLinkActive="ui-active">
+                                routerLinkActive="uk-active">
                                 <a [routerLink]="subMenu.path">{{subMenu.name}}</a>
                             </li>
                         </ng-container>
@@ -17,37 +17,37 @@
             </li>
         </ng-container>
         <li *ngIf="!currentUser"
-            routerLinkActive="ui-active">
+            routerLinkActive="uk-active">
             <a (click)="goToLogin()">用户登录</a>
         </li>
         <li *ngIf="enableSearch">
-            <a class="ui-navbar-toggle"
+            <a class="uk-navbar-toggle"
                #searchButton
                href="#modal-full"
-               ui-search-icon>
+               uk-search-icon>
             </a>
         </li>
     </ul>
     <div *ngIf="currentUser"
-         class="ui-navbar-item ui-flex-stretch ui-visible@m">
-        <a class="ui-flex ui-flex-middle">
+         class="uk-navbar-item uk-flex-stretch uk-visible@m">
+        <a class="uk-flex uk-flex-middle">
             <img [attr.src]="currentUser.user.avatar"
                  width="30"
                  height="30"
-                 class="ui-border-circle">
+                 class="uk-border-circle">
         </a>
-        <div class="ui-navbar-dropdown"
-             ui-drop="cls-drop: ui-navbar-dropdown; mode: click; pos: bottom-right; flip: x">
-            <ul class="ui-nav ui-navbar-dropdown-nav">
-                <li class="ui-h4 ui-text-truncate ui-margin-remove">
+        <div class="uk-navbar-dropdown"
+             uk-drop="cls-drop: uk-navbar-dropdown; mode: click; pos: bottom-right; flip: x">
+            <ul class="uk-nav uk-navbar-dropdown-nav">
+                <li class="uk-h4 uk-text-truncate uk-margin-remove">
                     你好，{{currentUser.user.name}}
                 </li>
-                <li class="ui-text-muted ui-text-truncate">
+                <li class="uk-text-muted uk-text-truncate">
                     @{{currentUser.user.loginName}}
                 </li>
-                <li class="ui-nav-divider"></li>
+                <li class="uk-nav-divider"></li>
                 <li>
-                    <button class="ui-button ui-button-link"
+                    <button class="uk-button uk-button-link"
                             (click)="logOut()">
                         退出登录
                     </button>
@@ -57,14 +57,14 @@
     </div>
 </div>
 <div id="modal-full"
-     class="ui-modal-full"
-     ui-modal>
-    <div class="ui-modal-dialog ui-flex ui-flex-center ui-flex-middle"
-         ui-height-viewport>
+     class="uk-modal-full"
+     uk-modal>
+    <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle"
+         uk-height-viewport>
         <button
-                class="ui-modal-close-full"
+                class="uk-modal-close-full"
                 type="button"
-                ui-close>
+                uk-close>
         </button>
         <app-common-main-menu-search></app-common-main-menu-search>
     </div>

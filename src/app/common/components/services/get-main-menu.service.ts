@@ -4,7 +4,7 @@ import {IMainMenuInterface} from '../../interfaces/menu.interface';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {ILoginUserInterface} from '../../interfaces/response.interface';
-import {AuthService} from 'app/user/services/auth.service';
+import {AuthService} from 'src/app/user/services/auth.service';
 
 function filterManiMenu(routes: Route[]): IMainMenuInterface[] {
     const result = [];

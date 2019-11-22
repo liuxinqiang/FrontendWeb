@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {switchMap} from 'rxjs/internal/operators';
-import {ComponentsService} from 'app/components/services/components.service';
-import {IComponentInterface} from 'app/components/interfaces/component.interface';
+import {ComponentsService} from 'src/app/components/services/components.service';
+import {IComponentInterface} from 'src/app/components/interfaces/component.interface';
 
 @Component({
     selector: 'app-component-detail',

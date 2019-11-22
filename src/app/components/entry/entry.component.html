@@ -1,19 +1,19 @@
 <app-common-headerbar></app-common-headerbar>
-<div class="page-medium-container ui-container">
-    <div ui-grid
-         class="ui-margin-bottom"
+<div class="page-medium-container uk-container">
+    <div uk-grid
+         class="uk-margin-bottom"
          *ngIf="menu && menu.children.length">
-        <div class="ui-width-expand">
-            <h2 class="ui-h3">
-                <a class="ui-link-reset"
+        <div class="uk-width-expand">
+            <h2 class="uk-h3">
+                <a class="uk-link-reset"
                     [routerLink]="menu.path">
                     {{menu.name}}
                 </a>
             </h2>
         </div>
-        <div class="ui-width-auto">
-            <ul class="ui-subnav" ui-margin>
-                <li routerLinkActive="ui-active"
+        <div class="uk-width-auto">
+            <ul class="uk-subnav" uk-margin>
+                <li routerLinkActive="uk-active"
                     *ngFor="let subMenu of menu.children">
                     <a [routerLink]="subMenu.path">{{subMenu.name}}</a>
                 </li>

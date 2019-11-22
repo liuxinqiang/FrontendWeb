@@ -13,7 +13,7 @@ export class ComponentsTagsRenderComponent implements OnInit, OnChanges {
 
     @Input() parentId = -1;
 
-    @Input() styClass = 'ui-nav ui-nav-default';
+    @Input() styClass = 'uk-nav uk-nav-default';
 
     @Input() selectMode: 'none' | 'single' | 'multiple' = 'none';
 

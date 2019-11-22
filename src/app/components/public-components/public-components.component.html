@@ -1,7 +1,7 @@
-<div class="ui-container page-medium-container">
+<div class="uk-container page-medium-container">
     <app-search (selected)="searchAction($event)"></app-search>
     <div *ngIf="dataList && dataList.length"
-         class="ui-child-width-1-3" ui-grid>
+         class="uk-child-width-1-3" uk-grid>
         <app-component-thumb-render *ngFor="let component of dataList"
                                     [component]="component">
         </app-component-thumb-render>
@@ -9,6 +9,6 @@
     <app-common-pagination
             [dataFilter]="dataFilter"
             (changed)="getComponents()"
-            class="ui-display-block ui-margin-medium-top">
+            class="uk-display-block uk-margin-medium-top">
     </app-common-pagination>
 </div>

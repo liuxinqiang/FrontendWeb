@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MyComponentsRouterComponents, MyComponentsRouterModule} from './my-components-router.module';
-import {CommonComponentsModule} from 'app/common/components/common-components.module';
+import {CommonComponentsModule} from '../../common/components/common-components.module';
 import {ComponentsSharedModule} from '../shared/components-shared.module';
 
 @NgModule({

@@ -1,20 +1,20 @@
 <ul [ngClass]="styClass">
     <li *ngFor="let tag of tags; let tagIndex = index"
         [ngClass]="{
-                'ui-parent': tag.children && tag.children.length
+                'uk-parent': tag.children && tag.children.length
             }">
         <a (click)="nodeClick.emit(tag)"
-           class="ui-visible-toggle">
-            <div class="ui-grid">
-                <div class="ui-width-expand">
+           class="uk-visible-toggle">
+            <div class="uk-grid">
+                <div class="uk-width-expand">
                     <ng-container *ngIf="tag.editing; else showName">
-                        <input class="ui-form-small ui-input"
+                        <input class="uk-form-small uk-input"
                                [(ngModel)]="tag.name"
                                type="text">
                     </ng-container>
                     <ng-template #showName>
                         <label>
-                            <input class="ui-checkbox"
+                            <input class="uk-checkbox"
                                    type="checkbox"
                                    *ngIf="selectMode !== 'none'"
                                    [(ngModel)]="tag.selected"
@@ -23,34 +23,34 @@
                         </label>
                     </ng-template>
                 </div>
-                <div class="ui-width-auto"
+                <div class="uk-width-auto"
                      *ngIf="editorMode">
-                    <ul class="ui-invisible-hover ui-iconnav">
+                    <ul class="uk-invisible-hover uk-iconnav">
                         <ng-container *ngIf="tag.editing; else showNameAction">
                             <li>
-                                <a ui-tooltip="确定"
-                                   ui-icon="icon: check"
+                                <a uk-tooltip="确定"
+                                   uk-icon="icon: check"
                                    (click)="add(tag)">
                                 </a>
                             </li>
                             <li>
-                                <a ui-tooltip="删除"
+                                <a uk-tooltip="删除"
                                    (click)="tags.splice(tagIndex, 1)"
-                                   ui-icon="icon: trash">
+                                   uk-icon="icon: trash">
                                 </a>
                             </li>
                         </ng-container>
                         <ng-template #showNameAction>
                             <li *ngIf="!tag.editing">
-                                <a ui-tooltip="添加子元素"
-                                   ui-icon="icon: arrow-down"
+                                <a uk-tooltip="添加子元素"
+                                   uk-icon="icon: arrow-down"
                                    (click)="addAction(tag)">
                                 </a>
                             </li>
                         </ng-template>
                         <li>
-                            <a ui-tooltip="添加兄弟元素"
-                               ui-icon="icon: menu"
+                            <a uk-tooltip="添加兄弟元素"
+                               uk-icon="icon: menu"
                                (click)="addAction()">
                             </a>
                         </li>
@@ -65,7 +65,7 @@
                 [selectMode]="selectMode"
                 (nodeClick)="nodeClick.emit($event)"
                 (selectedChange)="selectedChange.emit($event)"
-                styClass="ui-nav-sub">
+                styClass="uk-nav-sub">
         </app-components-tags-render>
     </li>
 </ul>

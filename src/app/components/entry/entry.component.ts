@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {IMainMenuInterface} from 'app/common/interfaces/menu.interface';
-import {GetMainMenuService} from 'app/common/components/services/get-main-menu.service';
+import {IMainMenuInterface} from 'src/app/common/interfaces/menu.interface';
+import {GetMainMenuService} from 'src/app/common/components/services/get-main-menu.service';
 
 @Component({
     selector: 'app-components-home',

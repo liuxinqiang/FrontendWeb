@@ -9,7 +9,7 @@ import {
 import {Observable, throwError} from 'rxjs';
 import {retry} from 'rxjs/operators';
 import {catchError} from 'rxjs/internal/operators';
-import {AuthService} from 'app/user/services/auth.service';
+import {AuthService} from 'src/app/user/services/auth.service';
 
 @Injectable()
 export class HttpCustomInterceptor implements HttpInterceptor {
@@ -21,14 +21,14 @@ export class HttpCustomInterceptor implements HttpInterceptor {
 
     private _handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            TopUI.notification('无网络链接...', {status: 'danger'});
+            UIkit.notification('无网络链接...', {status: 'danger'});
         } else {
             switch (error.error.statusCode) {
                 case 401:
                     this._authService.goToLogin();
                     break;
             }
-            TopUI.notification(error.error.message, {status: 'danger'});
+            UIkit.notification(error.error.message, {status: 'danger'});
         }
         return throwError(error);
     }

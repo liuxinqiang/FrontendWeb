@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {GitMideaService} from 'app/common/services/git-midea.service';
-import {map, switchMap, catchError} from 'rxjs/operators';
-import {of, timer} from 'rxjs';
 import {IUserInfoInterface, IUserInterface} from '../interfaces/user.interface';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {AuthService} from '../services/auth.service';
@@ -41,9 +38,9 @@ export class RegisterComponent {
 
     userInfo: IUserInfoInterface | null = null;
 
-    registerInfo = this._fb.group({
-        token: ['', Validators.required, this.validateToken.bind(this)],
-        passwords: this._fb.group({
+    registerInfo = this.fb.group({
+        token: ['', Validators.required],
+        passwords: this.fb.group({
                 password: ['', [Validators.required]],
                 confirmPassword: ['', [Validators.required]],
             }, {
@@ -53,10 +50,9 @@ export class RegisterComponent {
     });
 
     constructor(
-        private _fb: FormBuilder,
-        private _gitMideaService: GitMideaService,
-        private _authService: AuthService,
-        private _router: Router,
+        private fb: FormBuilder,
+        private authService: AuthService,
+        private router: Router,
     ) {
     }
 
@@ -65,7 +61,7 @@ export class RegisterComponent {
     }
 
     get p() {
-        return this.registerInfo['controls'].passwords['controls'];
+        return this.registerInfo.controls.passwords['controls'];
     }
 
     getConfirmPasswordError() {
@@ -81,32 +77,6 @@ export class RegisterComponent {
         }
     }
 
-    validateToken(control: AbstractControl) {
-        this.userInfo = null;
-        return timer(500).pipe(
-            switchMap(() => {
-                if (!control.value) {
-                    return of(null);
-                }
-                return this._gitMideaService.getUserByPrivateToken(control.value).pipe(
-                    map((result: IUserInfoInterface) => {
-                        if (!result.loginName) {
-                            return {
-                                tokenTypeError: true,
-                            };
-                        } else {
-                            this.userInfo = result;
-                            return null;
-                        }
-                    }),
-                    catchError(() => of({
-                        tokenError: true,
-                    }))
-                );
-            })
-        );
-    }
-
     register() {
         const value = this.registerInfo.value;
         const user: IUserInterface = {
@@ -118,17 +88,17 @@ export class RegisterComponent {
             repoPrivateToken: value.token,
             repoUserId: this.userInfo.id,
         };
-        this._authService.register(user)
+        this.authService.register(user)
             .subscribe(() => {
-                TopUI.notification({
+                UIkit.notification({
                     message: '注册成功，请登录',
                     status: 'success',
                 });
-                this._router.navigate(['/user/login'], {
+                this.router.navigate(['/user/login'], {
                     queryParams: {
                         loginName: this.userInfo.loginName,
                     }
-                });
+                }).then();
             });
     }
 }

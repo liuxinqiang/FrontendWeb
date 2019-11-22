@@ -1,17 +1,17 @@
-<div class="ui-width-large ui-margin-auto">
-    <h2 class="ui-h2 ui-margin-medium-bottom">新建组件</h2>
-    <form class="ui-form-stacked"
+<div class="uk-width-large uk-margin-auto">
+    <h2 class="uk-h2 uk-margin-medium-bottom">新建组件</h2>
+    <form class="uk-form-stacked"
           [formGroup]="mainForm"
           (keydown.enter)="$event.preventDefault()"
           (ngSubmit)="create()">
-        <div class="ui-grid ui-grid-small">
-            <div class="ui-width-1-2">
-                <div class="ui-margin">
-                    <label class="ui-form-label" for="form-group">
+        <div class="uk-grid uk-grid-small">
+            <div class="uk-width-1-2">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-group">
                         仓库所属群组
                     </label>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
+                    <div class="uk-form-controls">
+                        <select class="uk-select"
                                 formControlName="group"
                                 id="form-group">
                             <option value="">无</option>
@@ -23,17 +23,17 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-width-1-2">
-                <div class="ui-margin">
-                    <div class="ui-form-label ui-flex ui-flex-between">
-                        <div class="ui-flex ui-flex-between">
+            <div class="uk-width-1-2">
+                <div class="uk-margin">
+                    <div class="uk-form-label uk-flex uk-flex-between">
+                        <div class="uk-flex uk-flex-between">
                             <label for="repoId">
                                 选择仓库
                             </label>
                             <div *ngIf="f.repoId.errors !== null
                                 && f.repoId.errors
                                 && f.repoId.touched"
-                                 class="ui-text-danger"
+                                 class="uk-text-danger"
                                  [ngSwitch]="f.repoId.errors | objectFirstKey">
                                 <span *ngSwitchCase="'required'">
                                      必填项
@@ -43,15 +43,15 @@
                                 </span>
                             </div>
                             <a href="#create-project-modal"
-                               ui-toggle>
+                               uk-toggle>
                                 新建
                             </a>
                         </div>
                     </div>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
-                                [class.ui-form-danger]="f.repoId.errors && f.repoId.touched"
-                                [class.ui-form-success]="!f.repoId.errors && f.repoId.touched"
+                    <div class="uk-form-controls">
+                        <select class="uk-select"
+                                [class.uk-form-danger]="f.repoId.errors && f.repoId.touched"
+                                [class.uk-form-success]="!f.repoId.errors && f.repoId.touched"
                                 formControlName="repoId"
                                 id="repoId">
                             <option value="">请选择</option>
@@ -64,14 +64,14 @@
                 </div>
             </div>
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="title">
                         名称
                     </label>
                     <div *ngIf="f.title.errors && f.title.touched"
-                         class="ui-text-danger"
+                         class="uk-text-danger"
                          [ngSwitch]="f.title.errors | objectFirstKey">
                         <span *ngSwitchCase="'required'">
                             请填写组件名称
@@ -88,22 +88,22 @@
                     </div>
                 </div>
             </div>
-            <input class="ui-input"
+            <input class="uk-input"
                    formControlName="title"
                    id="title"
                    type="text"
-                   [class.ui-form-danger]="f.title.errors && f.title.touched"
-                   [class.ui-form-success]="!f.title.errors && f.title.touched"
+                   [class.uk-form-danger]="f.title.errors && f.title.touched"
+                   [class.uk-form-success]="!f.title.errors && f.title.touched"
                    placeholder="请输入组件标题">
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="componentName">
                         组件名
                     </label>
                     <div *ngIf="f.componentName.errors && f.componentName.touched"
-                         class="ui-text-danger"
+                         class="uk-text-danger"
                          [ngSwitch]="f.componentName.errors | objectFirstKey">
                             <span *ngSwitchCase="'required'">
                                 请填写组件名称
@@ -123,128 +123,128 @@
                     </div>
                 </div>
             </div>
-            <input class="ui-input"
+            <input class="uk-input"
                    formControlName="componentName"
                    id="componentName"
                    type="text"
-                   [class.ui-form-danger]="f.componentName.errors && f.componentName.touched"
-                   [class.ui-form-success]="!f.componentName.errors && f.componentName.touched"
+                   [class.uk-form-danger]="f.componentName.errors && f.componentName.touched"
+                   [class.uk-form-success]="!f.componentName.errors && f.componentName.touched"
                    placeholder="请输入组件名称">
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label>
                         所属分类
                     </label>
                 </div>
             </div>
             <div>
-                <a ui-icon="icon:plus"
+                <a uk-icon="icon:plus"
                    href="#tags-modal"
-                   ui-toggle></a>
+                   uk-toggle></a>
                 <div *ngFor="let tag of f.tags.value"
-                      class="ui-label ui-label-success ui-margin-small-left">
+                      class="uk-label uk-label-success uk-margin-small-left">
                     {{tag.name}}
                 </div>
             </div>
         </div>
-        <div class="ui-grid ui-grid-small">
-            <div class="ui-width-2-3">
-                <div class="ui-margin">
-                    <label class="ui-form-label">发布方式</label>
-                    <div class="ui-grid-small ui-child-width-auto ui-grid">
+        <div class="uk-grid uk-grid-small">
+            <div class="uk-width-2-3">
+                <div class="uk-margin">
+                    <label class="uk-form-label">发布方式</label>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid">
                         <label>
-                            <input class="ui-radio"
+                            <input class="uk-radio"
                                    type="radio"
                                    formControlName="deployType"
                                    [value]="0">
-                            <span class="ui-margin-small-left">无</span>
+                            <span class="uk-margin-small-left">无</span>
                         </label>
                         <label>
-                            <input class="ui-radio"
+                            <input class="uk-radio"
                                    type="radio"
                                    formControlName="deployType"
                                    [value]="1">
-                            <span class="ui-margin-small-left">npm 包</span>
+                            <span class="uk-margin-small-left">npm 包</span>
                         </label>
                         <label>
-                            <input class="ui-radio"
+                            <input class="uk-radio"
                                    type="radio"
                                    formControlName="deployType"
                                    [value]="2">
-                            <span class="ui-margin-small-left">异步组件</span>
+                            <span class="uk-margin-small-left">异步组件</span>
                         </label>
                     </div>
                 </div>
             </div>
-            <div class="ui-width-1-3">
-                <div class="ui-margin">
-                    <label class="ui-form-label">是否公开？</label>
-                    <div class="ui-grid-small ui-child-width-auto ui-grid">
+            <div class="uk-width-1-3">
+                <div class="uk-margin">
+                    <label class="uk-form-label">是否公开？</label>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid">
                         <label>
-                            <input class="ui-radio"
+                            <input class="uk-radio"
                                    type="radio"
                                    formControlName="isPublic"
                                    [value]="true">
-                            <span class="ui-margin-small-left">是</span>
+                            <span class="uk-margin-small-left">是</span>
                         </label>
                         <label>
-                            <input class="ui-radio"
+                            <input class="uk-radio"
                                    type="radio"
                                    formControlName="isPublic"
                                    [value]="false">
-                            <span class="ui-margin-small-left">否</span>
+                            <span class="uk-margin-small-left">否</span>
                         </label>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="description">
                         描述说明
                     </label>
                     <div *ngIf="f.description.errors && f.description.touched"
-                         class="ui-text-danger">
+                         class="uk-text-danger">
                         <span *ngIf="f.description.errors.required">请提供组件描述信息</span>
                     </div>
                 </div>
             </div>
-            <textarea class="ui-textarea"
+            <textarea class="uk-textarea"
                       formControlName="description"
                       rows="3"
                       id="description"
                       type="text"
-                      [class.ui-form-danger]="f.description.errors && f.description.touched"
-                      [class.ui-form-success]="!f.description.errors && f.description.touched"
+                      [class.uk-form-danger]="f.description.errors && f.description.touched"
+                      [class.uk-form-success]="!f.description.errors && f.description.touched"
                       placeholder="请提供描述信息，方便大家更了解你的组件">
             </textarea>
         </div>
-        <div class="ui-margin ui-text-center">
+        <div class="uk-margin uk-text-center">
             <button type="submit"
                     [disabled]="!mainForm.valid"
-                    class="ui-button ui-button-primary ui-button-large ui-width-1-2">
+                    class="uk-button uk-button-primary uk-button-large uk-width-1-2">
                 创建
             </button>
         </div>
     </form>
 </div>
-<div id="create-project-modal" #createProjectModal ui-modal>
-    <div class="ui-modal-dialog ui-width-large">
-        <button class="ui-modal-close-default" type="button" ui-close></button>
-        <div class="ui-modal-header">
-            <h2 class="ui-modal-title">新建仓库</h2>
+<div id="create-project-modal" #createProjectModal uk-modal>
+    <div class="uk-modal-dialog uk-width-large">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">新建仓库</h2>
         </div>
-        <div class="ui-modal-body">
-            <form class="ui-form-stacked"
+        <div class="uk-modal-body">
+            <form class="uk-form-stacked"
                   [formGroup]="createProject"
                   (keydown.enter)="$event.preventDefault()">
-                <div class="ui-margin">
-                    <label class="ui-form-label">所属群组</label>
-                    <div class="ui-form-controls">
-                        <select class="ui-select"
+                <div class="uk-margin">
+                    <label class="uk-form-label">所属群组</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select"
                                 formControlName="namespace_id">
                             <option value="">无</option>
                             <option *ngFor="let option of groups"
@@ -254,16 +254,16 @@
                         </select>
                     </div>
                 </div>
-                <div class="ui-margin">
-                    <div class="ui-form-label ui-flex ui-flex-between">
-                        <div class="ui-flex ui-flex-between">
+                <div class="uk-margin">
+                    <div class="uk-form-label uk-flex uk-flex-between">
+                        <div class="uk-flex uk-flex-between">
                             <label for="projectName">
                                 仓库名称
                             </label>
                             <div *ngIf="cf.name.errors !== null
                                 && cf.name.errors
                                 && cf.name.touched"
-                                 class="ui-text-danger"
+                                 class="uk-text-danger"
                                  [ngSwitch]="cf.name.errors | objectFirstKey">
                                 <span *ngSwitchCase="'required'">
                                      请输入仓库名称
@@ -277,20 +277,20 @@
                             </div>
                         </div>
                     </div>
-                    <input class="ui-input"
+                    <input class="uk-input"
                            formControlName="name"
                            id="projectName"
                            type="text"
-                           [class.ui-form-danger]="cf.name.errors && cf.name.touched"
-                           [class.ui-form-success]="!cf.name.errors && cf.name.touched"
+                           [class.uk-form-danger]="cf.name.errors && cf.name.touched"
+                           [class.uk-form-success]="!cf.name.errors && cf.name.touched"
                            placeholder="仓库名称......">
                 </div>
-                <div class="ui-margin">
-                    <label class="ui-form-label"
+                <div class="uk-margin">
+                    <label class="uk-form-label"
                            for="repoDescription">
                         描述说明
                     </label>
-                    <textarea class="ui-textarea"
+                    <textarea class="uk-textarea"
                               formControlName="description"
                               rows="3"
                               id="repoDescription"
@@ -300,12 +300,12 @@
                 </div>
             </form>
         </div>
-        <div class="ui-text-right ui-modal-footer">
-            <button class="ui-button ui-button-default ui-modal-close ui-margin-small-right"
+        <div class="uk-text-right uk-modal-footer">
+            <button class="uk-button uk-button-default uk-modal-close uk-margin-small-right"
                     type="button">
                 取消
             </button>
-            <button class="ui-button ui-button-primary ui-modal-close"
+            <button class="uk-button uk-button-primary uk-modal-close"
                     [disabled]="!createProject.valid"
                     (click)="createRepo()"
                     type="button">
@@ -314,13 +314,13 @@
         </div>
     </div>
 </div>
-<div id="tags-modal" #tagsModal ui-modal>
-    <div class="ui-modal-dialog ui-width-large">
-        <button class="ui-modal-close-default" type="button" ui-close></button>
-        <div class="ui-modal-header">
-            <h2 class="ui-modal-title">选择分类</h2>
+<div id="tags-modal" #tagsModal uk-modal>
+    <div class="uk-modal-dialog uk-width-large">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">选择分类</h2>
         </div>
-        <div class="ui-modal-body">
+        <div class="uk-modal-body">
             <app-components-tags-render
                     selectMode="multiple"
                     [editorMode]="true"
@@ -329,8 +329,8 @@
                     [tags]="tagsService.tags">
             </app-components-tags-render>
         </div>
-        <div class="ui-text-right ui-modal-footer">
-            <button class="ui-button ui-button-primary ui-modal-close"
+        <div class="uk-text-right uk-modal-footer">
+            <button class="uk-button uk-button-primary uk-modal-close"
                     type="button">
                 确定
             </button>

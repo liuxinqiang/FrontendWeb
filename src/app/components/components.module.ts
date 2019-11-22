@@ -4,7 +4,7 @@ import {
     ComponentsRouterComponents,
     ComponentsRouterModule
 } from './components-router.module';
-import {CommonComponentsModule} from 'app/common/components/common-components.module';
+import {CommonComponentsModule} from '../common/components/common-components.module';
 import {ComponentsSharedModule} from './shared/components-shared.module';
 import {TagsService} from './services/tags.service';
 import {BuildService} from './services/build.service';

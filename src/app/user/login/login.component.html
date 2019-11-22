@@ -1,16 +1,16 @@
-<div class="ui-width-large ui-margin-auto">
-    <form class="ui-form-stacked"
+<div class="uk-width-large uk-margin-auto">
+    <form class="uk-form-stacked"
           [formGroup]="loginInfo"
           (ngSubmit)="login()">
-        <h2 class="ui-h2 ui-margin-medium-bottom">用户登录</h2>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <h2 class="uk-h2 uk-margin-medium-bottom">用户登录</h2>
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="loginName">
                         登录名
                     </label>
                     <div *ngIf="f.loginName.errors && f.loginName.touched"
-                         class="ui-text-danger">
+                         class="uk-text-danger">
                         <span *ngIf="f.loginName.errors.required">请填写用户名</span>
                         <span *ngIf="f.loginName.errors.minlength">
                             最少{{f.loginName.errors.minlength.requiredLength}}个字符
@@ -19,23 +19,23 @@
                     </div>
                 </div>
             </div>
-            <input class="ui-input"
+            <input class="uk-input"
                    formControlName="loginName"
                    id="loginName"
                    type="text"
-                   [class.ui-form-danger]="f.loginName.errors && f.loginName.touched"
-                   [class.ui-form-success]="!f.loginName.errors && f.loginName.touched"
+                   [class.uk-form-danger]="f.loginName.errors && f.loginName.touched"
+                   [class.uk-form-success]="!f.loginName.errors && f.loginName.touched"
                    placeholder="请输入用户名">
         </div>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="password">
                         密码
                     </label>
-                    <ul class="ui-subnav ui-margin-remove" ui-margin>
+                    <ul class="uk-subnav uk-margin-remove" uk-margin>
                         <li>
-                            <a class="ui-link-text"
+                            <a class="uk-link-text"
                                tabindex="-1"
                                routerLink="../request-reset">
                                 忘了密码？
@@ -43,7 +43,7 @@
 
                         </li>
                         <li *ngIf="f.password.errors && f.password.touched">
-                                <span class="ui-text-danger"
+                                <span class="uk-text-danger"
                                       *ngIf="f.password.errors.required">
                                     请填写密码
                                 </span>
@@ -51,28 +51,28 @@
                     </ul>
                 </div>
             </div>
-            <input class="ui-input"
+            <input class="uk-input"
                    formControlName="password"
-                   [class.ui-form-danger]="f.password.errors && f.password.touched"
-                   [class.ui-form-success]="!f.password.errors && f.password.touched"
+                   [class.uk-form-danger]="f.password.errors && f.password.touched"
+                   [class.uk-form-success]="!f.password.errors && f.password.touched"
                    id="password"
                    type="password"
                    placeholder="密码">
         </div>
-        <label class="ui-margin">
-            <input class="ui-checkbox"
+        <label class="uk-margin">
+            <input class="uk-checkbox"
                    formControlName="rememberMe"
                    type="checkbox">
             在这台电脑上记住我
         </label>
-        <div class="ui-margin-medium-top ui-text-center">
+        <div class="uk-margin-medium-top uk-text-center">
             <button type="submit"
                     [disabled]="!loginInfo.valid"
-                    class="ui-button ui-button-primary ui-button-large ui-width-1-2">
+                    class="uk-button uk-button-primary uk-button-large uk-width-1-2">
                 登录
             </button>
         </div>
-        <p class="ui-text-center">
+        <p class="uk-text-center">
             还没有账号？
             <a routerLink="../register">
                 去注册

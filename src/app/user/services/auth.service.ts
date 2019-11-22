@@ -1,32 +1,32 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {environment} from 'environments/environment';
+import {environment} from 'src/environments/environment';
 import {Md5} from 'ts-md5';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
-import {IUserInterface} from 'app/user/interfaces/user.interface';
+import {IUserInterface} from 'src/app/user/interfaces/user.interface';
 import {
     ILoginResponseInterface, ILoginUserInterface,
-} from 'app/common/interfaces/response.interface';
+} from 'src/app/common/interfaces/response.interface';
 import {Router} from '@angular/router';
-import {LocalStorageService} from 'app/common/services/local-storage.service';
+import {LocalStorageService} from 'src/app/common/services/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    private _userApiPrefix = '/user';
+    private userApiPrefix = '/user';
 
     private currentUserSubject: BehaviorSubject<ILoginUserInterface>;
     public currentUser: Observable<ILoginUserInterface>;
 
     constructor(
-        private _http: HttpClient,
-        private _router: Router,
-        private _localStorage: LocalStorageService,
+        private http: HttpClient,
+        private router: Router,
+        private localStorage: LocalStorageService,
     ) {
-        this.currentUserSubject = new BehaviorSubject<ILoginUserInterface>(_localStorage.getItem('User'));
+        this.currentUserSubject = new BehaviorSubject<ILoginUserInterface>(localStorage.getItem('User'));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -35,7 +35,7 @@ export class AuthService {
     }
 
     private loginSuccess(userInfo: ILoginUserInterface) {
-        this._localStorage.setItem('User', userInfo);
+        this.localStorage.setItem('User', userInfo);
         this.currentUserSubject.next(userInfo);
     }
 
@@ -43,14 +43,14 @@ export class AuthService {
         const md5 = new Md5();
         md5.appendStr(data.password);
         data.password = md5.end().toString();
-        return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/register`, data);
+        return this.http.post(`${environment.mainAPI.url}${this.userApiPrefix}/register`, data);
     }
 
     public userInfo(loginName: string) {
         const headers = new HttpHeaders({
             'Skip-Intercept': 'yes',
         });
-        return this._http.get(`${environment.mainAPI.url}${this._userApiPrefix}/userInfo`, {
+        return this.http.get(`${environment.mainAPI.url}${this.userApiPrefix}/userInfo`, {
             headers,
             params: {
                 loginName,
@@ -62,7 +62,7 @@ export class AuthService {
         const md5 = new Md5();
         md5.appendStr(password);
         password = md5.end().toString();
-        return this._http.post(`${environment.mainAPI.url}${this._userApiPrefix}/login`, {
+        return this.http.post(`${environment.mainAPI.url}${this.userApiPrefix}/login`, {
             loginName,
             password,
             rememberMe,
@@ -77,11 +77,11 @@ export class AuthService {
     }
 
     public goToLogin() {
-        this._localStorage.removeItem('User');
+        this.localStorage.removeItem('User');
         this.currentUserSubject.next(null);
-        this._router.navigate(['/user/login'], {
+        this.router.navigate(['/user/login'], {
             queryParams: {
-                returnUrl: this._router.url,
+                returnUrl: this.router.url,
             },
         }).then();
     }

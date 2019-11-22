@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {IWSMessageInterface} from 'app/common/interfaces/websocket.interface';
+import {IWSMessageInterface} from 'src/app/common/interfaces/websocket.interface';
 import {filter, map, retry} from 'rxjs/internal/operators';
-import {WsConnectionService} from 'app/common/services/ws-connection.service';
+import {WsConnectionService} from 'src/app/common/services/ws-connection.service';
 
 @Injectable()
 export class BuildService {

@@ -1,10 +1,9 @@
 import {Component, ElementRef, ViewChild, AfterViewInit, Inject, OnDestroy} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-import {ILoginUserInterface} from 'app/common/interfaces/response.interface';
+import {ILoginUserInterface} from 'src/app/common/interfaces/response.interface';
 import {Subscription} from 'rxjs';
 import {IMainMenuInterface} from '../../interfaces/menu.interface';
 import {GetMainMenuService} from '../services/get-main-menu.service';
-import {AuthService} from 'app/user/services/auth.service';
+import {AuthService} from 'src/app/user/services/auth.service';
 import {DomService} from '../../services/dom.service';
 
 @Component({
@@ -19,39 +18,41 @@ export class MainMenuComponent implements AfterViewInit, OnDestroy {
     currentUser: ILoginUserInterface;
     mainMenus: IMainMenuInterface[];
 
-    private _mainMenuSubscription$: Subscription;
+    private mainMenuSubscription$: Subscription;
 
     constructor(
-        private _domService: DomService,
-        private _mainMenuService: GetMainMenuService,
-        private _authService: AuthService,
+        private domService: DomService,
+        private mainMenuService: GetMainMenuService,
+        private authService: AuthService,
     ) {
-        this._mainMenuSubscription$ = this._mainMenuService.getMainMenu()
+        this.mainMenuSubscription$ = this.mainMenuService.getMainMenu()
             .subscribe((data: {menus: IMainMenuInterface[], user: ILoginUserInterface}) => {
                this.mainMenus = data.menus;
                this.currentUser = data.user;
             });
     }
 
-    @ViewChild('searchButton') searchButton: ElementRef;
+    @ViewChild('searchButton', {
+      static: false,
+    }) searchButton: ElementRef;
 
     ngAfterViewInit() {
-        if (this._domService.isBrowser && this.enableSearch) {
+        if (this.domService.isBrowser && this.enableSearch) {
             setTimeout(() => {
-                TopUI.toggle(this.searchButton.nativeElement).toggle();
+                UIkit.toggle(this.searchButton.nativeElement).toggle();
             }, 0);
         }
     }
 
     ngOnDestroy(): void {
-        this._mainMenuSubscription$.unsubscribe();
+        this.mainMenuSubscription$.unsubscribe();
     }
 
     goToLogin() {
-        this._authService.goToLogin();
+        this.authService.goToLogin();
     }
 
     logOut() {
-        this._authService.logout();
+        this.authService.logout();
     }
 }

@@ -1,25 +1,25 @@
-<div class="ui-width-large ui-margin-auto">
-    <form class="ui-form-stacked"
+<div class="uk-width-large uk-margin-auto">
+    <form class="uk-form-stacked"
           [formGroup]="registerInfo"
           (ngSubmit)="register()">
-        <h2 class="ui-h2 ui-margin-medium-bottom">用户注册</h2>
-        <div class="ui-margin">
-            <div class="ui-form-label ui-flex ui-flex-between">
-                <div class="ui-flex ui-flex-between">
+        <h2 class="uk-h2 uk-margin-medium-bottom">用户注册</h2>
+        <div class="uk-margin">
+            <div class="uk-form-label uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between">
                     <label for="token">
                         Git Midea Access Token
                     </label>
-                    <ul class="ui-subnav ui-margin-remove" ui-margin>
+                    <ul class="uk-subnav uk-margin-remove" uk-margin>
                         <li *ngIf="f.token.errors && f.token.touched">
-                                <span class="ui-text-danger"
+                                <span class="uk-text-danger"
                                       *ngIf="f.token.errors.required">
                                     必填项
                                 </span>
-                                <span class="ui-text-danger"
+                                <span class="uk-text-danger"
                                   *ngIf="f.token.errors.tokenError">
                                     Token 错误
                                 </span>
-                                <span class="ui-text-danger"
+                                <span class="uk-text-danger"
                                   *ngIf="f.token.errors.tokenTypeError">
                                     该用户没有使用ldap登录
                                 </span>
@@ -34,31 +34,31 @@
                     </ul>
                 </div>
             </div>
-            <input class="ui-input"
+            <input class="uk-input"
                    id="token"
                    formControlName="token"
-                   [class.ui-form-danger]="f.token.errors && f.token.touched"
-                   [class.ui-form-success]="!f.token.errors && f.token.touched"
+                   [class.uk-form-danger]="f.token.errors && f.token.touched"
+                   [class.uk-form-success]="!f.token.errors && f.token.touched"
                    type="text"
                    placeholder="Git Midea Access Token...">
         </div>
         <div *ngIf="userInfo !== null"
              @userPanel
-             class="ui-margin">
-            <label class="ui-form-label">用户信息</label>
-            <div class="ui-card ui-card-small ui-card-body ui-card-secondary">
-                <div class="ui-grid ui-grid-small">
-                    <div class="ui-width-auto">
+             class="uk-margin">
+            <label class="uk-form-label">用户信息</label>
+            <div class="uk-card uk-card-small uk-card-body uk-card-secondary">
+                <div class="uk-grid uk-grid-small">
+                    <div class="uk-width-auto">
                         <img [attr.src]="userInfo.avatar_url"
                              width="50"
                              height="50">
                     </div>
-                    <div class="ui-width-expand">
-                        <div class="ui-grid ui-grid-small">
-                            <div class="ui-width-auto">
+                    <div class="uk-width-expand">
+                        <div class="uk-grid uk-grid-small">
+                            <div class="uk-width-auto">
                                 <span>姓名：{{userInfo.name}}</span>
                             </div>
-                            <div class="ui-width-expand">
+                            <div class="uk-width-expand">
                                 <span>登录名：{{userInfo.loginName}}</span>
                             </div>
                         </div>
@@ -70,57 +70,57 @@
             </div>
         </div>
         <div formGroupName="passwords">
-            <div class="ui-margin">
-                <div class="ui-form-label ui-flex ui-flex-between">
-                    <div class="ui-flex ui-flex-between">
+            <div class="uk-margin">
+                <div class="uk-form-label uk-flex uk-flex-between">
+                    <div class="uk-flex uk-flex-between">
                         <label for="password">
                             密码
                         </label>
                         <div *ngIf="p.password.errors && p.password.touched"
-                             class="ui-text-danger">
+                             class="uk-text-danger">
                             <span *ngIf="p.password.errors.required">请填写密码</span>
                         </div>
                     </div>
                 </div>
-                <input class="ui-input"
+                <input class="uk-input"
                        formControlName="password"
                        id="password"
                        type="password"
-                       [class.ui-form-danger]="p.password.errors && p.password.touched"
-                       [class.ui-form-success]="!p.password.errors && p.password.touched"
+                       [class.uk-form-danger]="p.password.errors && p.password.touched"
+                       [class.uk-form-success]="!p.password.errors && p.password.touched"
                        placeholder="登录密码">
             </div>
-            <div class="ui-margin">
-                <div class="ui-flex ui-flex-between">
+            <div class="uk-margin">
+                <div class="uk-flex uk-flex-between">
                     <label for="confirmPassword">
                         确认密码
                     </label>
                     <div *ngIf="p.confirmPassword.errors && p.confirmPassword.touched"
-                         class="ui-text-danger">
+                         class="uk-text-danger">
                         <span *ngIf="p.confirmPassword.errors.required">请填写确认密码</span>
                     </div>
                     <div *ngIf="getConfirmPasswordError()"
-                         class="ui-text-danger">
+                         class="uk-text-danger">
                         <span>密码和确认密码不一致</span>
                     </div>
                 </div>
-                <input class="ui-input"
+                <input class="uk-input"
                        id="confirmPassword"
                        formControlName="confirmPassword"
                        type="password"
-                       [class.ui-form-danger]="p.confirmPassword.touched && (p.confirmPassword.errors || getConfirmPasswordError())"
-                       [class.ui-form-success]="!p.confirmPassword.errors && p.confirmPassword.touched && !getConfirmPasswordError()"
+                       [class.uk-form-danger]="p.confirmPassword.touched && (p.confirmPassword.errors || getConfirmPasswordError())"
+                       [class.uk-form-success]="!p.confirmPassword.errors && p.confirmPassword.touched && !getConfirmPasswordError()"
                        placeholder="确认密码">
             </div>
         </div>
-        <div class="ui-margin-medium-top ui-text-center">
+        <div class="uk-margin-medium-top uk-text-center">
             <button type="submit"
                     [disabled]="!registerInfo.valid"
-                    class="ui-button ui-button-danger ui-button-large ui-width-1-2">
+                    class="uk-button uk-button-danger uk-button-large uk-width-1-2">
                 注册
             </button>
         </div>
-        <p class="ui-text-center">
+        <p class="uk-text-center">
             已有账号？
             <a routerLink="../login">
                 去登录

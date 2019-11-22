@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {UserRouterComponents, UserRouterModule} from './user-router.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonComponentsModule} from 'app/common/components/common-components.module';
+import {CommonComponentsModule} from '../common/components/common-components.module';
 
 @NgModule({
     declarations: [

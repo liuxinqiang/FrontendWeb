@@ -1,4 +1,4 @@
-import {IUserInterface} from 'app/user/interfaces/user.interface';
+import {IUserInterface} from 'src/app/user/interfaces/user.interface';
 
 export interface IComponentInterface {
     title: string;

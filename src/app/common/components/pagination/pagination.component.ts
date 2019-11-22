@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DataFilter} from 'app/common/interfaces/response.interface';
+import {DataFilter} from 'src/app/common/interfaces/response.interface';
 
 @Component({
     selector: 'app-common-pagination',

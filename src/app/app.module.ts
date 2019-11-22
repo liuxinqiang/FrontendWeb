@@ -2,12 +2,11 @@ import {BrowserModule, Title} from '@angular/platform-browser';
 import {ErrorHandler, LOCALE_ID, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {TransferHttpCacheModule} from '@nguniversal/common';
 import {AppRouteComponents, AppRouterModule} from './app-router.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ErrorsHandler} from './common/handlers/errors-handler';
 import {HttpCustomInterceptor} from './common/interceptors/http-custom.interceptor';
-import localeZhHans from '@angular/common/locales/zh-Hans';
+import localeZhHans from '@angular/common/locales/zh-hans';
 import {registerLocaleData} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -22,7 +21,6 @@ registerLocaleData(localeZhHans, 'zh-Hans');
         BrowserModule.withServerTransition({appId: 'my-app'}),
         BrowserAnimationsModule,
         AppRouterModule,
-        TransferHttpCacheModule,
         HttpClientModule,
     ],
     providers: [

@@ -15,7 +15,7 @@ const mainRoutes: Routes = [
     },
     {
         path: 'projects',
-        loadChildren: './projects/projects.module#ProjectsModule',
+        loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
         canActivate: [AuthGuard],
         data: {
             title: '项目中心',
@@ -23,7 +23,7 @@ const mainRoutes: Routes = [
     },
     {
         path: 'components',
-        loadChildren: './components/components.module#ComponentsModule',
+        loadChildren: () => import('./components/components.module').then(m => m.ComponentsModule),
         data: {
             title: '组件库',
             mainMenu: {
@@ -51,17 +51,8 @@ const mainRoutes: Routes = [
         }
     },
     {
-        path: 'editor',
-        loadChildren: './editor/editor.module#EditorModule',
-        canActivate: [AuthGuard],
-        data: {
-            noHeader: true,
-            title: '编辑器',
-        }
-    },
-    {
         path: 'user',
-        loadChildren: './user/user.module#UserModule',
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule),
         data: {
             title: '用户中心',
         },

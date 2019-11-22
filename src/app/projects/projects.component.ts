@@ -13,6 +13,6 @@ export class ProjectsComponent implements OnInit {
     this.message = 'Hello';
   }
   sayHello() {
-    TopUI.notification('Hello!');
+    UIkit.notification('Hello!');
   }
 }

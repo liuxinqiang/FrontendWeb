@@ -7,17 +7,17 @@ import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 export class DomService {
 
     constructor(
-        @Inject(PLATFORM_ID) private _platformId: Object,
-        @Inject(DOCUMENT) private _document: any,
+        @Inject(PLATFORM_ID) private platformId: object,
+        @Inject(DOCUMENT) private doc: any,
     ) {
     }
 
     public get isBrowser(): boolean {
-        return isPlatformBrowser(this._platformId);
+        return isPlatformBrowser(this.platformId);
     }
 
     async enableFullScreen() {
-        const elem = this._document.documentElement;
+        const elem = this.doc.documentElement;
         if (elem.requestFullscreen) {
             await elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -30,18 +30,18 @@ export class DomService {
     }
 
     async disableFullScreen() {
-        if (this._document.exitFullscreen) {
-            await this._document.exitFullscreen();
-        } else if (this._document.mozCancelFullScreen) { /* Firefox */
-            await this._document.mozCancelFullScreen();
-        } else if (this._document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-            await this._document.webkitExitFullscreen();
-        } else if (this._document.msExitFullscreen) { /* IE/Edge */
-            await this._document.msExitFullscreen();
+        if (this.doc.exitFullscreen) {
+            await this.doc.exitFullscreen();
+        } else if (this.doc.mozCancelFullScreen) { /* Firefox */
+            await this.doc.mozCancelFullScreen();
+        } else if (this.doc.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            await this.doc.webkitExitFullscreen();
+        } else if (this.doc.msExitFullscreen) { /* IE/Edge */
+            await this.doc.msExitFullscreen();
         }
     }
 
     public get document(): Document {
-        return this._document;
+        return this.doc;
     }
 }

@@ -1,8 +1,8 @@
-<div class="ui-card ui-card-default"
+<div class="uk-card uk-card-default"
      *ngIf="component">
-    <div class="ui-card-header">
-        <h3 class="ui-card-title ui-margin-remove-bottom">
-            <a class="ui-link-reset"
+    <div class="uk-card-header">
+        <h3 class="uk-card-title uk-margin-remove-bottom">
+            <a class="uk-link-reset"
                [routerLink]="[component.componentName]">
                 {{component.title}}
                 <span *ngIf="component.users && component.users.length">
@@ -10,13 +10,13 @@
                 </span>
             </a>
         </h3>
-        <p class="ui-text-meta ui-margin-remove-top">
+        <p class="uk-text-meta uk-margin-remove-top">
             {{component.componentName}}
         </p>
     </div>
-    <div class="ui-card-body">
+    <div class="uk-card-body">
         <div [innerHtml]="component.description"></div>
-        <ul class="ui-list">
+        <ul class="uk-list">
             <li>
                 <span>创建时间：</span>
                 {{component.createTime | date: 'medium'}}
@@ -27,9 +27,9 @@
             </li>
         </ul>
     </div>
-    <div class="ui-card-footer">
+    <div class="uk-card-footer">
         <a [routerLink]="[component.componentName]"
-           class="ui-button ui-button-text">
+           class="uk-button uk-button-text">
             详细了解
         </a>
     </div>
