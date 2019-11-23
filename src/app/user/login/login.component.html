@@ -6,25 +6,25 @@
         <div class="uk-margin">
             <div class="uk-form-label uk-flex uk-flex-between">
                 <div class="uk-flex uk-flex-between">
-                    <label for="loginName">
+                    <label for="username">
                         登录名
                     </label>
-                    <div *ngIf="f.loginName.errors && f.loginName.touched"
+                    <div *ngIf="f.username.errors && f.username.touched"
                          class="uk-text-danger">
-                        <span *ngIf="f.loginName.errors.required">请填写用户名</span>
-                        <span *ngIf="f.loginName.errors.minlength">
-                            最少{{f.loginName.errors.minlength.requiredLength}}个字符
+                        <span *ngIf="f.username.errors.required">请填写用户名</span>
+                        <span *ngIf="f.username.errors.minlength">
+                            最少{{f.username.errors.minlength.requiredLength}}个字符
                         </span>
-                        <span *ngIf="f.loginName.errors.notExist">该用户不存在</span>
+                        <span *ngIf="f.username.errors.notExist">该用户不存在</span>
                     </div>
                 </div>
             </div>
             <input class="uk-input"
-                   formControlName="loginName"
-                   id="loginName"
+                   formControlName="username"
+                   id="username"
                    type="text"
-                   [class.uk-form-danger]="f.loginName.errors && f.loginName.touched"
-                   [class.uk-form-success]="!f.loginName.errors && f.loginName.touched"
+                   [class.uk-form-danger]="f.username.errors && f.username.touched"
+                   [class.uk-form-success]="!f.username.errors && f.username.touched"
                    placeholder="请输入用户名">
         </div>
         <div class="uk-margin">

@@ -1,130 +1,126 @@
 <div class="uk-width-large uk-margin-auto">
-    <form class="uk-form-stacked"
-          [formGroup]="registerInfo"
-          (ngSubmit)="register()">
-        <h2 class="uk-h2 uk-margin-medium-bottom">用户注册</h2>
-        <div class="uk-margin">
-            <div class="uk-form-label uk-flex uk-flex-between">
-                <div class="uk-flex uk-flex-between">
-                    <label for="token">
-                        Git Midea Access Token
-                    </label>
-                    <ul class="uk-subnav uk-margin-remove" uk-margin>
-                        <li *ngIf="f.token.errors && f.token.touched">
-                                <span class="uk-text-danger"
-                                      *ngIf="f.token.errors.required">
-                                    必填项
-                                </span>
-                                <span class="uk-text-danger"
-                                  *ngIf="f.token.errors.tokenError">
-                                    Token 错误
-                                </span>
-                                <span class="uk-text-danger"
-                                  *ngIf="f.token.errors.tokenTypeError">
-                                    该用户没有使用ldap登录
-                                </span>
-                        </li>
-                        <li>
-                            <a tabindex="-1"
-                               target="_blank"
-                               href="http://git.midea.com/profile/personal_access_tokens">
-                                去获取【请勾选所有权限】
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <input class="uk-input"
-                   id="token"
-                   formControlName="token"
-                   [class.uk-form-danger]="f.token.errors && f.token.touched"
-                   [class.uk-form-success]="!f.token.errors && f.token.touched"
-                   type="text"
-                   placeholder="Git Midea Access Token...">
+  <form class="uk-form-stacked"
+        [formGroup]="registerInfo"
+        (ngSubmit)="register()">
+    <h2 class="uk-h2 uk-margin-medium-bottom">用户注册</h2>
+    <div class="uk-margin">
+      <div class="uk-form-label uk-flex uk-flex-between">
+        <div class="uk-flex uk-flex-between">
+          <label for="username">
+            用户名
+          </label>
+          <div *ngIf="r.username.errors && r.username.touched"
+               class="uk-text-danger">
+            <span *ngIf="r.username.errors.required">请填写用户名</span>
+            <span *ngIf="r.username.errors.minlength">
+                            最少{{r.username.errors.minlength.requiredLength}}个字符
+                        </span>
+            <span *ngIf="r.username.errors.existedUser">该用户名已经被 {{r.username.errors.existedUser}} 使用</span>
+          </div>
         </div>
-        <div *ngIf="userInfo !== null"
-             @userPanel
-             class="uk-margin">
-            <label class="uk-form-label">用户信息</label>
-            <div class="uk-card uk-card-small uk-card-body uk-card-secondary">
-                <div class="uk-grid uk-grid-small">
-                    <div class="uk-width-auto">
-                        <img [attr.src]="userInfo.avatar_url"
-                             width="50"
-                             height="50">
-                    </div>
-                    <div class="uk-width-expand">
-                        <div class="uk-grid uk-grid-small">
-                            <div class="uk-width-auto">
-                                <span>姓名：{{userInfo.name}}</span>
-                            </div>
-                            <div class="uk-width-expand">
-                                <span>登录名：{{userInfo.loginName}}</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span>邮箱：</span>{{userInfo.email}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <input class="uk-input"
+             id="username"
+             type="text"
+             formControlName="username"
+             [class.uk-form-danger]="r.username.errors && r.username.touched"
+             [class.uk-form-success]="!r.username.errors && r.username.touched"
+             placeholder="请输入用户名">
+    </div>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="name">姓名</label>
+      <input class="uk-input"
+             id="name"
+             type="text"
+             formControlName="name"
+             [class.uk-form-danger]="r.name.errors && r.name.touched"
+             [class.uk-form-success]="!r.name.errors && r.name.touched"
+             placeholder="请输入姓名">
+    </div>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="phone">手机号</label>
+      <input class="uk-input"
+             id="phone"
+             type="text"
+             formControlName="phone"
+             [class.uk-form-danger]="r.phone.errors && r.phone.touched"
+             [class.uk-form-success]="!r.phone.errors && r.phone.touched"
+             placeholder="请输入手机号">
+    </div>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="email">邮箱</label>
+      <input class="uk-input"
+             id="email"
+             type="text"
+             formControlName="email"
+             [class.uk-form-danger]="r.email.errors && r.email.touched"
+             [class.uk-form-success]="!r.email.errors && r.email.touched"
+             placeholder="请输入邮箱">
+    </div>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="email">图像</label>
+      <input class="uk-input"
+             id="avatar"
+             type="text"
+             formControlName="avatar"
+             [class.uk-form-danger]="r.avatar.errors && r.avatar.touched"
+             [class.uk-form-success]="!r.avatar.errors && r.avatar.touched"
+             placeholder="请输入个性图像">
+    </div>
+    <div class="uk-margin">
+      <div class="uk-form-label uk-flex uk-flex-between">
+        <div class="uk-flex uk-flex-between">
+          <label for="password">
+            密码
+          </label>
+          <div *ngIf="r.password.errors && r.password.touched"
+               class="uk-text-danger">
+            <span *ngIf="r.password.errors.required">请填写密码</span>
+          </div>
         </div>
-        <div formGroupName="passwords">
-            <div class="uk-margin">
-                <div class="uk-form-label uk-flex uk-flex-between">
-                    <div class="uk-flex uk-flex-between">
-                        <label for="password">
-                            密码
-                        </label>
-                        <div *ngIf="p.password.errors && p.password.touched"
-                             class="uk-text-danger">
-                            <span *ngIf="p.password.errors.required">请填写密码</span>
-                        </div>
-                    </div>
-                </div>
-                <input class="uk-input"
-                       formControlName="password"
-                       id="password"
-                       type="password"
-                       [class.uk-form-danger]="p.password.errors && p.password.touched"
-                       [class.uk-form-success]="!p.password.errors && p.password.touched"
-                       placeholder="登录密码">
-            </div>
-            <div class="uk-margin">
-                <div class="uk-flex uk-flex-between">
-                    <label for="confirmPassword">
-                        确认密码
-                    </label>
-                    <div *ngIf="p.confirmPassword.errors && p.confirmPassword.touched"
-                         class="uk-text-danger">
-                        <span *ngIf="p.confirmPassword.errors.required">请填写确认密码</span>
-                    </div>
-                    <div *ngIf="getConfirmPasswordError()"
-                         class="uk-text-danger">
-                        <span>密码和确认密码不一致</span>
-                    </div>
-                </div>
-                <input class="uk-input"
-                       id="confirmPassword"
-                       formControlName="confirmPassword"
-                       type="password"
-                       [class.uk-form-danger]="p.confirmPassword.touched && (p.confirmPassword.errors || getConfirmPasswordError())"
-                       [class.uk-form-success]="!p.confirmPassword.errors && p.confirmPassword.touched && !getConfirmPasswordError()"
-                       placeholder="确认密码">
-            </div>
+      </div>
+      <input class="uk-input"
+             formControlName="password"
+             id="password"
+             type="password"
+             [class.uk-form-danger]="r.password.errors && r.password.touched"
+             [class.uk-form-success]="!r.password.errors && r.password.touched"
+             placeholder="登录密码">
+    </div>
+    <div class="uk-margin">
+      <div class="uk-flex uk-flex-between">
+        <label for="confirmPassword">
+          确认密码
+        </label>
+        <div *ngIf="r.confirmPassword.errors && r.confirmPassword.touched"
+             class="uk-text-danger">
+          <span *ngIf="r.confirmPassword.errors.required">请填写确认密码</span>
         </div>
-        <div class="uk-margin-medium-top uk-text-center">
-            <button type="submit"
-                    [disabled]="!registerInfo.valid"
-                    class="uk-button uk-button-danger uk-button-large uk-width-1-2">
-                注册
-            </button>
+        <div *ngIf="getConfirmPasswordError()"
+             class="uk-text-danger">
+          <span>密码和确认密码不一致</span>
         </div>
-        <p class="uk-text-center">
-            已有账号？
-            <a routerLink="../login">
-                去登录
-            </a>
-        </p>
-    </form>
+      </div>
+      <input class="uk-input"
+             id="confirmPassword"
+             formControlName="confirmPassword"
+             type="password"
+             [class.uk-form-danger]="r.confirmPassword.touched && (r.confirmPassword.errors || getConfirmPasswordError())"
+             [class.uk-form-success]="!r.confirmPassword.errors && r.confirmPassword.touched && !getConfirmPasswordError()"
+             placeholder="确认密码">
+    </div>
+    <div class="uk-margin-medium-top uk-text-center">
+      <button type="submit"
+              [disabled]="!registerInfo.valid"
+              class="uk-button uk-button-danger uk-button-large uk-width-1-2">
+        注册
+      </button>
+    </div>
+    <p class="uk-text-center">
+      已有账号？
+      <a routerLink="../login">
+        去登录
+      </a>
+    </p>
+  </form>
 </div>

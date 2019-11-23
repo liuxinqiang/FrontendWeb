@@ -12,28 +12,28 @@ import {IUserInterface} from '../interfaces/user.interface';
     styles: []
 })
 export class LoginComponent {
-    readonly _returnUrl: string;
+    readonly returnUrl: string;
 
     userInfo: null | IUserInterface = null;
 
-    loginInfo = this._fb.group({
-        loginName: ['', [
+    loginInfo = this.fb.group({
+        username: ['', [
             Validators.required,
             Validators.minLength(4)
-        ], this.validateLoginName.bind(this)],
+        ], this.validateUsername.bind(this)],
         password: ['', Validators.required],
         rememberMe: [false],
     });
 
     constructor(
-        private _fb: FormBuilder,
-        private _authService: AuthService,
-        private _router: Router,
-        private _activeRoute: ActivatedRoute,
+        private fb: FormBuilder,
+        private authService: AuthService,
+        private router: Router,
+        private activeRoute: ActivatedRoute,
     ) {
-        this._returnUrl = this._activeRoute.snapshot.queryParams.returnUrl;
-        if (this._activeRoute.snapshot.queryParams.loginName) {
-            this.f.loginName.setValue(this._activeRoute.snapshot.queryParams.loginName);
+        this.returnUrl = this.activeRoute.snapshot.queryParams.returnUrl;
+        if (this.activeRoute.snapshot.queryParams.username) {
+            this.f.username.setValue(this.activeRoute.snapshot.queryParams.username);
         }
     }
 
@@ -41,20 +41,20 @@ export class LoginComponent {
         return this.loginInfo.controls;
     }
 
-    validateLoginName(control: AbstractControl) {
+    validateUsername(control: AbstractControl) {
         this.userInfo = null;
         return timer(500).pipe(
             switchMap(() => {
                 if (!control.value) {
                     return of(null);
                 }
-                return this._authService.userInfo(control.value).pipe(
+                return this.authService.simpleUserInfo(control.value).pipe(
                     map((result: IUserInterface) => {
                         this.userInfo = result;
                         return null;
                     }),
                     catchError(() => of({
-                        'notExist': control.value,
+                        notExist: control.value,
                     }))
                 );
             })
@@ -62,9 +62,9 @@ export class LoginComponent {
     }
 
     login() {
-        this._authService.login(this.loginInfo.value)
+        this.authService.login(this.loginInfo.value)
             .subscribe(() => {
-                this._router.navigateByUrl(this._returnUrl || '/components');
+                this.router.navigateByUrl(this.returnUrl || '/components');
             }, error => {
                 this.loginInfo.controls.password.reset();
             });

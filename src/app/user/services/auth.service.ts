@@ -46,30 +46,29 @@ export class AuthService {
         return this.http.post(`${environment.mainAPI.url}${this.userApiPrefix}/register`, data);
     }
 
-    public userInfo(loginName: string) {
+    public simpleUserInfo(username: string) {
         const headers = new HttpHeaders({
             'Skip-Intercept': 'yes',
         });
-        return this.http.get(`${environment.mainAPI.url}${this.userApiPrefix}/userInfo`, {
+        return this.http.get(`${environment.mainAPI.url}${this.userApiPrefix}/simpleUserInfo`, {
             headers,
             params: {
-                loginName,
+                username,
             },
         });
     }
 
-    public login({loginName, password, rememberMe}): Observable<IUserInterface> {
+    public login({username, password, rememberMe}): Observable<IUserInterface> {
         const md5 = new Md5();
         md5.appendStr(password);
         password = md5.end().toString();
         return this.http.post(`${environment.mainAPI.url}${this.userApiPrefix}/login`, {
-            loginName,
+            username,
             password,
             rememberMe,
         })
             .pipe(
                 map((res: ILoginResponseInterface) => {
-                    res.data.user.rule = 1;
                     this.loginSuccess(res.data);
                     return res.data.user;
                 })

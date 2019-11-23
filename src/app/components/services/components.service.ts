@@ -61,14 +61,14 @@ export class ComponentsService {
             });
     }
 
-    getComponentsListByUser(dataFilter: DataFilter, loginName?: string): Observable<object> {
+    getComponentsListByUser(dataFilter: DataFilter, username?: string): Observable<object> {
         const {
             pageSize,
             pageIndex,
         } = dataFilter;
         const params = {};
-        if (loginName) {
-            params['loginName'] = loginName;
+        if (username) {
+            params['username'] = username;
         }
         return this._http.post(
             `${this._urlPrefix}/getComponentsByUser`,
