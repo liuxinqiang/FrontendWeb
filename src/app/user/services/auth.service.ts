@@ -35,6 +35,7 @@ export class AuthService {
     }
 
     private loginSuccess(userInfo: ILoginUserInterface) {
+        console.log(userInfo);
         this.localStorage.setItem('User', userInfo);
         this.currentUserSubject.next(userInfo);
     }
@@ -76,6 +77,9 @@ export class AuthService {
     }
 
     public goToLogin() {
+        if (this.router.url.startsWith('/user/login')) {
+          return;
+        }
         this.localStorage.removeItem('User');
         this.currentUserSubject.next(null);
         this.router.navigate(['/user/login'], {

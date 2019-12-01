@@ -15,7 +15,8 @@ export class WsConnectionService {
     getConnection() {
         if (!this.ws$) {
             this.ws$ = webSocket({
-                url: `${environment.liveAPI.url}?token=${this.authService.currentUserValue ? this.authService.currentUserValue.token : ''}`,
+                url: `${environment.liveAPI.url}
+                      ?token=${this.authService.currentUserValue ? this.authService.currentUserValue.access_token : ''}`,
             });
         }
         return this.ws$;

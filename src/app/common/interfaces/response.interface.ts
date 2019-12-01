@@ -14,7 +14,7 @@ export interface ILoginResponseInterface extends IResponseInterface{
 }
 
 export interface ILoginUserInterface {
-    token: string;
+    access_token: string;
     user: IUserInterface;
 }
 

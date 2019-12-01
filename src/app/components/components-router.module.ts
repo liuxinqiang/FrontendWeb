@@ -27,14 +27,14 @@ const routes: Routes = [
             {
                 path: 'my-components',
                 canActivate: [AuthGuard],
-                loadChildren: './my-components/my-components.module#MyComponentsModule',
+                loadChildren: () => import('./my-components/my-components.module').then(m => m.MyComponentsModule),
                 data: {
                     title: '我的组件',
                 }
             },
             {
                 path: 'component-create',
-                loadChildren: './component-create/component-create.module#ComponentCreateModule',
+                loadChildren: () => import('./component-create/component-create.module').then(m => m.ComponentCreateModule),
                 canActivate: [AuthGuard],
             }
         ],

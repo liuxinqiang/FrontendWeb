@@ -17,19 +17,15 @@ function filterManiMenu(routes: Route[]): IMainMenuInterface[] {
 }
 
 function transfer(menus: IMainMenuInterface[],
-                  result = [],
-                  userRule: number) {
+                  result = []) {
     menus.forEach((menu: IMainMenuInterface) => {
-        if (userRule >= menu.rule) {
             const newMenu: IMainMenuInterface = Object.assign({}, menu);
             newMenu.children = [];
             if (menu.children && menu.children.length) {
                 transfer(menu.children,
-                    newMenu.children,
-                    userRule);
+                    newMenu.children);
             }
             result.push(newMenu);
-        }
     });
     return result;
 }
@@ -51,20 +47,19 @@ function searchMenu(menus: IMainMenuInterface[], keyPath: String): IMainMenuInte
 })
 export class GetMainMenuService {
     constructor(
-        private _authService: AuthService,
-        private _router: Router,
+        private authService: AuthService,
+        private router: Router,
     ) {
     }
 
     getMainMenu(searchPath?: string): Observable<{ menus: IMainMenuInterface[], menu: IMainMenuInterface, user: ILoginUserInterface }> {
-        return this._authService.currentUser.pipe(
+        return this.authService.currentUser.pipe(
             map(user => {
-                const filterMenus: IMainMenuInterface[] = filterManiMenu(this._router.config);
+                const filterMenus: IMainMenuInterface[] = filterManiMenu(this.router.config);
                 let menu: null | IMainMenuInterface = null;
                 const menus = transfer(
                     filterMenus,
-                    [],
-                    user ? user.user.rule : 0);
+                    []);
                 if (searchPath) {
                     menu = searchMenu(menus, searchPath);
                 }
